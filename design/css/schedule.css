@@ -1,0 +1,476 @@
+
+/* FullCalendar Customizations */
+
+:root {
+    --fc-daygrid-event-dot-width: 20px !important;
+    --fc-list-event-dot-width: 20px !important;
+    --fc-list-event-hover-bg-color: #fff !important
+}
+
+#fullcalendar .fc-toolbar-chunk .fc-toolbar-title {
+    color: #052570;
+    font-weight: bold;
+    font-size: 20px
+}
+
+#fullcalendar .fc-daygrid-day-events {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+}
+
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary {
+    background-color: #F5F6FB;
+    color: #08AEDE;
+    border: 0;
+    padding: 8px 24px;
+    position: relative;
+}
+
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary:focus {
+    box-shadow: none;
+}
+
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-button-active::after {
+    display: block;
+    content: '';
+    position: absolute;
+    height: 80%;
+    width: 85%;
+    background-color: #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    border-radius: 5px;
+}
+
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-prev-button,
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-next-button {
+    padding: 6px;
+    background: rgba(1, 134, 208, 0.06);
+    font-size: 12px
+}
+
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-today-button {
+    background: rgba(1, 134, 208, 0.06);
+}
+
+#fullcalendar .fc-toolbar-chunk:nth-of-type(3) .fc-button-group {
+    gap: 5px !important
+}
+
+#fullcalendar .fc-daygrid-dot-event.fc-event-mirror,
+#fullcalendar .fc-daygrid-dot-event:hover {
+    background: rgba(0, 0, 0, 0) !important;
+}
+
+#fullcalendar .fc-daygrid-event-dot {
+    margin: 0 !important
+}
+
+
+/* Filter  */
+
+.filter-orders {
+    border: 1px solid #08AEDE;
+    width: 200px;
+    width: auto;
+    padding: 8px;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.filter-orders:focus {
+    outline: none
+}
+
+
+/* Schedule Modals */
+
+.schedule-modal.planned {
+    border: 1px solid #c82222;
+}
+
+.schedule-modal.progresss {
+    border: 1px solid #08AEDE;
+}
+
+.schedule-modal.completed {
+    border: 1px solid #1FC84E;
+}
+
+.schedule-modal.new {
+    border: 1px solid #000000;
+}
+
+.schedule-modal .modal-dialog {
+    width: 260px;
+}
+
+.schedule-modal .modal-dialog .modal-content {
+    min-height: 270px
+}
+
+
+/* Header */
+
+.schedule-modal .header,
+.schedule-card .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 12px
+}
+
+.schedule-modal .header .left .dots,
+.schedule-card .header .left .dots {
+    display: flex;
+    align-items: center;
+    gap: 4px
+}
+
+.schedule-modal .header .left .dots .dot,
+.schedule-card .header .left .dots .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+}
+
+.schedule-modal.planned .header .left .dots .dot,
+.schedule-card.planned .header .left .dots .dot {
+    background-color: #c82222;
+}
+
+.schedule-modal.progresss .header .left .dots .dot,
+.schedule-card.progresss .header .left .dots .dot {
+    background-color: #08AEDE;
+}
+
+.schedule-modal.completed .header .left .dots .dot,
+.schedule-card.completed .header .left .dots .dot {
+    background-color: #1FC84E;
+}
+
+.schedule-modal.new .header .left .dots .dot,
+.schedule-card.new .header .left .dots .dot {
+    background-color: #000000;
+}
+
+.schedule-modal .header .right,
+.schedule-card .header .right {
+    text-align: right;
+}
+
+.schedule-modal .header .right p,
+.schedule-card .header .right p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.schedule-modal.planned .header .right p,
+.schedule-card.planned .header .right p {
+    color: #c82121
+}
+
+.schedule-modal.progresss .header .right p,
+.schedule-card.progresss .header .right p {
+    color: #08AEDE
+}
+
+.schedule-modal.completed .header .right p,
+.schedule-card.completed .header .right p {
+    color: #1FC84E
+}
+
+.schedule-modal.new .header .right p,
+.schedule-card.new .header .right p {
+    color: #000000
+}
+
+.schedule-modal .header .right .status,
+.schedule-card .header .right .status {
+    display: inline-block;
+    background: rgba(90, 86, 104, 0.047);
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 7px;
+}
+
+.schedule-modal.planned .header .right .status,
+.schedule-card.planned .header .right .status {
+    color: #c81f1f;
+}
+
+.schedule-modal.progresss .header .right .status,
+.schedule-card.progresss .header .right .status {
+    color: #08AEDE
+}
+
+.schedule-modal.completed .header .right .status,
+.schedule-card.completed .header .right .status {
+    color: #1FC84E
+}
+
+.schedule-modal.new .header .right .status,
+.schedule-card.new .header .right .status {
+    color: #000000
+}
+
+
+/* Content */
+
+.schedule-modal .content .wrapper,
+.schedule-card .content .wrapper {
+    margin-bottom: 16px;
+    margin-left: 30px;
+}
+
+.schedule-modal .content .wrapper .key,
+.schedule-card .content .wrapper .key {
+    font-size: 12px;
+    position: relative;
+}
+
+.schedule-modal.planned .content .wrapper .key,
+.schedule-card.planned .content .wrapper .key {
+    color: #c82222;
+}
+
+.schedule-modal.progresss .content .wrapper .key,
+.schedule-card.progresss .content .wrapper .key {
+    color: #08AEDE;
+}
+
+.schedule-modal.completed .content .wrapper .key,
+.schedule-card.completed .content .wrapper .key {
+    color: #1FC84E;
+}
+
+.schedule-modal.new .content .wrapper .key,
+.schedule-card.new .content .wrapper .key {
+    color: #000000;
+}
+
+.schedule-modal .content .wrapper .key:before,
+.schedule-card .content .wrapper .key:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -30px;
+    top: 8px;
+    width: 23px;
+    height: 1px;
+}
+
+.schedule-modal.planned .content .wrapper .key:before,
+.schedule-card.planned .content .wrapper .key:before {
+    background-color: #c82222;
+}
+
+.schedule-modal.progresss .content .wrapper .key:before,
+.schedule-card.progresss .content .wrapper .key:before {
+    background-color: #08AEDE;
+}
+
+.schedule-modal.completed .content .wrapper .key:before,
+.schedule-card.completed .content .wrapper .key:before {
+    background-color: #1FC84E;
+}
+
+.schedule-modal.new .content .wrapper .key:before,
+.schedule-card.new .content .wrapper .key:before {
+    background-color: #000000;
+}
+
+.schedule-modal .content .wrapper .value,
+.schedule-card .content .wrapper .value {
+    font-weight: 700;
+    font-size: 16px;
+    color: #052570
+}
+
+.items{
+    color: #000000;
+    font-size: 10px;
+}
+
+.schedule-modal .content .wrapper .driver-box,
+.schedule-card .content .wrapper .driver-box {
+    display: inline-flex;
+    align-items: center;
+    background: #F5F6FB;
+    padding: 7px 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    width: 80%;
+}
+
+.schedule-modal .content .wrapper .driver-box .image,
+.schedule-card .content .wrapper .driver-box .image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.schedule-modal .content .wrapper .driver-box .image img,
+.schedule-card .content .wrapper .driver-box .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.schedule-modal .content .wrapper .driver-box .content .driver-name,
+.schedule-card .content .wrapper .driver-box .content .driver-name {
+    margin: 0;
+    font-size: 12px;
+    color: #700505
+}
+
+.schedule-modal .content .wrapper .driver-box .content .truck,
+.schedule-card .content .wrapper .driver-box .content .truck {
+    font-size: 12px;
+    margin: 0
+}
+
+.schedule-modal .content .wrapper .driver-box .content .truck.planned,
+.schedule-card .content .wrapper .driver-box .content .truck.planned {
+    color: #c82323
+}
+
+.schedule-modal .content .wrapper .driver-box .content .truck.progresss,
+.schedule-card .content .wrapper .driver-box .content .truck.progresss {
+    color: #08AEDE
+}
+
+.schedule-modal .content .wrapper .driver-box .content .truck.completed,
+.schedule-card .content .wrapper .driver-box .content .truck.completed {
+    color: #1FC84E
+}
+
+.schedule-modal .content .wrapper .driver-box .content .truck.new,
+.schedule-card .content .wrapper .driver-box .content .truck.new {
+    color: #000000
+}
+
+.schedule-modal.planned .modal-dialog .modal-content,
+.schedule-card.planned {
+    border: 1px solid #c82323;
+}
+
+.schedule-modal.progresss .modal-dialog .modal-content,
+.schedule-card.progresss {
+    border: 1px solid #08AEDE;
+}
+
+.schedule-modal.completed .modal-dialog .modal-content,
+.schedule-card.completed {
+    border: 1px solid #1FC84E;
+}
+
+.schedule-modal.new .modal-dialog .modal-content,
+.schedule-card.new {
+    border: 1px solid #000000;
+}
+
+.circle-planned {
+    border: 1px solid #c82323;
+}
+
+.circle-progresss {
+    border: 1px solid #08AEDE;
+}
+
+.circle-completed {
+    border: 1px solid #1FC84E;
+}
+
+.circle-new {
+    border: 1px solid #000000;
+}
+
+
+
+@media (max-width: 992px) {
+    #date-orders-container {
+        margin-top: 20px;
+    }
+
+    #fullcalendar {
+        position: relative;
+    }
+
+    #fullcalendar .fc-toolbar-chunk .fc-toolbar-title {
+        color: #052570;
+        font-weight: bold;
+        font-size: 15px;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .fc .fc-toolbar {
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        gap: 6px
+    }
+
+    #fullcalendar .fc-daygrid-day-events {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+    }
+
+    #fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary {
+        background-color: #F5F6FB;
+        color: #08AEDE;
+        border: 0;
+        padding: 6px 12px;
+        position: relative;
+    }
+
+    #fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary:focus {
+        box-shadow: none;
+    }
+
+    #fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-button-active::after {
+        display: block;
+        content: '';
+        position: absolute;
+        height: 80%;
+        width: 85%;
+        background-color: #fff;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        border-radius: 5px;
+    }
+
+    #fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-prev-button,
+    #fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-next-button {
+        padding: 6px;
+        background: rgba(1, 134, 208, 0.06);
+        font-size: 12px
+    }
+
+    #fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-today-button {
+        background: rgba(1, 134, 208, 0.06);
+    }
+
+    #fullcalendar .fc-toolbar-chunk:nth-of-type(3) .fc-button-group {
+        gap: 5px !important
+    }
+
+    #fullcalendar .fc-daygrid-dot-event.fc-event-mirror,
+    #fullcalendar .fc-daygrid-dot-event:hover {
+        background: rgba(0, 0, 0, 0) !important;
+    }
+
+    #fullcalendar .fc-daygrid-event-dot {
+        margin: 0 !important
+    }
+
+}

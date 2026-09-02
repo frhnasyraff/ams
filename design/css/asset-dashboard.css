@@ -1,0 +1,422 @@
+.mt-25{
+    margin-top: 25px
+}
+
+.mt-40{
+    margin-top: 40px
+}
+
+@media(max-width:991.5px){
+   .mb-md-40{
+        margin-bottom: 40px;
+    }
+}
+
+@media(min-width:992px){
+    
+    .mt-lg-40{
+        margin-top: 40px;
+    }
+}
+
+
+.folder {
+    height: 105px;
+    width: 100%;
+    position: relative;
+    background-color: #120d38;
+    padding: 0.25em 0.5em;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 0 10px 10px 10px;
+}
+
+.folder:before {
+    content: "";
+    width: 50%;
+    height: 25px;
+    background: #0e0d38;
+    position: absolute;
+    top: -24px;
+    left: 0;
+    border-top-left-radius: 20px;
+    clip-path: polygon(0 1%, 73% 1%, 100% 100%, 0% 100%);
+}
+
+.folder::after {
+    content: '';
+    position: absolute;
+    left: 0.8em;
+    width: 4em;
+    height: 15px;
+    top: -16px;
+    background: #FAA202;
+    border-radius: 30px;
+}
+
+.folder > a{
+    text-decoration: none;
+}
+.folder > a:hover{
+    text-decoration: none;
+}
+
+
+.folder .content{
+    text-align: center;
+}
+
+.folder .name {
+    font-size: 1rem;
+    color: #FAA202;
+    font-weight: 500;
+    position: relative;
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    line-height: 1.5
+}
+
+.folder .name::after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    background: #FAA202;
+    width: 30px
+}
+
+.folder .total {
+    color: #FAA202;
+    margin: 0;
+    font-size: 2rem;
+    margin: 0;
+    font-weight: bold
+}
+
+
+/* MAP BOX */
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.marker {
+    background-image: url('mapbox-icon.png');
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-family: Montserrat;
+}
+
+.leaflet-popup-content {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+
+
+
+/* Asset Detail */
+
+.folder.detail{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    height: 90px
+}
+
+
+.folder.detail .content-table{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+}
+
+
+
+.folder.detail .content-table h2.heading{
+    font-size: 1.6rem;
+    color: #052570;
+    margin: 0 
+}
+
+
+.folder.detail .content-table .divider{
+    height: 90%;
+    width: 2px;
+    background: #dad8d8;
+}
+
+
+.folder.detail .seperator{
+    width: 100%;
+    height: 1px;
+    background: #b6c1d9
+}
+
+
+.folder.detail + .table-container{
+    background: #f5f6fb;
+    padding: 10px 8px 30px 8px
+}
+
+.folder.detail + .table-container table{
+    border-collapse: separate;
+}
+
+.folder.detail + .table-container table thead{
+    background-color: #70ad47;
+    color: #fff;
+}
+
+.folder.detail + .table-container table thead th{
+    font-size: 0.9rem;
+    font-weight: 500;
+    vertical-align: top;
+}
+
+.folder.detail + .table-container table tbody td{
+    color: #000;
+    font-weight: 500;
+    font-size: 0.8rem;
+    vertical-align: top;
+}
+.folder.detail + .table-container table tbody tr:nth-child(even){
+    background: #EBF1E9;
+}
+
+.folder.detail + .table-container table tbody tr:nth-child(odd){
+    background: #D5E3CF;
+}
+
+/* General Asset Dashboard redesign - black/blue UI */
+.asset-general-dashboard {
+    width: min(100%, 1520px);
+    margin: 0 auto;
+    padding: 0 10px 40px;
+}
+
+.asset-general-dashboard .general-dashboard-tabs-wrap {
+    margin: 0 0 18px;
+}
+
+.asset-general-dashboard .general-tabs-shell,
+.asset-general-dashboard .general-map-card,
+.asset-general-dashboard .general-kpi-panel {
+    border: 1px solid rgba(56, 189, 248, .32);
+    border-radius: 22px;
+    background: linear-gradient(145deg, rgba(4, 13, 30, .96), rgba(11, 35, 77, .82));
+    box-shadow: 0 18px 42px rgba(0, 0, 0, .30), inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.asset-general-dashboard .general-dashboard-tabs {
+    border: 0 !important;
+    padding: 12px;
+    gap: 10px;
+    margin-bottom: 0 !important;
+}
+
+.asset-general-dashboard .general-dashboard-tabs .nav-link {
+    border: 1px solid rgba(56, 189, 248, .25) !important;
+    border-radius: 16px !important;
+    background: rgba(8, 24, 52, .88) !important;
+    color: #b9c8dd !important;
+    font-weight: 800;
+    padding: 12px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: .18s ease;
+}
+
+.asset-general-dashboard .general-dashboard-tabs .nav-link.active,
+.asset-general-dashboard .general-dashboard-tabs .nav-link:hover {
+    color: #fff !important;
+    background: linear-gradient(135deg, #1d8cff, #1752c8) !important;
+    border-color: rgba(125, 211, 252, .72) !important;
+    box-shadow: 0 12px 24px rgba(29, 140, 255, .20);
+}
+
+.asset-general-dashboard .general-dashboard-grid {
+    row-gap: 24px;
+}
+
+.asset-general-dashboard .general-map-card,
+.asset-general-dashboard .general-kpi-panel {
+    padding: 18px;
+    min-height: 548px;
+}
+
+.asset-general-dashboard .general-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    color: #fff;
+}
+
+.asset-general-dashboard .general-section-title > span {
+    width: 44px;
+    height: 44px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #67e8f9;
+    background: rgba(14, 165, 233, .15);
+    border: 1px solid rgba(56, 189, 248, .35);
+    box-shadow: inset 0 0 18px rgba(34, 211, 238, .08);
+}
+
+.asset-general-dashboard .general-section-title strong {
+    display: block;
+    color: #f8fbff;
+    font-size: 1.15rem;
+    letter-spacing: .02em;
+    font-weight: 900;
+}
+
+.asset-general-dashboard .general-section-title small {
+    display: block;
+    color: #8fb1d6;
+    font-size: .78rem;
+    margin-top: 2px;
+}
+
+.asset-general-dashboard .general-map-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid rgba(56, 189, 248, .30);
+    background: rgba(2, 8, 23, .70);
+    box-shadow: 0 18px 38px rgba(0,0,0,.26);
+}
+
+.asset-general-dashboard #map {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    border-radius: 20px;
+}
+
+.asset-general-dashboard .leaflet-control-zoom a {
+    background: rgba(5, 18, 40, .92) !important;
+    color: #eaf6ff !important;
+    border-color: rgba(56, 189, 248, .25) !important;
+}
+
+.asset-general-dashboard .leaflet-control-attribution {
+    background: rgba(5, 18, 40, .72) !important;
+    color: #dbeafe !important;
+    border-radius: 12px 0 18px 0;
+}
+
+.asset-general-dashboard .general-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.asset-general-dashboard .folder.general-kpi-card {
+    position: relative;
+    isolation: isolate;
+    min-height: 145px;
+    height: auto;
+    width: 100%;
+    padding: 18px;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(56, 189, 248, .28);
+    background:
+        radial-gradient(circle at 82% 12%, rgba(56, 189, 248, .20), transparent 30%),
+        linear-gradient(145deg, rgba(7, 21, 47, .98), rgba(15, 48, 104, .92));
+    box-shadow: 0 18px 34px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    text-align: left;
+    transform: translateZ(0);
+}
+
+.asset-general-dashboard .folder.general-kpi-card::before,
+.asset-general-dashboard .folder.general-kpi-card::after {
+    display: none !important;
+}
+
+.asset-general-dashboard .folder.general-kpi-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(125, 211, 252, .75);
+    box-shadow: 0 22px 42px rgba(0,0,0,.38), 0 0 26px rgba(56,189,248,.10);
+}
+
+.asset-general-dashboard .folder.general-kpi-card .kpi-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: linear-gradient(135deg, rgba(29, 140, 255, .95), rgba(34, 211, 238, .45));
+    box-shadow: 0 12px 24px rgba(14,165,233,.20);
+    font-size: 18px;
+}
+
+.asset-general-dashboard .folder.general-kpi-card .content {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.asset-general-dashboard .folder.general-kpi-card .name {
+    color: #dbeafe !important;
+    font-size: .80rem !important;
+    line-height: 1.2 !important;
+    font-weight: 900 !important;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin: 0 !important;
+    display: block !important;
+}
+
+.asset-general-dashboard .folder.general-kpi-card .name::after {
+    display: none !important;
+}
+
+.asset-general-dashboard .folder.general-kpi-card .total {
+    color: #fff !important;
+    font-size: 2.45rem !important;
+    line-height: .9;
+    font-weight: 950 !important;
+    text-shadow: 0 0 18px rgba(56, 189, 248, .22);
+}
+
+.asset-general-dashboard .folder.general-kpi-card.use .kpi-icon { background: linear-gradient(135deg, #16a34a, #22c55e); }
+.asset-general-dashboard .folder.general-kpi-card.faulty .kpi-icon { background: linear-gradient(135deg, #ef4444, #fb7185); }
+.asset-general-dashboard .folder.general-kpi-card.maintenance .kpi-icon { background: linear-gradient(135deg, #f59e0b, #facc15); color: #081226; }
+.asset-general-dashboard .folder.general-kpi-card.location .kpi-icon { background: linear-gradient(135deg, #06b6d4, #38bdf8); }
+.asset-general-dashboard .folder.general-kpi-card.store .kpi-icon { background: linear-gradient(135deg, #8b5cf6, #38bdf8); }
+
+@media (max-width: 1199px) {
+    .asset-general-dashboard .general-map-card,
+    .asset-general-dashboard .general-kpi-panel { min-height: auto; }
+}
+
+@media (max-width: 767px) {
+    .asset-general-dashboard .general-kpi-grid { grid-template-columns: 1fr; }
+    .asset-general-dashboard .general-dashboard-tabs .nav-link { width: 100%; justify-content: center; }
+}

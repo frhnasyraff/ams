@@ -1,0 +1,170 @@
+/*
+jQuery.ganttView v.0.8.0
+Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
+MIT License Applies
+*/
+
+.card-body {
+  overflow: auto !important;
+}
+
+#ganttChart {
+  display: flex;
+}
+
+#ganttChart > h2 {
+  padding: 2em 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+div.gantt_chart_responsive::-webkit-scrollbar,
+div.ganttview-slide-container::-webkit-scrollbar,
+.card-body::-webkit-scrollbar {
+  width: 0.25em !important;
+  height: 0.25em !important;
+}
+
+div.ganttview-hzheader-day,
+div.ganttview-vtheader-item-name,
+div.ganttview-vtheader-series,
+div.ganttview-grid,
+div.ganttview-grid-row-cell {
+  float: left;
+}
+div.ganttview-grid-row {
+  width: auto !important;
+}
+div.ganttview-hzheader-month,
+div.ganttview-hzheader-day {
+  text-align: center;
+}
+
+div.ganttview-grid-row-cell.last,
+div.ganttview-hzheader-day.last,
+div.ganttview-hzheader-month.last {
+  border-right: none;
+}
+
+div.ganttview {
+  border: 1px solid #999;
+  display: flex;
+}
+
+div.ganttview-hzheader-days {
+  height: 20px;
+  display: flex;
+}
+/* Horizontal Header */
+
+div.ganttview-hzheader-month {
+  width: auto;
+  border-right: 1px solid #d0d0d0;
+}
+
+div.ganttview-hzheader-day {
+  width: 25px;
+  border-right: 1px solid #f0f0f0;
+  border-top: 1px solid #d0d0d0;
+  color: #777;
+}
+
+/* Vertical Header */
+
+div.ganttview-vtheader {
+  margin-top: 44px;
+  width: 200px;
+  overflow: auto;
+  background-color: #fff;
+  position: sticky;
+}
+
+div.ganttview-vtheader-item {
+  overflow: hidden;
+  color: #666;
+}
+
+div.ganttview-vtheader-item-name {
+  width: 125px;
+  padding-left: 2px;
+  border-top: 1px solid #d0d0d0;
+  white-space: nowrap;
+}
+
+div.ganttview-vtheader-item-name > .small,
+div.ganttview-vtheader-item-name > small,
+div.ganttview-vtheader-series > .small,
+div.ganttview-vtheader-series > small {
+  font-size: 70% !important;
+}
+
+div.ganttview-vtheader-series-name {
+  width: 75px;
+  height: 100%;
+  border-top: 1px solid #d0d0d0;
+  padding-right: 2px;
+  text-align: right;
+  display: flex;
+  align-items: center;
+}
+
+/* Slider */
+div.ganttview-slide-container {
+  overflow: auto;
+  border-left: 1px solid #999;
+}
+
+/* Grid */
+div.ganttview-grid-row-cell {
+  width: 25px;
+  height: 30px;
+  border-right: 1px solid #f0f0f0;
+  border-top: 1px solid #f0f0f0;
+}
+
+div.ganttview-vtheader-series {
+  height: 31px;
+}
+
+div.ganttview-grid-row-cell.ganttview-weekend {
+  background-color: #fafafa;
+}
+
+/* Blocks */
+div.ganttview-blocks {
+  margin: 0;
+  padding: 0;
+}
+
+div.ganttview-block-container {
+  height: 31px;
+}
+
+div.ganttview-block {
+  position: relative;
+  height: 25px;
+  border: 1px solid #c0c0c0;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+
+div.ganttview-block-text {
+  position: absolute;
+  height: 12px;
+  font-size: 0.8em;
+  color: #fff;
+  padding: 2px 3px;
+  display: none;
+}
+
+/* Adjustments for jQuery UI Styling */
+div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
+  bottom: -0;
+}
+
+div.ganttview-hzheader-months,
+div.ganttview-hzheader-month {
+  width: 100%;
+}

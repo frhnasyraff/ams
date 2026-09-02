@@ -1,0 +1,296 @@
+
+
+.header-second {
+    display: flex;
+    align-items: center;
+    background-color: #f5f6fb;
+    padding: 18px;
+    margin-bottom: 30px;
+}
+
+.header-second p {
+    margin: 0;
+    color: #0186D0;
+    font-size: 20px
+}
+
+.header-second p i {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.header-second p span {
+    font-weight: 600;
+    margin-right: 20px;
+    position: relative;
+}
+
+.header-second p span::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: 2px;
+    background: #0186D0;
+    right: 0;
+    bottom: -6px;
+    position: absolute;
+    word-spacing: 4px;
+}
+
+
+.header-second button {
+    border: 0;
+    font-size: 9px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-size: 8px;
+    background-color: #0186D0;
+    color: #fff;
+}
+
+.header-second button:focus {
+    outline: none;
+
+}
+
+
+.service_type table {
+    background-color: #fff;
+}
+
+.service_type thead {
+    background: #fbfbfb;
+    color: #052570;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.service_type tbody tr,
+.service_type tbody td,
+.service_type thead tr,
+.service_type thead th {
+    border: 0;
+    min-width: 120px;
+}
+
+.service_type thead th {
+    vertical-align: top;
+}
+
+.service_type tbody td {
+    vertical-align: center;
+}
+
+
+.service_type tbody td,
+.service_type tbody td a {
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.service_type a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}
+
+.service_type .actions a {
+    display: inline-block;
+    font-size: 18px;
+    color: #052570
+}
+
+.service_type .actions button {
+    border: 0;
+    background: transparent;
+    font-size: 17px;
+    color: #052570
+}
+
+.service_type .actions .delete-form {
+    display: inline-block;
+}
+
+
+
+.serviceModal .modal-body button.close-button {
+    border: 0;
+    background: transparent;
+    color: #052570;
+    font-weight: bold;
+    font-size: 22px;
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
+
+.serviceModal .modal-body button.close-button:focus {
+    outline: 0
+}
+
+.serviceModal label {
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.serviceModal .modal-body .check-boxes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px
+}
+
+.serviceModal .modal-body .check-boxes input[type="checkbox"] {
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid #052570;
+    background: #fff;
+    border-radius: 2px;
+    user-select: none;
+}
+
+.serviceModal .modal-body .check-boxes input[type="checkbox"]:checked {
+    background-color: #052570;
+}
+
+.serviceModal .modal-body .check-boxes .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F5F6FB;
+    padding: 4px;
+    max-width: 50%;
+    flex-grow: 1;
+    justify-content: space-around;
+}
+
+.serviceModal .modal-body .check-boxes .box label {
+    font-weight: 500;
+    font-size: 13px;
+    width: auto;
+    margin: 0 8px 0 0;
+    cursor: pointer;
+}
+
+.serviceModal .modal-body #month_dates .date,
+.modal-body .date {
+    width: calc(100% - 13px)
+}
+
+.serviceModal .modal-body .add-more,
+.add-more {
+    display: inline-block;
+    color: #052570;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.serviceModal .modal-body .date-remove,
+.modal-body .date-remove {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.serviceModal .modal-body .remove-more,
+.modal-body .remove-more {
+    color: red;
+    margin-left: 5px;
+}
+
+.serviceModal .submit-btn {
+    background: #0186D0;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    color: #fff;
+    padding: 8px 30px;
+    border-radius: 7px;
+    font-weight: 500;
+
+}
+
+.serviceModal .submit-btn:focus {
+    border: 0;
+    outline: 0;
+}
+
+.serviceModal .service-container {
+    margin-top: 30px;
+}
+
+.serviceModal .service-container .heading {
+    text-align: center;
+    font-size: 16px;
+    color: #0186D0
+}
+
+.service_type{
+    background: #fff;
+    padding: 20px;
+}
+.service_type .container{
+    width: 600px;
+    max-width: 90%;
+    margin: auto;
+}
+
+.service_type label{
+    display: block;
+    color: #052570;
+    font-weight: bold;
+    position: relative;
+    font-size: 13px;
+}
+.service_type .input{
+    outline: none;
+    padding: 8px;
+    color: #0186D0;
+    font-size: 14px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.service_type .field {
+    display: block;
+    background: #F5F6FB;
+    border: 0;
+    padding: 7px 13px;
+    font-size: 13px;
+    font-weight: 400;
+    width: 100%;
+    border: 1px solid #0186D0;
+    color: rgba(0, 0, 0, 1)
+}
+
+.service_type .field:focus {
+    outline: none;
+}
+.service_type .scheduleupdatebtn{
+    border: 0;
+    font-size: 9px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 7px 15px;
+    background-color: #0186D0;
+    color: #fff;
+}
+
+
+.text-center{
+    text-align: center;
+}

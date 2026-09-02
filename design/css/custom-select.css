@@ -1,0 +1,35 @@
+body {
+    overflow-x: hidden
+}
+
+/* .select2-container--default .select2-selection--single{
+    padding: 3px !important;
+    font-size: 14px !important;
+    color: #eee !important;
+    border: 1px solid #eee !important;
+} */
+
+.select2-selection {
+    -webkit-box-shadow: 0;
+    box-shadow: 0;
+    background-color: #fff;
+    border: 0;
+    border-radius: 0;
+    color: #555555;
+    font-size: 14px;
+    outline: 0;
+    min-height: 38px;
+    text-align: left;
+}
+
+.select2-selection__rendered {
+    margin: 5px;
+}
+
+.select2-selection__arrow {
+    margin: 5px;
+}
+
+/* .select2-dropdown.select2-dropdown--below{
+    top: -150px
+  } */

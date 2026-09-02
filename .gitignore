@@ -1,0 +1,49 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+/config.php
+/my.cnf
+/docker-compose.yml
+/application/config/database.php
+/application/config/email.php
+*.ppk
+*.pem
+*.key
+/design/js/mapbox-config.local.js
+
+# Runtime data and user uploads
+/application/cache/*
+!/application/cache/index.html
+/application/logs/*
+!/application/logs/index.html
+/application/sessions/
+/storage/
+/temp/
+/uploads/*
+!/uploads/.gitkeep
+/rams_DB/
+
+# Local Git recovery data
+/.git_corrupted_backup/
+
+# Editor, test, and generated files
+/.idea/
+/.vscode/
+.phpunit.result.cache
+npm-debug.log
+yarn-error.log
+*.log
+*.tmp
+*.bak
+*.bak-*
+*.before-*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,111 @@
+thead {
+    background: #0D2A5A !important;
+    color: #ffffff !important;
+    font-size: 0.85rem !important;
+    font-size: 14px !important;
+}
+
+
+tbody:before {
+	content: "@";
+	display: block;
+	line-height: 10px;
+	text-indent: -99999px;
+}
+tbody tr,
+tbody td,
+thead tr,
+thead th {
+	border: 0;
+	min-width: 40px;
+	text-transform: initial;
+	padding: 10px !important;
+}
+
+thead th {
+	vertical-align: top;
+}
+
+thead th:first-child {
+	border-top-left-radius: 10px !important;
+	border-bottom-left-radius: 10px !important;
+}
+
+thead th:last-child {
+	border-top-right-radius: 10px !important;
+	border-bottom-right-radius: 10px !important;
+}
+
+td,
+th {
+	border: 0 !important;
+}
+
+tbody td {
+	vertical-align: middle !important;
+}
+
+tbody td,
+tbody td a {
+	color: #0D2A5A;
+	font-size: 1rem	!important;
+	font-weight: 500;
+}
+
+tbody .text_light_blue_color {
+	color: #08aede;
+}
+tbody td .custom-badge {
+	border-radius: 8px;
+	display: inline-block;
+	padding: 3px 9px;
+	font-size: 13px;
+	font-weight: 500;
+	text-align: center;
+	min-width: auto !important;
+}
+
+tbody td .custom-badge.light-blue {
+	background: rgba(4, 126, 160, 0.83);
+	color: #fff;
+}
+tbody td .custom-badge.dark-blue {
+	background: rgba(7, 67, 163, 0.72);
+	color: #fff;
+}
+tbody td .custom-badge.success {
+	background: rgba(17, 171, 33, 0.89);
+	color: #fff;
+}
+
+tbody td .custom-badge.warn {
+	background: #daa215;
+	color: #ffffff;
+}
+tbody td .custom-badge.green {
+	background: #04854b;
+	color: #ffffff;
+}
+tbody td .custom-badge.purple {
+	background: purple;
+	color: #fff;
+}
+tbody td .custom-badge.red {
+	background: rgb(181, 1, 1);
+	color: #fff;
+}
+
+.dataTables_paginate .pagination .page-item .page-link {
+	display: inline-block !important;
+	padding: 6px 15px !important;
+	background-color: #0D2A5A !important;
+	color: #fff !important;
+	margin-right: 2px !important;
+	margin-bottom: 10px !important;
+	border-radius: 0 !important;
+	border: none !important;
+}
+
+.dataTables_paginate .pagination .page-item.active .page-link {
+	background: #0D2A5A !important;
+}

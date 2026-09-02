@@ -1,0 +1,724 @@
+.sidebar-brand-icon img {
+  height: 3em;
+}
+.form-check {
+  padding-left: 2.25rem;
+}
+.ms-container {
+  width: 100%;
+}
+.dataTables_length#workers_length {
+  float: left;
+}
+label sup {
+  font-size: 40%;
+  color: #e74a3b;
+}
+.smaller {
+  font-size: 0.5rem;
+}
+datepicker .ui-datepicker-inline {
+  width: 100%;
+}
+datepicker .calendar.nohover td .ui-state-hover {
+  background: inherit;
+  border-color: inherit;
+}
+.btn-group {
+  display: inline-block;
+}
+.fc-center h2 {
+  font-size: smaller;
+}
+.multiselect-container li.disabled {
+  display: none;
+}
+table.table .img-thumbnail {
+  max-width: 4rem;
+}
+.multiselect.dropdown-toggle {
+  padding-left: 0;
+  padding-top: 0;
+  text-align: left;
+}
+.fc-event,
+.fc-event-dot {
+  background-color: inherit;
+}
+.fc-event {
+  border: none;
+}
+datepicker .ui-state-default,
+datepicker .ui-widget-content .ui-state-default,
+datepicker .ui-widget-header .ui-state-default {
+  color: inherit;
+}
+.toggle-group .btn-sm {
+  padding: 0.4rem 0.5rem;
+  font-size: 1em;
+}
+:checked + label {
+  font-weight: bold;
+}
+.card .resource_types,
+.card .equipment_types,
+.card .gear_types {
+  min-height: 100px;
+}
+.ui-sortable-placeholder {
+  min-height: 150px;
+}
+
+.num_select_to select,
+.num_select_from select {
+  min-width: 4em;
+}
+.profile_picture {
+  height: 4em;
+  width: 4.3em;
+}
+.fa-star.active {
+  color: goldenrod;
+}
+.select-middle {
+  line-height: 3em;
+}
+.sidebar .nav-item .nav-link {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-weight: 500;
+}
+.sidebar.toggled .nav-item .nav-link {
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+}
+.country_sets {
+  min-height: 18rem;
+}
+.topbar .navbar-branches {
+  width: auto;
+}
+.country_set tbody tr:first-child .delete_port {
+  display: none;
+}
+.trash_can.ui-droppable-hover {
+  background: #e74a3b;
+}
+.trash_can .fa-trash-restore-alt {
+  display: none;
+}
+input.ui-autocomplete-input,
+input.ui-autocomplete-input:focus {
+  background: rgba(247, 238, 105, 0.16);
+}
+.trash_can.ui-droppable-hover .fa-trash {
+  display: none;
+}
+.trash_can.ui-droppable-hover .fa-trash-restore-alt {
+  display: block;
+}
+.datepicker {
+  z-index: 1100;
+}
+.op-5 {
+  opacity: 0.5;
+}
+.badge.badge-pill.d-inline-block {
+  text-align: left;
+}
+.op-9 {
+  opacity: 0.9;
+}
+.colorPicker .color,
+.colorPicker .reset_color {
+  color: white;
+  cursor: pointer;
+}
+span.delete {
+  cursor: pointer;
+}
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  position: fixed;
+  z-index: 1999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(rgba(20, 20, 20, 0.6), rgba(0, 0, 0, 0.6));
+
+  background: -webkit-radial-gradient(rgba(20, 20, 20, 0.6), rgba(0, 0, 0, 0.6));
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 10em;
+  height: 10em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  background-image: url(../img/spinner.png);
+  background-size: 10em;
+  margin-left: -10em;
+}
+.card-body {
+  padding: 0.75rem;
+}
+#wrapper {
+  /*background-image: url('../img/aerial-bay-cargo-1554646.jpg');*/
+  background-size: auto 100vh;
+}
+.bg-gradient-primary {
+  border-radius: 10px;
+  /*background-color: rgba(78, 115, 223, 0.9);*/
+  background-image: none;
+}
+.alerts-box {
+  max-height: 300px;
+  max-height: 60vh;
+  overflow: auto;
+}
+.droppable_set:before {
+  content: 'B/L';
+  position: absolute;
+  bottom: 0;
+  right: 18px;
+  font-size: small;
+}
+.container_number.ui-draggable {
+  margin-bottom: 0.25rem;
+  cursor: crosshair;
+}
+.droppable_set {
+  min-height: 100px;
+  border: 1px dashed;
+}
+.droppable_set .container_number {
+  margin: 0.5em;
+}
+.droppable_set.highlight {
+}
+.droppable_set.highlight {
+  background: rgba(247, 238, 105, 0.16);
+}
+.droppable_set.highlight .placeholder {
+  display: none;
+}
+.chat {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chat li {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted #b3a9a9;
+}
+
+.chat li.left .chat-body {
+  margin-left: 60px;
+}
+
+.chat li.right .chat-body {
+  margin-right: 60px;
+}
+
+.chat li .chat-body p {
+  margin: 0;
+  color: #777777;
+}
+.form-check-input:disabled ~ .form-check-label {
+  color: maroon;
+}
+.filters .btn.disabled,
+.filters .btn:disabled {
+  opacity: 1;
+}
+.colorwheel {
+  margin: 5px auto;
+}
+.country_set table.small td {
+  vertical-align: top;
+}
+.surcharge.badge {
+  cursor: not-allowed;
+}
+.table.small td {
+  vertical-align: middle;
+}
+.multiselect-selected-text {
+  white-space: pre-wrap;
+}
+.ui-autocomplete-loading {
+  background: white url('../vendor/jquery-ui-1.12.1/images/ui-anim_basic_16x16.gif') right center no-repeat;
+}
+.pre-sm {
+  max-height: 100px;
+}
+.fade:not(.show):not(.active) {
+  display: none;
+}
+@media (max-width: 1200px) {
+  .input-group-prepend span.input-group-text.disabled {
+    display: none;
+  }
+}
+.embed-responsive-pdf {
+  min-height: 750px;
+}
+.panel .slidedown .glyphicon,
+.chat .glyphicon {
+  margin-right: 5px;
+}
+
+.uppercase select {
+  text-transform: uppercase;
+}
+
+.panel-body {
+  overflow-y: scroll;
+  height: 375px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #8b8b8b;
+  background-color: #8b8b8b;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: #8b8b8b;
+  border-radius: 20px;
+}
+.accordion .card .card-header {
+  padding: 0;
+  font-weight: bold;
+}
+::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px #01183d;
+  background-color: #01183d;
+}
+.sortable-ghost {
+  opacity: 0.5;
+}
+.sortable-ghost .delete_dropped {
+  display: none;
+}
+.go_to_worker {
+  display: none;
+}
+.accordion#workers .delete_dropped {
+  display: none;
+}
+.accordion#workers .go_to_worker {
+  display: inline;
+}
+
+.collapse .resources:empty:before {
+  content: 'No resources selected';
+}
+.collapse .gears:empty:before {
+  content: 'No gears selected';
+}
+.collapse .equipments:empty:before {
+  content: 'No equipments selected';
+}
+
+.accordion .badge.badge-info {
+  width: fit-content;
+  display: inline;
+  white-space: inherit;
+}
+
+.gridster .gs-w {
+  background: #61a9cf;
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+.gridster .player {
+  -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  background: #bbb;
+}
+.gridster .gs-w.try {
+  background-image: url(../img/sprite.png);
+  background-repeat: no-repeat;
+  background-position: 37px -169px;
+}
+.gridster .preview-holder {
+  border: none !important;
+  border-radius: 0 !important;
+  background: red !important;
+}
+.gridster ul {
+  background-color: #efefef;
+  list-style-type: none;
+  margin-left: 2px;
+}
+.gridster.ready ul:after {
+  content: 'On deck';
+  position: absolute;
+  font-size: 0.5em;
+  text-transform: uppercase;
+  width: 40px;
+  top: 45px;
+  font-weight: bold;
+  left: -11px;
+  color: #e74a3b;
+  height: 100%;
+  text-align: center;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+}
+.gridster .gs-w[data-row='1'] .gridster-box {
+  background-color: #e74a3b !important;
+}
+.gridster li {
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100%;
+  list-style: none;
+  font-weight: bold;
+}
+.gridster-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  padding: 2px;
+  color: white;
+  font-size: 0.5em;
+}
+.dropdown-menu {
+  min-width: 15rem;
+}
+
+.controls {
+  margin-bottom: 20px;
+}
+.progress.small {
+  height: 0.2rem;
+}
+.gridster li header {
+  display: block;
+  line-height: normal;
+  text-align: center;
+  cursor: move;
+  font-weight: bold;
+  border-bottom: 1px solid;
+}
+.gridster .gs-w.disabled {
+  cursor: default;
+}
+.gridster .content {
+  line-height: 1.25em;
+}
+.ui-autocomplete.ui-widget.ui-widget-content {
+  z-index: 10000;
+}
+.multiselect-container > li > a > label {
+  padding: 3px 3px 3px 3px;
+}
+.navbar-nav.toggled .full_logo {
+  display: none !important ;
+}
+.disabled-picker {
+  opacity: 0.7;
+  pointer-events: none;
+}
+.navbar-nav.toggled .half_logo {
+  display: inline !important ;
+  text-align: center;
+}
+.accordion .dropzone {
+  min-height: 100px;
+}
+.sidebar-brand-icon {
+  margin: 0 auto;
+}
+.resources_planner_list {
+  min-height: 100vh;
+  overflow: auto;
+  width: 35vw;
+}
+.date_boxes {
+  overflow: auto;
+}
+.resources_counts {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+button.float-right.delete_tally,
+button.float-right.delete_delay,
+button.float-right.delete_disposal,
+button.delete_hatch_remark {
+  display: none;
+}
+table tr:hover button.float-right.delete_tally,
+table tr:hover button.float-right.delete_disposal,
+.text-primary.delays:hover button.float-right.delete_delay,
+.text-primary.delays:hover button.delete_hatch_remark {
+  display: inline;
+}
+
+div.dataTables_wrapper div.dataTables_processing {
+  z-index: 1;
+  min-width: 400px;
+  padding-left: 50px !important;
+  padding-right: 50px !important;
+  font-size: large;
+  background-color: rgba(78, 115, 223, 0.2);
+}
+div.dataTables_wrapper div.dataTables_processing {
+  top: 150px !important;
+}
+
+/* div#tonnageByCommodityPieChart,
+div#workerschart,
+div#equipmentschart {
+  display: flex;
+  justify-content: center;
+} */
+div.no_data {
+  height: 195px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  text-align: center;
+}
+
+
+.reportvalue
+{
+  padding-right:15px;
+}
+.list-group-item
+{
+  border-radius:5px;
+  margin-bottom:7px; 
+  border:none;
+  border-left: 7px solid #ccc;
+  box-shadow:0px 1px 1px #ccc;
+    
+}
+.list-group-item.active
+{
+  border-radius:5px;
+  margin-bottom:7px; 
+  color:#fff !important;
+}
+#border-left{
+ 
+  border-left: 7px solid  #495057 transparent;
+  border-image: linear-gradient(to bottom, black , blue);
+  border-image-slice: 1;
+}
+
+.acc-panel{
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 0px 10px;
+}
+
+.acc-panel .card-body{
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+.acc-panel a.acr {
+  width: 100%;
+  color: #787a8b;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px;
+}
+
+.acc-panel a:hover{
+  text-decoration: none;
+  color: #787a8b;
+}
+
+.groupbutton {
+  background-color: #073D11;
+  margin-top: 35px;
+
+}
+#accordionSidebar{
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  /*background-image: url('../img/aerial-bay-cargo-1554646.jpg');*/
+  /*newone*/
+
+
+  /* background-image: url('../img/__login-bg.png'); */
+  /*background-image: url('../img/aerial-bay-cargo-1554646.jpg');*/
+  /*background-size: 21vw 100%; */
+  background-attachment: scroll; 
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.tabradius{
+  border-radius: 20px;
+}
+.text_warning_color{
+  color: #FAA202;
+}.text_warning_color_2{
+  color: #FAA202;
+  text-decoration: none !important;
+}
+
+.bg_warning_color{
+  background-color: #F9A202;
+}
+.bg_success{
+  background-color: #264C7B;
+}
+.border_success{
+  border: 1px solid #264C7B;
+}
+
+.btn_border{
+  border: 1px solid #fdfdfd;
+}
+
+.text_coloro{
+  color: #FAA202;
+}.text_colorb{
+  color: #FAA202;
+  font-weight: bold;
+}.text_successo{
+  color: #ffffff;
+  background-color: #262121;
+}.text_successb{
+  font-weight: bold;
+  color: #264C7B;
+}.text_dangerb{
+  font-weight: bold;
+  color: #FB2F2E;
+}.borderclass1{
+  border-bottom: 2px solid #E5E2DB; 
+  padding-bottom: 5px;
+}
+.borderclass3{
+  border-radius: 10px;
+  border: 2px solid #E5E2DB; 
+  padding: 5px;
+}.borderclass2{
+  border-radius: 10px;
+  border: 2px solid #E5E2DB; 
+  padding: 5px;
+}.capitalwords{
+  text-transform: uppercase;
+}

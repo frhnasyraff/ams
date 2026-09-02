@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;800;900&family=Freehand&family=Montserrat:ital,wght@0,200;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap');
+
+body {
+    font-family: 'Montserrat', 'Arial', sans-serif
+}
+
+button:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.header-second {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f5f6fb;
+    padding: 18px;
+    margin-bottom: 30px
+}
+
+.header-second p {
+    margin: 0;
+    color: #0186D0;
+    font-size: 20px
+}
+
+.header-second p i {
+    display: inline-block;
+    margin-right: 10px
+}
+
+.header-second p span {
+    font-weight: 600;
+    margin-right: 20px;
+    position: relative
+}
+
+.header-second p span::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: 3px;
+    background: #0186D0;
+    left: 0;
+    bottom: -6px;
+    position: absolute;
+    word-spacing: 4px
+}
+
+
+.project-tab th:first-child {
+    border-top-left-radius: 10px !important
+}
+
+.project-tab th:last-child {
+    border-top-right-radius: 10px !important
+}
+
+.project-tab th:first-child {
+    border-bottom-left-radius: 10px !important
+}
+
+.project-tab th:last-child {
+    border-bottom-right-radius: 10px !important
+}
+
+.project-tab thead {
+    background: #F5F6FB;
+    color: #C2D5DA;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px
+}
+
+.project-tab thead a {
+    color: #C2D5DA;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px
+}
+
+.project-tab tbody tr, .project-tab tbody td, .project-tab thead tr, .project-tab thead th {
+    border: 0;
+    min-width: 120px;
+    text-transform: initial
+}
+
+.project-tab thead th {
+    vertical-align: top
+}
+
+.project-tab tbody td {
+    vertical-align: center
+}
+
+.project-tab tbody td, .project-tab tbody td a {
+    color: #052570;
+    font-size: 13px;
+    font-weight: 600
+}
+
+.project-tab tbody .--badge-success {
+    background: rgb(35 168 48 / 89%);
+    border-radius: 8px;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-weight: 700
+}
+
+.project-tab tbody .--badge-info {
+    background: rgb(8 174 222 / 83%);
+    border-radius: 8px;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 9px;
+    font-size: 10px;
+    font-weight: 600
+}
+
+.project-tab tbody .--badge-planned {
+    background: rgb(23 90 199 / 72%);
+    border-radius: 8px;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 9px;
+    font-size: 10px;
+    font-weight: 600
+}
+
+.project-tab tbody .--badge-progress {
+    background: #2c9faf;
+    border-radius: 8px;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 9px;
+    font-size: 10px;
+    font-weight: 600
+}
+
+.project-tab tbody .--badge-new {
+    background: rgba(197, 167, 236, .19);
+    border-radius: 8px;
+    color: #361FC8;
+    display: inline-block;
+    padding: 3px 9px;
+    font-size: 10px;
+    font-weight: 600
+}
+
+
+.project-tab a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600
+}
+
+
+.input {
+    display: flex;
+    width: 100%;
+    margin-bottom: 7px;
+    gap: 10px;
+
+}
+
+.input label {
+    display: block;
+    color: #052570;
+    font-weight: bold;
+    font-size: 13px;
+    margin: 0;
+    line-height: 2.5;
+}
+
+.input .field {
+    display: block;
+    background: #F5F6FB;
+    border: 0;
+    padding: 7px 13px;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 1)
+}
+
+.input .field:focus {
+    outline: none;
+    border: 0
+}

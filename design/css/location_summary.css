@@ -1,0 +1,69 @@
+.expiry-box.green {
+    background-color: green;
+    /* Example color */
+}
+
+.expiry-box.red {
+    background-color: rgba(53, 56, 13);
+
+}
+
+.expiry-box.red h3 {
+    color: white !important;
+   
+    font-weight: bold !important;
+    margin-top: 20%;
+    margin-left: auto !important;
+    margin-left: -14% !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.expiry-box.green h3 {
+    color: #80A874  !important;
+   
+    font-weight: bold !important;
+    margin-top: 20%;
+    margin-left: auto !important;
+    margin-left: -14% !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+.expiry-box.red h4 {
+    color: white !important;
+}
+
+.expiry-box.red::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 44% !important;
+    right: 1% !important;
+    width: 31% !important;
+    height: 130px !important;
+    background-image: url(/design/img/Union-white.png) !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+}
+
+.expiry-box.green::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 44% !important;
+    right: 1% !important;
+    width: 31% !important;
+    height: 130px !important;
+    background-image: url(/design/img/Union.png) !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+}
+
+.my-btn button {
+    border: none !important;
+    background-color: transparent;
+    width: 100%;
+}
+
+#my-btn button.no-border {
+    border: none;
+    /* No border style */
+}
