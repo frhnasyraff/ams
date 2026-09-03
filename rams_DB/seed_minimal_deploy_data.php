@@ -72,8 +72,38 @@ function ensureIndex(mysqli $db, string $table, string $index, string $columns, 
     }
 }
 
+function filterExistingColumns(mysqli $db, string $table, array $row): array
+{
+    if (!$row) {
+        return [];
+    }
+
+    $columns = array_keys($row);
+    $placeholders = implode(', ', array_fill(0, count($columns), '?'));
+    $types = str_repeat('s', count($columns) + 1);
+    $params = array_merge([$table], $columns);
+
+    $stmt = $db->prepare(
+        "SELECT COLUMN_NAME
+         FROM information_schema.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE()
+           AND TABLE_NAME = ?
+           AND COLUMN_NAME IN ({$placeholders})"
+    );
+    $stmt->bind_param($types, ...$params);
+    $stmt->execute();
+
+    $existing = [];
+    foreach ($stmt->get_result()->fetch_all(MYSQLI_ASSOC) as $column) {
+        $existing[$column['COLUMN_NAME']] = true;
+    }
+
+    return array_intersect_key($row, $existing);
+}
+
 function upsert(mysqli $db, string $table, string $idColumn, array $match, array $data = []): int
 {
+    $data = filterExistingColumns($db, $table, $data);
     $where = implode(' AND ', array_map(static fn ($column) => ident($column) . ' = ?', array_keys($match)));
     $stmt = $db->prepare('SELECT ' . ident($idColumn) . ' FROM ' . ident($table) . " WHERE {$where} LIMIT 1");
     $stmt->execute(array_values($match));
