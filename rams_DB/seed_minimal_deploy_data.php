@@ -221,6 +221,15 @@ try {
         UNIQUE KEY managed_by_name_unique (name)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    $db->query("CREATE TABLE IF NOT EXISTS asset_status (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        name VARCHAR(80) NOT NULL,
+        colour VARCHAR(20) DEFAULT '#36caff',
+        active INT(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (id),
+        UNIQUE KEY asset_status_name_unique (name)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
     $db->query("CREATE TABLE IF NOT EXISTS item_status (
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         name VARCHAR(80) NOT NULL,
@@ -439,6 +448,7 @@ try {
     }
 
     foreach ([['SERVICEABLE', '#35d6a0'], ['UNSERVICEABLE', '#f16f79'], ['MAINTENANCE', '#f5b942'], ['STORE', '#a47aff'], ['AVAILABLE', '#36caff']] as [$status, $colour]) {
+        upsert($db, 'asset_status', 'id', ['name' => $status], ['colour' => $colour, 'active' => 1]);
         upsert($db, 'item_status', 'id', ['name' => $status], ['colour' => $colour, 'active' => 1]);
         upsert($db, 'dashboard_status_colors', 'id', ['name' => $status], ['color' => $colour, 'active' => 1]);
     }
@@ -617,6 +627,8 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
+
+
 
 
 
