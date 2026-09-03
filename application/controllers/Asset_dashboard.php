@@ -189,7 +189,7 @@ class Asset_dashboard extends CI_Controller
             LEFT JOIN countries on countries.code = company_addresses.address_country
             LEFT JOIN RankedData ON RankedData.order_id = orders.order_id
             WHERE orders.second_order_type IS NULL AND RankedData.rn = 1
-            AND company_addresses.branch_office_id in (" + getUserActiveBranchsId() + ')';
+            AND company_addresses.branch_office_id in (" . implode(',', getUserActiveBranchsId()) . ')';
         }
 
         $plannedOrdersData = $this->db->query($query)->result();
@@ -272,5 +272,6 @@ class Asset_dashboard extends CI_Controller
         echo json_encode(['states' => $states]);
     }
 }
+
 
 

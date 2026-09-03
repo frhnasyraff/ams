@@ -325,6 +325,16 @@ try {
         UNIQUE KEY dashboard_status_unique (name)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    $db->query("CREATE TABLE IF NOT EXISTS disposal_methods (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        disposal_method VARCHAR(120) NOT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL,
+        PRIMARY KEY (id),
+        UNIQUE KEY disposal_method_unique (disposal_method)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
     $db->query("CREATE TABLE IF NOT EXISTS depreciation_methods (
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         method_name VARCHAR(120) NOT NULL,
@@ -478,6 +488,13 @@ try {
         UNIQUE KEY next_maintenance_equipment_unique (equipment_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    ensureColumn($db, 'users', 'isSuper', 'INT(1) NOT NULL DEFAULT 0');
+    ensureColumn($db, 'company_addresses', 'branch_office_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'dashboard_status_colors', 'status_name', 'VARCHAR(80) DEFAULT NULL');
+    ensureColumn($db, 'dashboard_status_colors', 'status_color', 'VARCHAR(20) DEFAULT NULL');
+    ensureColumn($db, 'asset_disposal_requests', 'disposal_method_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'asset_disposal_requests', 'request_status', 'VARCHAR(50) DEFAULT NULL');
+
     ensureColumn($db, 'asset_types', 'asset_picture', 'VARCHAR(255) DEFAULT NULL');
     ensureColumn($db, 'asset_types', 'depreciation_method_id', 'INT UNSIGNED DEFAULT NULL');
     ensureColumn($db, 'asset_types', 'useful_life_years', 'INT DEFAULT NULL');
@@ -577,6 +594,10 @@ try {
         upsert($db, 'asset_type_color', 'id', ['asset_type_id' => $assetTypeId], ['color' => $colour, 'active' => 1]);
     }
 
+    foreach (['Scrap', 'Sell', 'Transfer', 'Write Off'] as $disposalMethod) {
+        upsert($db, 'disposal_methods', 'id', ['disposal_method' => $disposalMethod], ['active' => 1]);
+    }
+
     foreach ([['Straight Line', 'Equal depreciation every year'], ['Reducing Balance', 'Higher depreciation in earlier years'], ['Manual', 'Manual depreciation policy']] as [$methodName, $description]) {
         upsert($db, 'depreciation_methods', 'id', ['method_name' => $methodName], ['description' => $description, 'active' => 1]);
     }
@@ -611,7 +632,7 @@ try {
     foreach ([['SERVICEABLE', '#35d6a0'], ['UNSERVICEABLE', '#f16f79'], ['MAINTENANCE', '#f5b942'], ['STORE', '#a47aff'], ['AVAILABLE', '#36caff']] as [$status, $colour]) {
         upsert($db, 'asset_status', 'id', ['name' => $status], ['colour' => $colour, 'active' => 1]);
         upsert($db, 'item_status', 'id', ['name' => $status], ['colour' => $colour, 'active' => 1]);
-        upsert($db, 'dashboard_status_colors', 'id', ['name' => $status], ['color' => $colour, 'active' => 1]);
+        upsert($db, 'dashboard_status_colors', 'id', ['name' => $status], ['color' => $colour, 'status_name' => $status, 'status_color' => $colour, 'active' => 1]);
     }
 
     $faultIds = [];
@@ -788,6 +809,8 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
+
+
 
 
 
