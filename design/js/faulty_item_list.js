@@ -3,6 +3,8 @@ $(function () {
         processing: true,
         responsive: false,
         autoWidth: false,
+        scrollX: true,
+        scrollCollapse: true,
         stateSave: true,
         pageLength: 10,
         pagingType: 'simple_numbers',
@@ -39,7 +41,16 @@ $(function () {
             { data: 'part_number', defaultContent: '-' },
             { data: 'store_location', defaultContent: '-' }
         ],
-        drawCallback: reportDrawCallback
+        drawCallback: reportDrawCallback,
+        initComplete: function () {
+            var table = this.api();
+            var wrapper = $(table.table().container());
+
+            window.requestAnimationFrame(function () {
+                wrapper.find('.dataTables_scrollBody').scrollLeft(0);
+                table.columns.adjust();
+            });
+        }
     });
 });
 
