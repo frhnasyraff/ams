@@ -325,6 +325,74 @@ try {
         UNIQUE KEY dashboard_status_unique (name)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    $db->query("CREATE TABLE IF NOT EXISTS depreciation_methods (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        method_name VARCHAR(120) NOT NULL,
+        description TEXT DEFAULT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (id),
+        UNIQUE KEY depreciation_method_name_unique (method_name)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS write_off_reasons (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        write_off_reason VARCHAR(180) NOT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL,
+        PRIMARY KEY (id),
+        UNIQUE KEY write_off_reason_unique (write_off_reason)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS asset_disposal_requests (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        request_number VARCHAR(80) DEFAULT NULL,
+        asset_id INT UNSIGNED DEFAULT NULL,
+        equipment_id INT UNSIGNED DEFAULT NULL,
+        write_off_reason_id INT UNSIGNED DEFAULT NULL,
+        requested_by INT UNSIGNED DEFAULT NULL,
+        approved_by INT UNSIGNED DEFAULT NULL,
+        status VARCHAR(50) DEFAULT 'Pending',
+        remarks TEXT DEFAULT NULL,
+        attachment VARCHAR(255) DEFAULT NULL,
+        request_date DATE DEFAULT NULL,
+        disposal_date DATE DEFAULT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL,
+        PRIMARY KEY (id),
+        UNIQUE KEY disposal_request_number_unique (request_number)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS orders (
+        order_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        order_num VARCHAR(80) DEFAULT NULL,
+        company_id INT UNSIGNED DEFAULT NULL,
+        company_address_id INT UNSIGNED DEFAULT NULL,
+        service_type_id INT UNSIGNED DEFAULT NULL,
+        asset_id INT UNSIGNED DEFAULT NULL,
+        status INT DEFAULT 1,
+        order_type INT DEFAULT NULL,
+        second_order_type INT DEFAULT NULL,
+        start_date DATE DEFAULT NULL,
+        progress_at DATETIME DEFAULT NULL,
+        completed_at DATETIME DEFAULT NULL,
+        remarks_updated_at DATETIME DEFAULT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (order_id),
+        UNIQUE KEY orders_order_num_unique (order_num)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS item_pictures (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        asset_id INT UNSIGNED DEFAULT NULL,
+        item_id INT UNSIGNED DEFAULT NULL,
+        item_picture VARCHAR(255) DEFAULT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
     $db->query("CREATE TABLE IF NOT EXISTS vendor_part_number (
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         part_number VARCHAR(100) NOT NULL,
@@ -411,6 +479,17 @@ try {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
     ensureColumn($db, 'asset_types', 'asset_picture', 'VARCHAR(255) DEFAULT NULL');
+    ensureColumn($db, 'asset_types', 'depreciation_method_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'asset_types', 'useful_life_years', 'INT DEFAULT NULL');
+    ensureColumn($db, 'asset_types', 'salvage_value', 'DECIMAL(12,2) DEFAULT NULL');
+    ensureColumn($db, 'item_types', 'item_picture', 'VARCHAR(255) DEFAULT NULL');
+    ensureColumn($db, 'add_asset_items', 'item_picture', 'VARCHAR(255) DEFAULT NULL');
+    ensureColumn($db, 'asset_logs', 'log_item_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'asset_logs', 'log_item_table', 'VARCHAR(120) DEFAULT NULL');
+    ensureColumn($db, 'asset_logs', 'log_code', 'VARCHAR(120) DEFAULT NULL');
+    ensureColumn($db, 'asset_logs', 'log_description', 'TEXT DEFAULT NULL');
+    ensureColumn($db, 'asset_logs', 'log_user_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'asset_logs', 'timestamp', 'DATETIME DEFAULT CURRENT_TIMESTAMP');
 
     foreach (['equipments_asset', 'equipments'] as $table) {
         ensureColumn($db, $table, 'serial_number', 'VARCHAR(120) DEFAULT NULL');
@@ -496,6 +575,14 @@ try {
         ]);
         $assetTypeIds[] = $assetTypeId;
         upsert($db, 'asset_type_color', 'id', ['asset_type_id' => $assetTypeId], ['color' => $colour, 'active' => 1]);
+    }
+
+    foreach ([['Straight Line', 'Equal depreciation every year'], ['Reducing Balance', 'Higher depreciation in earlier years'], ['Manual', 'Manual depreciation policy']] as [$methodName, $description]) {
+        upsert($db, 'depreciation_methods', 'id', ['method_name' => $methodName], ['description' => $description, 'active' => 1]);
+    }
+
+    foreach (['End of useful life', 'Damaged beyond repair', 'Obsolete asset', 'Sold or transferred'] as $reason) {
+        upsert($db, 'write_off_reasons', 'id', ['write_off_reason' => $reason], ['active' => 1]);
     }
 
     foreach ([['corrective', '#f16f79'], ['preventive', '#f5b942'], ['inspection', '#36caff']] as [$maintenanceType, $colour]) {
@@ -701,6 +788,9 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
+
+
+
 
 
 
