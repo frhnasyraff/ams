@@ -205,6 +205,62 @@ try {
         UNIQUE KEY asset_type_name_unique (name)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    $db->query("CREATE TABLE IF NOT EXISTS asset_type_color (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        asset_type_id INT UNSIGNED DEFAULT NULL,
+        color VARCHAR(20) DEFAULT '#36caff',
+        active INT(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (id),
+        UNIQUE KEY asset_type_color_type_unique (asset_type_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS maintenance_type_color_code (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        maintenance_type VARCHAR(120) NOT NULL,
+        color VARCHAR(20) DEFAULT '#36caff',
+        active INT(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (id),
+        UNIQUE KEY maintenance_type_unique (maintenance_type)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS vendor_manufacturing_number (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        manufacturer_name VARCHAR(180) NOT NULL,
+        manufacturer_number VARCHAR(120) DEFAULT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (id),
+        UNIQUE KEY vendor_manufacturer_name_unique (manufacturer_name)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS vendor_manufacturing_drawing_number (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        drawing_number VARCHAR(160) NOT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (id),
+        UNIQUE KEY vendor_drawing_number_unique (drawing_number)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS asset_logs (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        table_name VARCHAR(120) DEFAULT NULL,
+        record_id INT UNSIGNED DEFAULT NULL,
+        user_id INT UNSIGNED DEFAULT NULL,
+        action VARCHAR(120) DEFAULT NULL,
+        description TEXT DEFAULT NULL,
+        data TEXT DEFAULT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        KEY asset_logs_record_idx (table_name, record_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $db->query("CREATE TABLE IF NOT EXISTS fault_lists (
+        fault_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        fault_name VARCHAR(180) NOT NULL,
+        active INT(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (fault_id),
+        UNIQUE KEY fault_name_unique (fault_name)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
     $db->query("CREATE TABLE IF NOT EXISTS store_location (
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         name VARCHAR(120) NOT NULL,
@@ -433,11 +489,29 @@ try {
     ];
     $assetTypeIds = [];
     foreach ($assetTypes as [$typeName, $short, $colour]) {
-        $assetTypeIds[] = upsert($db, 'asset_types', 'asset_id', ['name' => $typeName], [
+        $assetTypeId = upsert($db, 'asset_types', 'asset_id', ['name' => $typeName], [
             'short_code' => $short,
             'colour' => $colour,
             'active' => 1,
         ]);
+        $assetTypeIds[] = $assetTypeId;
+        upsert($db, 'asset_type_color', 'id', ['asset_type_id' => $assetTypeId], ['color' => $colour, 'active' => 1]);
+    }
+
+    foreach ([['corrective', '#f16f79'], ['preventive', '#f5b942'], ['inspection', '#36caff']] as [$maintenanceType, $colour]) {
+        upsert($db, 'maintenance_type_color_code', 'id', ['maintenance_type' => $maintenanceType], ['color' => $colour, 'active' => 1]);
+    }
+
+    foreach (['Toyota', 'Volvo', 'Mercedes', 'Nissan', 'MineBiz', 'Caterpillar'] as $maker) {
+        upsert($db, 'vendor_manufacturing_number', 'id', ['manufacturer_name' => $maker], ['manufacturer_number' => strtoupper(substr($maker, 0, 3)) . '-001', 'active' => 1]);
+    }
+
+    foreach (['DRW-AMS-001', 'DRW-AMS-002', 'DRW-AMS-003'] as $drawingNumber) {
+        upsert($db, 'vendor_manufacturing_drawing_number', 'id', ['drawing_number' => $drawingNumber], ['active' => 1]);
+    }
+
+    foreach (['Hydraulic leak', 'Electrical fault', 'Brake issue', 'Tyre damage'] as $faultName) {
+        upsert($db, 'fault_lists', 'fault_id', ['fault_name' => $faultName], ['active' => 1]);
     }
 
     foreach (['Stor Utama', 'Stor Operasi', 'Stor Penyelenggaraan'] as $storeName) {
@@ -627,6 +701,9 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
+
+
+
 
 
 
