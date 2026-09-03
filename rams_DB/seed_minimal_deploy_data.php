@@ -20,7 +20,7 @@ declare(strict_types=1);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 $host = getenv('AMS_DB_HOST') ?: getenv('DB_HOST') ?: '127.0.0.1';
-$user = getenv('AMS_DB_USER') ?: getenv('DB_USER') ?: 'root';
+$user = getenv('AMS_DB_USER') ?: getenv('DB_USER') ?: 'ams_user';
 $pass = getenv('AMS_DB_PASS') ?: getenv('DB_PASS') ?: '';
 $name = getenv('AMS_DB_NAME') ?: getenv('DB_NAME') ?: 'rams';
 
@@ -474,7 +474,8 @@ try {
         ensureLink($db, 'user_role', ['user_id' => $adminId, 'role_id' => 1]);
     }
     if (tableExists($db, 'role_permissions') && tableExists($db, 'permissions')) {
-        $permissionRows = $db->query('SELECT perm_id FROM permissions WHERE active = 1')->fetch_all(MYSQLI_ASSOC);
+        $permissionSql = columnExists($db, 'permissions', 'active') ? 'SELECT perm_id FROM permissions WHERE active = 1' : 'SELECT perm_id FROM permissions';
+        $permissionRows = $db->query($permissionSql)->fetch_all(MYSQLI_ASSOC);
         foreach ($permissionRows as $row) {
             ensureLink($db, 'role_permissions', ['role_id' => 1, 'perm_id' => (int) $row['perm_id']]);
         }
@@ -605,3 +606,4 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
+
