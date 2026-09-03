@@ -345,6 +345,8 @@ try {
         UNIQUE KEY next_maintenance_equipment_unique (equipment_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    ensureColumn($db, 'asset_types', 'asset_picture', 'VARCHAR(255) DEFAULT NULL');
+
     foreach (['equipments_asset', 'equipments'] as $table) {
         ensureColumn($db, $table, 'serial_number', 'VARCHAR(120) DEFAULT NULL');
         ensureColumn($db, $table, 'rfid', 'VARCHAR(120) DEFAULT NULL');
@@ -615,5 +617,6 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
+
 
 
