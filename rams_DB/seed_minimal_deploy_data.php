@@ -186,6 +186,15 @@ try {
         UNIQUE KEY location_name_unique (name)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    $db->query("CREATE TABLE IF NOT EXISTS logo_images (
+        image_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        image_name VARCHAR(255) DEFAULT NULL,
+        image_path VARCHAR(255) DEFAULT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL,
+        PRIMARY KEY (image_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
     $db->query("CREATE TABLE IF NOT EXISTS asset_types (
         asset_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         name VARCHAR(120) NOT NULL,
@@ -606,4 +615,5 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
+
 
