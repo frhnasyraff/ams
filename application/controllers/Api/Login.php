@@ -611,10 +611,11 @@ class Login extends CI_Controller
         }
 
         // 4. Fetch location data
-        $this->db->select('l.state_name AS name, l.colour, COUNT(ea.equipment_id) AS in_use_count');
+        $this->db->select("COALESCE(s.state_name, 'Unassigned') AS name, COALESCE(MIN(l.colour), '#64748B') AS colour, COUNT(DISTINCT ea.equipment_id) AS in_use_count", false);
         $this->db->from('equipments_asset ea');
         $this->db->join('locations l', 'l.id = ea.location_id', 'left');
-        $this->db->group_by('l.state_name');
+        $this->db->join('states s', 's.id = l.state_id', 'left');
+        $this->db->group_by('s.id, s.state_name');
         $query = $this->db->get();
 
         $location_data = $query->result();
@@ -855,10 +856,11 @@ class Login extends CI_Controller
     public function totalLocations()
     {
 
-        $this->db->select('l.state_name, l.colour, COUNT(ea.equipment_id) AS in_use_count');
+        $this->db->select("COALESCE(s.state_name, 'Unassigned') AS state_name, COALESCE(MIN(l.colour), '#64748B') AS colour, COUNT(DISTINCT ea.equipment_id) AS in_use_count", false);
         $this->db->from('equipments_asset ea');
         $this->db->join('locations l', 'l.id = ea.location_id', 'left');
-        $this->db->group_by('l.state_name');
+        $this->db->join('states s', 's.id = l.state_id', 'left');
+        $this->db->group_by('s.id, s.state_name');
         $query = $this->db->get();
 
         $location_data = $query->result();

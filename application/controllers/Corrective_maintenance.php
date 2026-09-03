@@ -39,7 +39,7 @@ class corrective_maintenance extends CI_Controller
 
             'design/js/corrective-summary.js',
             'design/js/corrective-maintenance-summary.js',
-            'design/js/corrective_table_list.js'
+            'design/js/corrective_table_list.js?v=2'
         ]]);
     }
 

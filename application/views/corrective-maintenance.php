@@ -22,7 +22,10 @@
     }
 
     html body#page-top#page-top .corrective-ops-page .corrective-table-scroll {
-        overflow: hidden !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        overscroll-behavior-x: contain;
+        touch-action: pan-x pan-y;
     }
 
     html body#page-top#page-top .corrective-ops-page .dataTables_scroll {
@@ -68,6 +71,17 @@
 
     html body#page-top#page-top .corrective-ops-page #corrective {
         min-width: 680px !important;
+    }
+
+    html body#page-top#page-top .corrective-ops-page .corrective-data-table {
+        width: 100% !important;
+        table-layout: fixed !important;
+    }
+
+    html body#page-top#page-top .corrective-ops-page .corrective-data-table th,
+    html body#page-top#page-top .corrective-ops-page .corrective-data-table td {
+        box-sizing: border-box !important;
+        overflow-wrap: anywhere;
     }
 
     /* Match the shared system pagination: Previous, numbered pages, Next. */

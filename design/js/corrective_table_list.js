@@ -36,8 +36,10 @@
         serverSide: false,
         responsive: false,
         autoWidth: false,
-        scrollX: true,
-        scrollCollapse: true,
+        // The table wrapper handles horizontal overflow. DataTables scrollX
+        // clones the header and the shared theme makes that hidden clone visible.
+        scrollX: false,
+        scrollCollapse: false,
         pagingType: 'simple_numbers',
         pageLength: 5,
         lengthMenu: [[5, 10, 25], [5, 10, 25]],
