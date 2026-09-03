@@ -2,11 +2,18 @@ $(document).ready(function () {
     // Initialize plain Leaflet map (not L.mapbox.map)
     const map = L.map('map').setView([5, 113], 6);
 
-    // Mapbox tiles via Leaflet tileLayer
-    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + encodeURIComponent(window.AMS_MAPBOX_TOKEN || ''), {
+    const mapboxToken = window.AMS_MAPBOX_TOKEN || '';
+    const tileLayerUrl = mapboxToken
+        ? 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + encodeURIComponent(mapboxToken)
+        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    L.tileLayer(tileLayerUrl, mapboxToken ? {
         tileSize: 512,
         zoomOffset: -1,
         attribution: '© <a href="https://www.mapbox.com/">Mapbox</a>'
+    } : {
+        maxZoom: 19,
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
     const markerGroup = L.layerGroup().addTo(map);
@@ -104,3 +111,4 @@ $(document).ready(function () {
         mapResizeTimer = window.setTimeout(refreshMapSize, 120);
     });
 });
+
