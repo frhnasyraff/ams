@@ -1,4 +1,73 @@
-<div class="report-suite-page" data-report-tone="faulty">
+<style>
+    /* Match Asset Summary report behaviour: controls and pagination stay
+       inside the card while only the wide records grid scrolls sideways. */
+    body:has(.faulty-item-report-page) .faulty-item-report-page .report-table-scroll {
+        width: 100% !important;
+        min-width: 0 !important;
+        overflow: visible !important;
+    }
+
+    body:has(.faulty-item-report-page) .faulty-item-report-page .dataTables_wrapper {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    body:has(.faulty-item-report-page) .faulty-item-report-page .dataTables_scroll,
+    body:has(.faulty-item-report-page) .faulty-item-report-page .dataTables_scrollHead,
+    body:has(.faulty-item-report-page) .faulty-item-report-page .dataTables_scrollBody {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    body:has(.faulty-item-report-page) .faulty-item-report-page .dataTables_scrollHead {
+        position: sticky !important;
+        top: 98px !important;
+        z-index: 20 !important;
+        overflow: hidden !important;
+        background: #06162e !important;
+    }
+
+    body:has(.faulty-item-report-page) .faulty-item-report-page .dataTables_scrollBody {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(var(--report-accent-rgb), .75) #06162d !important;
+    }
+
+    body:has(.faulty-item-report-page) .faulty-item-report-page .dataTables_scrollHeadInner,
+    body:has(.faulty-item-report-page) .faulty-item-report-page table.report-suite-table {
+        min-width: 1500px !important;
+    }
+
+    body:has(.faulty-item-report-page) .faulty-item-report-page .report-dt-top,
+    body:has(.faulty-item-report-page) .faulty-item-report-page .report-dt-bottom {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    body:has(.faulty-item-report-page) .faulty-item-report-page .report-dt-bottom {
+        padding-top: 13px !important;
+        border-top: 1px solid rgba(var(--report-accent-rgb), .14) !important;
+    }
+
+    @media (max-width: 767px) {
+        body:has(.faulty-item-report-page) .faulty-item-report-page .dataTables_scrollHead {
+            top: 82px !important;
+        }
+
+        body:has(.faulty-item-report-page) .faulty-item-report-page .report-dt-top,
+        body:has(.faulty-item-report-page) .faulty-item-report-page .report-dt-bottom {
+            align-items: stretch !important;
+            flex-direction: column !important;
+        }
+    }
+</style>
+<div class="report-suite-page faulty-item-report-page" data-report-tone="faulty">
     <section class="report-suite-hero">
         <div class="report-suite-hero-icon"><i class="fas fa-exclamation-triangle"></i></div>
         <div class="report-suite-hero-copy">

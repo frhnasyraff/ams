@@ -5,7 +5,7 @@ $(function () {
         autoWidth: false,
         scrollX: true,
         scrollCollapse: true,
-        stateSave: true,
+        stateSave: false,
         pageLength: 10,
         pagingType: 'simple_numbers',
         dom: '<"report-dt-top"l f>t<"report-dt-bottom"i p>',
@@ -69,6 +69,7 @@ $(function () {
 
             window.requestAnimationFrame(function () {
                 wrapper.find('.dataTables_scrollBody').scrollLeft(0);
+                wrapper.find('.dataTables_scrollHead').scrollLeft(0);
                 table.columns.adjust();
             });
         }
