@@ -12,8 +12,10 @@ $(document).ready(function () {
         purple: '#9b6cf6'
     };
 
-    Chart.defaults.font.family = 'Poppins, Montserrat, sans-serif';
-    Chart.defaults.color = theme.text;
+    if (window.Chart && Chart.defaults && Chart.defaults.global) {
+        Chart.defaults.global.defaultFontFamily = 'Poppins, Montserrat, sans-serif';
+        Chart.defaults.global.defaultFontColor = theme.text;
+    }
 
     const summaryCache = { asset: null, component: null };
     const inventoryCharts = { asset: null, component: null };
@@ -23,9 +25,9 @@ $(document).ready(function () {
     }
 
     function baseUrl(path) {
-        const parts = window.location.pathname.split('/').filter(Boolean);
-        const base = parts.length ? `/${parts[0]}` : '';
-        return `${base}/${path.replace(/^\//, '')}`;
+        const cleanPath = String(path || '').replace(/^\//, '');
+        const appBase = (typeof base_url !== 'undefined' ? base_url : (window.AMS_BASE_URL || window.APP_BASE_URL || '/')).replace(/\/+$/, '/');
+        return appBase + cleanPath;
     }
 
     function totalBy(rows, key) {
@@ -107,79 +109,60 @@ $(document).ready(function () {
         return {
             responsive: true,
             maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            layout: { padding: { top: 8, right: 14, bottom: 4, left: 8 } },
-            plugins: {
-                title: {
-                    display: false,
-                    text: titleText,
-                    color: theme.text,
-                    align: 'start',
-                    padding: { bottom: 16 },
-                    font: { size: 16, weight: '900' }
-                },
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        color: theme.muted,
-                        usePointStyle: true,
-                        pointStyle: 'rectRounded',
-                        padding: 16,
-                        boxWidth: 10,
-                        boxHeight: 10,
-                        font: { size: 12, weight: '800' }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(3, 10, 24, .96)',
-                    titleColor: '#ffffff',
-                    bodyColor: '#dbeafe',
-                    borderColor: 'rgba(56, 189, 248, .35)',
-                    borderWidth: 1,
-                    cornerRadius: 12,
-                    padding: 12
-                },
-                datalabels: {
-                    color: '#ffffff',
-                    anchor: 'end',
-                    align: 'top',
-                    offset: 2,
-                    clamp: true,
-                    font: { weight: '900', size: 11 },
-                    formatter: value => value > 0 ? value : ''
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+                backgroundColor: 'rgba(3, 10, 24, .96)',
+                titleFontColor: '#ffffff',
+                bodyFontColor: '#dbeafe',
+                borderColor: 'rgba(56, 189, 248, .35)',
+                borderWidth: 1,
+                cornerRadius: 12,
+                xPadding: 12,
+                yPadding: 12
+            },
+            legend: {
+                position: 'bottom',
+                labels: {
+                    fontColor: theme.muted,
+                    usePointStyle: true,
+                    padding: 16,
+                    boxWidth: 10,
+                    fontSize: 12,
+                    fontStyle: 'bold'
                 }
             },
+            title: {
+                display: false,
+                text: titleText,
+                fontColor: theme.text,
+                fontSize: 16,
+                fontStyle: 'bold'
+            },
             scales: {
-                x: {
+                xAxes: [{
                     stacked,
                     ticks: {
-                        color: theme.muted,
-                        font: { size: 11, weight: '800' },
+                        fontColor: theme.muted,
+                        fontSize: 11,
+                        fontStyle: 'bold',
                         maxRotation: 0,
                         minRotation: 0,
                         autoSkip: false,
                         padding: 8,
-                        callback: function (value) {
-                            const label = typeof this.getLabelForValue === 'function'
-                                ? this.getLabelForValue(value)
-                                : value;
-                            return wrapAxisLabel(label);
-                        }
+                        callback: function (value) { return wrapAxisLabel(value); }
                     },
-                    grid: { color: 'rgba(148, 163, 184, .07)', drawBorder: false },
-                    title: { display: false }
-                },
-                y: {
+                    gridLines: { color: 'rgba(148, 163, 184, .07)', drawBorder: false }
+                }],
+                yAxes: [{
                     stacked,
-                    beginAtZero: true,
-                    ticks: { color: theme.muted, precision: 0, font: { size: 12, weight: '800' } },
-                    grid: { color: theme.grid, drawBorder: false },
-                    title: { display: true, text: yTitle, color: theme.muted, font: { size: 12, weight: '800' } }
-                }
+                    ticks: { fontColor: theme.muted, beginAtZero: true, precision: 0, fontSize: 12, fontStyle: 'bold' },
+                    gridLines: { color: theme.grid, drawBorder: false },
+                    scaleLabel: { display: true, labelString: yTitle, fontColor: theme.muted, fontSize: 12, fontStyle: 'bold' }
+                }]
             }
         };
     }
-
     function barDataset(label, data, color, order = 1) {
         return {
             label,
@@ -187,9 +170,7 @@ $(document).ready(function () {
             backgroundColor: color + 'cc',
             borderColor: color,
             borderWidth: 1.5,
-            borderRadius: 10,
-            borderSkipped: false,
-            barPercentage: .62,
+                        barPercentage: .62,
             categoryPercentage: .78,
             order
         };
@@ -224,7 +205,7 @@ $(document).ready(function () {
                 ]
             },
             options: chartOptions('Asset Status Overview', 'Number of Assets'),
-            plugins: [ChartDataLabels]
+
         });
     }
 
@@ -253,7 +234,7 @@ $(document).ready(function () {
                 ]
             },
             options: chartOptions('Component Status Overview', 'Number of Components', false),
-            plugins: [ChartDataLabels]
+
         });
     }
 
@@ -296,3 +277,6 @@ $(document).ready(function () {
         }, 120);
     });
 });
+
+
+

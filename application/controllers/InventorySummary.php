@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class InventorySummary extends CI_Controller
@@ -26,10 +26,8 @@ class InventorySummary extends CI_Controller
 
         $this->load->view('footer', ['scripts' => [
 
-            'https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js',
-            'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.4.0/dist/chartjs-plugin-datalabels.min.js',
-            'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels',
 
+            'design/vendor/chart.js/Chart.min.js',
             'design/js/inventory-summary.js?v=6',
             'design/js/getAssetSummary_table.js?v=7'
 
@@ -684,6 +682,7 @@ class InventorySummary extends CI_Controller
         }, $rows);
     }
 }
+
 
 
 
