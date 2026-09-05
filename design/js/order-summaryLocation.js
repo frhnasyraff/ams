@@ -4,7 +4,7 @@ const lcolors = window.colorsObject;
 
 // PIE CHART ASSET Location
 $.ajax({
-    url: "/Order_summary/getAssetsLocation",
+    url: ((typeof base_url !== 'undefined' ? base_url : '/').replace(/\/+$/, '/') + 'Order_summary/getAssetsLocation'),
     method: "GET",
     dataType: "json",
     success: function (response) {
@@ -69,6 +69,7 @@ $.ajax({
         });
     }
 });
+
 
 
 

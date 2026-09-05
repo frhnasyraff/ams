@@ -4,7 +4,7 @@ const colorss = window.colorsObject;
 
 // PIE CHART ASSET Maintenance
 $.ajax({
-    url: "/order_summary/getAssetsMaintenance",
+    url: ((typeof base_url !== 'undefined' ? base_url : '/').replace(/\/+$/, '/') + 'order_summary/getAssetsMaintenance'),
     method: "GET",
     dataType: "json",
     success: function (response) {
@@ -87,6 +87,7 @@ $.ajax({
         });
     }
 });
+
 
 
 

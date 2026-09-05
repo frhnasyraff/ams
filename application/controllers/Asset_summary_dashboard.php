@@ -506,16 +506,17 @@ class Asset_summary_dashboard  extends CI_Controller
             'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.4.0/dist/chartjs-plugin-datalabels.min.js',
             'design/js/graph-colors.js',
             'design/js/summary-chart-canvas-fix.js',
-            'design/js/order-summary.js?v=2',
-            'design/js/order-summaryMaintenance.js',
-            'design/js/store-summary.js',
-            'design/js/order-summaryLocation.js',
-            'design/js/order-summaryQuantity.js',
+            'design/js/order-summary.js?v=4',
+            'design/js/order-summaryMaintenance.js?v=4',
+            'design/js/store-summary.js?v=4',
+            'design/js/order-summaryLocation.js?v=4',
+            'design/js/order-summaryQuantity.js?v=4',
 
-            'design/js/order-summaryFaulty.js',
+            'design/js/order-summaryFaulty.js?v=4',
 
             'design/js/equipment_asset_map.js?v=2'
         ]]);
     } 
 }
+
 

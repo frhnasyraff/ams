@@ -2,14 +2,23 @@ const urlParams = new URLSearchParams(window.location.search);
 const start_date = urlParams.get('start_date');
 const colors = window.colorsObject;
 
+function showServiceableEmpty() {
+    $('#pie-chart-asset-total').html('0');
+    const breakdownList = document.querySelector('#breakdown-list-asset-summary');
+    if (breakdownList) {
+        breakdownList.innerHTML = '<div class="breakdown-item summary-metric-pill summary-metric-empty"><span class="type">No serviceable assets found.</span><strong class="total">0</strong></div>';
+    }
+}
+
 // PIE CHART FOR SERVICEABLE ASSETS
 $.ajax({
-    url: "/Order_summary/getAssetsServiceable",
+    url: ((typeof base_url !== 'undefined' ? base_url : '/').replace(/\/+$/, '/') + 'Order_summary/getAssetsServiceable'),
     method: "GET",
     dataType: "json",
 
     success: function (response) {
         console.log(response);
+        if (!response || !Array.isArray(response.equipment_types)) { showServiceableEmpty(); return; }
 
         // Update total count display
         $('#pie-chart-asset-total').html(response.total);
@@ -81,7 +90,8 @@ $.ajax({
             });
         }
 
-    }
+    },
+    error: showServiceableEmpty
 });
 
 
@@ -97,7 +107,7 @@ $(document).ready(function () {
         "stateSave": false,
         "pagingType": "simple_numbers",
         "ajax": {
-            "url": "/order_summary/home_table_data",
+            "url": ((typeof base_url !== 'undefined' ? base_url : '/').replace(/\/+$/, '/') + 'order_summary/home_table_data'),
             "type": "GET",
             "error": function (xhr, error, thrown) {
                 if (xhr.responseJSON && xhr.responseJSON.redirect) {
@@ -129,6 +139,8 @@ $(document).ready(function () {
     });
 
 });
+
+
 
 
 

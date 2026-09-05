@@ -1,5 +1,5 @@
 $.ajax({
-    "url": "/order_summary/getAssetsQuantity",
+    "url": ((typeof base_url !== 'undefined' ? base_url : '/').replace(/\/+$/, '/') + 'order_summary/getAssetsQuantity'),
     "method": "GET",
     "dataType": "json",
 
@@ -67,6 +67,7 @@ $.ajax({
 
     }
 });
+
 
 
 

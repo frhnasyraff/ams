@@ -1,10 +1,20 @@
+function showFaultyEmpty() {
+    $('#pie-chart-asset-faulty').html('0');
+    $('#faulty-box h2').text('0');
+    $('#asset-summary-faulty-badge').text('0');
+    const breakdownList = document.querySelector('#breakdown-list-faulty');
+    if (breakdownList) {
+        breakdownList.innerHTML = '<div class="breakdown-item summary-metric-pill summary-metric-empty"><span class="type">No unserviceable assets found.</span><strong class="total">0</strong></div>';
+    }
+}
 $.ajax({
-    url: "/order_summary/getAssetsUnServiceable",
+    url: ((typeof base_url !== 'undefined' ? base_url : '/').replace(/\/+$/, '/') + 'order_summary/getAssetsUnServiceable'),
     method: "GET",
     dataType: "json",
 
     success: function(response) {
         console.log(response);
+        if (!response || !Array.isArray(response.equipment_types)) { showFaultyEmpty(); return; }
 
         const totalCount = response.total;
 
@@ -79,8 +89,11 @@ $.ajax({
                 `;
             });
         }
-    }
+    },
+    error: showFaultyEmpty
 });
+
+
 
 
 
