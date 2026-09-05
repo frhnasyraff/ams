@@ -566,7 +566,7 @@ class Order_summary extends CI_Controller
         // Step 2: Get all Serviceable equipment
         $this->db->select('equipment_type')
             ->from('equipments_asset')
-            ->where_in('UPPER(TRIM(equipment_status))', ['SERVICEABLE', 'AVAILABLE', 'IN USE'], false);
+            ->where("UPPER(TRIM(equipment_status)) IN ('SERVICEABLE', 'AVAILABLE', 'IN USE')", null, false);
 
         // if (!isSuperAdmin()) {
         //     $this->db->where_in('branch_office_id', getUserActiveBranchsId());
@@ -814,7 +814,7 @@ class Order_summary extends CI_Controller
         // Step 2: Get all UnServiceable equipment
         $this->db->select('equipment_type')
             ->from('equipments_asset')
-            ->where_in('UPPER(TRIM(equipment_status))', ['UNSERVICEABLE', 'REPAIR', 'FAULTY'], false);
+            ->where("UPPER(TRIM(equipment_status)) IN ('UNSERVICEABLE', 'REPAIR', 'FAULTY')", null, false);
 
         // if (!isSuperAdmin()) {
         //     $this->db->where_in('branch_office_id', getUserActiveBranchsId());
