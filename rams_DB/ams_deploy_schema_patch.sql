@@ -351,6 +351,21 @@ CREATE TABLE IF NOT EXISTS asset_logs (
   KEY asset_logs_legacy_idx (log_item_id, log_code, timestamp)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+CREATE TABLE IF NOT EXISTS task (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  task_id INT UNSIGNED DEFAULT NULL,
+  task_name VARCHAR(180) DEFAULT NULL,
+  name VARCHAR(180) DEFAULT NULL,
+  description TEXT DEFAULT NULL,
+  remarks TEXT DEFAULT NULL,
+  status VARCHAR(50) DEFAULT 'ACTIVE',
+  active INT(1) NOT NULL DEFAULT 1,
+  created_at DATETIME DEFAULT NULL,
+  updated_at DATETIME DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 DROP PROCEDURE IF EXISTS ams_add_column_if_missing;
 DELIMITER $$
 CREATE PROCEDURE ams_add_column_if_missing(IN p_table VARCHAR(64), IN p_column VARCHAR(64), IN p_definition TEXT)
@@ -489,7 +504,12 @@ CALL ams_add_column_if_missing('equipments_asset', 'depreciation_method_id', 'IN
 CALL ams_add_column_if_missing('asset_types', 'depreciate_value', 'DECIMAL(12,2) DEFAULT 0');
 CALL ams_add_column_if_missing('asset_types', 'depreciation_method', 'VARCHAR(80) DEFAULT NULL');
 CALL ams_add_column_if_missing('asset_disposal_requests', 'equipment_asset_id', 'INT UNSIGNED DEFAULT NULL');
+CALL ams_add_column_if_missing('asset_disposal_requests', 'status', 'VARCHAR(50) DEFAULT ''pending''');
+CALL ams_add_column_if_missing('equipments_asset', 'status', 'VARCHAR(50) DEFAULT ''active''');
+CALL ams_add_column_if_missing('add_asset_items', 'status', 'VARCHAR(50) DEFAULT ''active''');
+CALL ams_add_column_if_missing('task', 'status', 'VARCHAR(50) DEFAULT ''ACTIVE''');
 DROP PROCEDURE IF EXISTS ams_add_column_if_missing;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
 

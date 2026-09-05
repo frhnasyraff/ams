@@ -488,6 +488,21 @@ try {
         UNIQUE KEY next_maintenance_equipment_unique (equipment_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+
+    $db->query("CREATE TABLE IF NOT EXISTS task (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        task_id INT UNSIGNED DEFAULT NULL,
+        task_name VARCHAR(180) DEFAULT NULL,
+        name VARCHAR(180) DEFAULT NULL,
+        description TEXT DEFAULT NULL,
+        remarks TEXT,
+        status VARCHAR(50) DEFAULT 'ACTIVE',
+        active INT(1) NOT NULL DEFAULT 1,
+        created_at DATETIME DEFAULT NULL,
+        updated_at DATETIME DEFAULT NULL,
+        PRIMARY KEY (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
     ensureColumn($db, 'users', 'isSuper', 'INT(1) NOT NULL DEFAULT 0');
     ensureColumn($db, 'company_addresses', 'branch_office_id', 'INT UNSIGNED DEFAULT NULL');
     ensureColumn($db, 'dashboard_status_colors', 'status_name', 'VARCHAR(80) DEFAULT NULL');
@@ -513,6 +528,10 @@ try {
     ensureColumn($db, 'add_asset_items', 'part_number_id', 'INT UNSIGNED DEFAULT NULL');
     ensureColumn($db, 'add_asset_items', 'add_asset_items_id', 'INT UNSIGNED DEFAULT NULL');
     ensureColumn($db, 'asset_disposal_requests', 'equipment_asset_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'asset_disposal_requests', 'status', "VARCHAR(50) DEFAULT 'pending'");
+    ensureColumn($db, 'equipments_asset', 'status', "VARCHAR(50) DEFAULT 'active'");
+    ensureColumn($db, 'add_asset_items', 'status', "VARCHAR(50) DEFAULT 'active'");
+    ensureColumn($db, 'task', 'status', "VARCHAR(50) DEFAULT 'ACTIVE'");
     ensureColumn($db, 'asset_logs', 'log_item_id', 'INT UNSIGNED DEFAULT NULL');
     ensureColumn($db, 'asset_logs', 'log_item_table', 'VARCHAR(120) DEFAULT NULL');
     ensureColumn($db, 'asset_logs', 'log_code', 'VARCHAR(120) DEFAULT NULL');
@@ -821,4 +840,5 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
+
 
