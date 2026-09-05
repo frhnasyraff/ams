@@ -501,6 +501,18 @@ try {
     ensureColumn($db, 'asset_types', 'salvage_value', 'DECIMAL(12,2) DEFAULT NULL');
     ensureColumn($db, 'item_types', 'item_picture', 'VARCHAR(255) DEFAULT NULL');
     ensureColumn($db, 'add_asset_items', 'item_picture', 'VARCHAR(255) DEFAULT NULL');
+    ensureColumn($db, 'store_location', 'color', "VARCHAR(20) DEFAULT '#36caff'");
+    ensureColumn($db, 'depreciation_methods', 'depreciation_method', 'VARCHAR(100) DEFAULT NULL');
+    if (tableExists($db, 'depreciation_methods')) {
+        $db->query("UPDATE depreciation_methods SET depreciation_method = method_name WHERE depreciation_method IS NULL OR depreciation_method = ''");
+    }
+    ensureColumn($db, 'asset_types', 'depreciate_value', 'DECIMAL(12,2) DEFAULT 0');
+    ensureColumn($db, 'asset_types', 'depreciation_method', 'VARCHAR(80) DEFAULT NULL');
+    ensureColumn($db, 'item_pictures', 'add_asset_items_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'add_asset_items', 'manufacturer_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'add_asset_items', 'part_number_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'add_asset_items', 'add_asset_items_id', 'INT UNSIGNED DEFAULT NULL');
+    ensureColumn($db, 'asset_disposal_requests', 'equipment_asset_id', 'INT UNSIGNED DEFAULT NULL');
     ensureColumn($db, 'asset_logs', 'log_item_id', 'INT UNSIGNED DEFAULT NULL');
     ensureColumn($db, 'asset_logs', 'log_item_table', 'VARCHAR(120) DEFAULT NULL');
     ensureColumn($db, 'asset_logs', 'log_code', 'VARCHAR(120) DEFAULT NULL');
@@ -809,16 +821,4 @@ try {
     fwrite(STDERR, 'Minimal seeder failed and was rolled back: ' . $exception->getMessage() . "\n");
     exit(1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -477,6 +477,19 @@ CALL ams_add_column_if_missing('asset_logs', 'log_description', 'TEXT DEFAULT NU
 CALL ams_add_column_if_missing('asset_logs', 'log_user_id', 'INT UNSIGNED DEFAULT NULL');
 CALL ams_add_column_if_missing('asset_logs', 'timestamp', 'DATETIME DEFAULT CURRENT_TIMESTAMP');
 
+CALL ams_add_column_if_missing('store_location', 'color', 'VARCHAR(20) DEFAULT ''#36caff''');
+CALL ams_add_column_if_missing('depreciation_methods', 'depreciation_method', 'VARCHAR(100) DEFAULT NULL');
+UPDATE depreciation_methods SET depreciation_method = method_name WHERE depreciation_method IS NULL OR depreciation_method = '';
+CALL ams_add_column_if_missing('add_asset_items', 'add_asset_items_id', 'INT UNSIGNED DEFAULT NULL');
+CALL ams_add_column_if_missing('item_pictures', 'add_asset_items_id', 'INT UNSIGNED DEFAULT NULL');
+CALL ams_add_column_if_missing('add_asset_items', 'manufacturer_id', 'INT UNSIGNED DEFAULT NULL');
+CALL ams_add_column_if_missing('add_asset_items', 'part_number_id', 'INT UNSIGNED DEFAULT NULL');
+CALL ams_add_column_if_missing('equipments_asset', 'depreciation_method', 'VARCHAR(80) DEFAULT NULL');
+CALL ams_add_column_if_missing('equipments_asset', 'depreciation_method_id', 'INT UNSIGNED DEFAULT NULL');
+CALL ams_add_column_if_missing('asset_types', 'depreciate_value', 'DECIMAL(12,2) DEFAULT 0');
+CALL ams_add_column_if_missing('asset_types', 'depreciation_method', 'VARCHAR(80) DEFAULT NULL');
+CALL ams_add_column_if_missing('asset_disposal_requests', 'equipment_asset_id', 'INT UNSIGNED DEFAULT NULL');
 DROP PROCEDURE IF EXISTS ams_add_column_if_missing;
 
 SET FOREIGN_KEY_CHECKS = 1;
+

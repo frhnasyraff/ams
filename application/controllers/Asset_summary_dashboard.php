@@ -22,6 +22,8 @@ class Asset_summary_dashboard  extends CI_Controller
 
         $alertMessage = '';
         $itemalertMessage = '';
+        $asset_maintenanceAlertMessage = '';
+        $item_maintenanceAlertMessage = '';
         $current_date = date('Y-m-d');
         $expiringAssetsCount = 0;
         $expiringItemsCount = 0;
@@ -485,6 +487,7 @@ class Asset_summary_dashboard  extends CI_Controller
             'selectedMonth' => $selectedMonth,
             'customerComplaintsByLocation' => $customerComplaintsByLocation,
             'UnServiceable_assets' => $UnServiceable_assets,
+            'faulty_assets' => $UnServiceable_assets,
             'assestsAvailability' => $assestsAvailability,
             'totalAssets' => $totalAssets,
             'totalAssetsServiceable' => $totalAssetsServiceable,
@@ -514,6 +517,5 @@ class Asset_summary_dashboard  extends CI_Controller
             'design/js/equipment_asset_map.js?v=2'
         ]]);
     } 
-} 
-
+}
 

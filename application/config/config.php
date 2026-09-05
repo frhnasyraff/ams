@@ -24,10 +24,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 
-//$config['base_url'] = 'http://localhost:8888/';
+//$config['base_url'] = 'http://localhost/assets_IT-usman/';
 
-// $config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-$config['base_url'] = 'http://localhost/assets_IT-usman/';
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? 'https' : 'http';
+$config['base_url'] = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/';
 
 /*
 |--------------------------------------------------------------------------
@@ -528,5 +528,4 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
-
 
