@@ -420,6 +420,8 @@ CALL ams_add_column_if_missing('add_asset_items', 'calibration_date', 'DATE DEFA
 CALL ams_add_column_if_missing('add_asset_items', 'frequency_day', 'INT DEFAULT NULL');
 CALL ams_add_column_if_missing('add_asset_items', 'reminder_day', 'INT DEFAULT NULL');
 CALL ams_add_column_if_missing('add_asset_items', 'maintenance_date', 'DATE DEFAULT NULL');
+CALL ams_add_column_if_missing('add_asset_items', 'frequency_year', 'INT DEFAULT NULL');
+CALL ams_add_column_if_missing('add_asset_items', 'maintenance_reminder_day', 'INT DEFAULT NULL');
 CALL ams_add_column_if_missing('add_asset_items', 'items_qr_code', 'VARCHAR(120) DEFAULT NULL');
 CALL ams_add_column_if_missing('add_asset_items', 'item_picture', 'VARCHAR(255) DEFAULT NULL');
 CALL ams_add_column_if_missing('add_asset_items', 'active', 'INT(1) NOT NULL DEFAULT 1');

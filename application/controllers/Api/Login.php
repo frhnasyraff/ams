@@ -205,6 +205,15 @@ class Login extends CI_Controller
             return;
         }
 
+        // Preserve the mobile response key across legacy/deploy schemas.
+        $drawingField = 'NULL';
+        foreach (['manufacturer_drawing_number', 'manufacturer_drwing_number'] as $column) {
+            if ($this->db->field_exists($column, 'equipments_asset')) {
+                $drawingField = 'equipments_asset.' . $column;
+                break;
+            }
+        }
+        $this->db->select($drawingField . ' AS manufacturer_drwing_number', false);
         // Fetch the asset details from 'equipments_asset' table
         $this->db->select(
             'equipments_asset.equipment_id,
@@ -215,7 +224,7 @@ class Login extends CI_Controller
              equipments_asset.frequency_day,
              equipments_asset.reminder_day,
              equipments_asset.status,
-             equipments_asset.manufacturer_drwing_number,
+
              equipments_asset.equipment_picture,
              equipments_asset.maintenance_date,
              equipments_asset.purchase_date,

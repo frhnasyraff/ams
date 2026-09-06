@@ -17,7 +17,7 @@ class Steve extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        if ($_SESSION['user']->timezone) {
+        if (!empty($_SESSION['user']->timezone)) {
             date_default_timezone_set('Asia/Kuala_Lumpur');
         }
     }

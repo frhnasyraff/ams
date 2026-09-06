@@ -933,8 +933,8 @@ public function new_maintenance_ajax_list()
             $frequency_day_item = $this->input->post('frequency_day_item');
             $reminder_day_item = $this->input->post('reminder_day_item');
             $maintenance_date_item = $this->input->post('maintenance_date_item');
-            $frequency_year_item = $this->input->post('frequency_day_item') ?: $default_frequency_year;
-            $maintenance_reminder_day_item = $this->input->post('reminder_day_item') ?: $default_reminder_days;
+            $frequency_year_item = $this->input->post('frequency_year_item');
+            $maintenance_reminder_day_item = $this->input->post('maintenance_reminder_day_item');
 
 
             if (is_array($items) && !empty($items)) {
