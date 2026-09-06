@@ -195,14 +195,14 @@
                                 </div>
 
                                 <!-- Serial Number -->
-                                <?= $this->steve->form_group_label_input("text", "serial_number", "Serial Number", "col-sm-4", 1, $items->serial_number); ?>
+                                <?= $this->steve->form_group_label_input("text", "serial_number", "Serial Number", "col-sm-4", 1, ($items->serial_number ?? '')); ?>
 
 
                                 <!-- Vendor Part Number Dropdown -->
                                 <div class="col-sm-4 form-group">
                                     <label for="vendor_part_number">Vendor Part Number</label>
                                     <select name="vendor_part_number" id="vendor_part_number" class="form-control">
-                                        <option value="<?= $items->part_number ?>">Select Vendor Part Number</option>
+                                        <option value="<?= ($items->part_number ?? '') ?>">Select Vendor Part Number</option>
                                         <?php foreach ($part_numbers as $pn): ?>
                                             <option value="<?= $pn->part_number ?>"
                                                 <?= ($pn->part_number == $items->vendor_part_number) ? 'selected' : ''; ?>>
@@ -233,7 +233,7 @@
                                     <label for="manufacturer_drawing_number">Drawing Number</label>
                                     <select name="manufacturer_drawing_number" id="manufacturer_drawing_number"
                                         class="form-control">
-                                        <option value="<?= $items->drawing_number ?>">Select Manufacturer Drawing Number
+                                        <option value="<?= ($items->drawing_number ?? '') ?>">Select Manufacturer Drawing Number
                                         </option>
                                         <?php foreach ($drawing_numbers as $drawing_number): ?>
                                             <option value="<?= $drawing_number->drawing_number ?>"
@@ -333,14 +333,14 @@
                                 <div class="form-group col-sm-4 uppercase" id="frequency_year_item_edit"
                                     style="<?= ($items->maintenance == 1) ? 'display: block;' : 'display: none;' ?>">
                                     <label>Frequency In years</label><br />
-                                    <input type="text" class="form-control" value="<?= $items->frequency_year ?>"
+                                    <input type="text" class="form-control" value="<?= ($items->frequency_year ?? '') ?>"
                                         name="frequency_year_item" placeholder="2">
                                 </div>
 
                                 <div class="form-group col-sm-4 uppercase" id="maintenance_reminder_day_item_edit"
                                     style="<?= ($items->maintenance == 1) ? 'display: block;' : 'display: none;' ?>">
                                     <label>Reminder In Days</label><br />
-                                    <input type="text" class="form-control" value="<?= $items->maintenance_reminder_day ?>"
+                                    <input type="text" class="form-control" value="<?= ($items->maintenance_reminder_day ?? '') ?>"
                                         name="maintenance_reminder_day_item" placeholder="30">
                                 </div>
 
@@ -449,7 +449,7 @@
                                 // Build the string with readable status name
                                 $chlvalue = "Component name: " . $items->item_name . "\n"
                                     . "Vendor Part number: " . $items->vendor_part_number . "\n"
-                                    . "Serial Number: " . $items->serial_number . "\n"
+                                    . "Serial Number: " . ($items->serial_number ?? '') . "\n"
                                     . "Manufacturer Name: " . $items->manufacturer_name . "\n"
                                     . "Status: " . $statusName;
 
@@ -987,8 +987,8 @@
                     formData.append('item_picture[]', file);
                 });
 
-                formData.append('id', '<?= $info->equipment_id ?>');
-                formData.append('unique_id', '<?= $items_id ?>');
+                formData.append('id', '<?= ($items->asset_id ?? '') ?>');
+                formData.append('unique_id', '<?= $items->id ?>');
 
                 // AJAX request to upload images
                 $.ajax({
