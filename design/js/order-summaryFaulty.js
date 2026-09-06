@@ -4,7 +4,7 @@ function showFaultyEmpty() {
     $('#asset-summary-faulty-badge').text('0');
     const breakdownList = document.querySelector('#breakdown-list-faulty');
     if (breakdownList) {
-        breakdownList.innerHTML = '<div class="breakdown-item summary-metric-pill summary-metric-empty"><span class="type">No unserviceable assets found.</span><strong class="total">0</strong></div>';
+        breakdownList.innerHTML = '<div class="breakdown-item summary-metric-pill summary-metric-empty"><span class="type" style="width:auto;min-width:0;flex:1;white-space:normal;overflow:visible;text-overflow:clip">No unserviceable assets found.</span><strong class="total">0</strong></div>';
     }
 }
 $.ajax({
@@ -28,8 +28,8 @@ $.ajax({
 
         // Prepare data for chart
         const labels = filteredTypes.map(item => item.name);
-        const data = filteredTypes.map(item => parseInt(item.equipment_count, 10));
-        const backgroundColors = filteredTypes.map(item => item.color);
+        const data = filteredTypes.length ? filteredTypes.map(item => parseInt(item.equipment_count, 10)) : [1];
+        const backgroundColors = filteredTypes.length ? filteredTypes.map(item => item.color) : ['#334155'];
 
         // Generate the pie chart
         new Chart(prepareSummaryChartCanvas('pie-chart-faulty'), {
@@ -46,6 +46,7 @@ $.ajax({
                 responsive: true,
                 maintainAspectRatio: true,
                 cutoutPercentage: 60,
+                tooltips: { enabled: filteredTypes.length > 0 },
                 legend: {
                     display: false,
                     position: 'right',
@@ -74,7 +75,7 @@ $.ajax({
         if (top5.length === 0) {
             breakdownList.innerHTML += `
                 <div class="breakdown-item summary-metric-pill summary-metric-empty">
-                    <span class="type">No unserviceable assets found.</span>
+                    <span class="type" style="width:auto;min-width:0;flex:1;white-space:normal;overflow:visible;text-overflow:clip">No unserviceable assets found.</span>
                     <strong class="total">0</strong>
                 </div>
             `;
@@ -90,7 +91,10 @@ $.ajax({
             });
         }
     },
-    error: showFaultyEmpty
+    error: function () {
+        $('#pie-chart-asset-faulty, #asset-summary-faulty-badge').text('—');
+        $('#breakdown-list-faulty').text('Unable to load unserviceable assets. Please reload.');
+    }
 });
 
 

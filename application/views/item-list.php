@@ -1595,6 +1595,7 @@
         // Get references to the item container and the "Add More Items" button
         var itemContainer = document.getElementById('itemContainer');
         var addItemButton = document.getElementById('addItemButton');
+        if (!itemContainer || !addItemButton || !document.querySelector('.itemSection')) return;
 
         // Function to add remove button functionality
         function addRemoveButtonEvent(section) {

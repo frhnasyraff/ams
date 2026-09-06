@@ -8,7 +8,7 @@ class Users extends CI_Controller
     {
         parent::__construct();
         $this->load->library('email');
-        $this->load->config('email');
+        $this->config->load('email', false, true);
 
         if (!$this->user_model->logged_in() || !$this->user_model->has_perm("list_users")) {
             die(redirect("/order_summary?error=No permission to view this content."));

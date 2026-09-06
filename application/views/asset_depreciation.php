@@ -345,7 +345,8 @@ function updateYearlyChart(assetsData, selectedYear, assetName) {
 // Toggle between Straight Line and Reducing Balance fields
 function toggleDepreciationFields() {
     let methodSelect = document.getElementById('depreciationMethod');
-    let selectedMethod = methodSelect.options[methodSelect.selectedIndex].text;
+    const selectedOption = methodSelect ? methodSelect.options[methodSelect.selectedIndex] : null;
+    const selectedMethod = selectedOption ? selectedOption.text : '';
     
     if (selectedMethod === 'Reducing Balance') {
         // Show depreciation rate, hide useful life and salvage value
@@ -492,7 +493,8 @@ function loadAssetTypeDetails(id){
 // Update savePolicy function
 function savePolicy(){
     let methodSelect = document.getElementById('depreciationMethod');
-    let selectedMethod = methodSelect.options[methodSelect.selectedIndex].text;
+    const selectedOption = methodSelect ? methodSelect.options[methodSelect.selectedIndex] : null;
+    const selectedMethod = selectedOption ? selectedOption.text : '';
 
     let data = {
         asset_type_id: currentAssetType,

@@ -490,6 +490,7 @@ CALL ams_add_column_if_missing('asset_logs', 'log_item_table', 'VARCHAR(120) DEF
 CALL ams_add_column_if_missing('asset_logs', 'log_code', 'VARCHAR(120) DEFAULT NULL');
 CALL ams_add_column_if_missing('asset_logs', 'log_description', 'TEXT DEFAULT NULL');
 CALL ams_add_column_if_missing('asset_logs', 'log_user_id', 'INT UNSIGNED DEFAULT NULL');
+CALL ams_add_column_if_missing('asset_logs', 'log_ip', 'VARCHAR(45) DEFAULT NULL');
 CALL ams_add_column_if_missing('asset_logs', 'timestamp', 'DATETIME DEFAULT CURRENT_TIMESTAMP');
 
 CALL ams_add_column_if_missing('store_location', 'color', 'VARCHAR(20) DEFAULT ''#36caff''');

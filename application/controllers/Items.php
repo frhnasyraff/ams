@@ -97,9 +97,9 @@ class Items extends CI_Controller
                 'https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js',
                 'https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js',
                 'design/js/helper.js',
-                'design/js/init-map.js',
-                'design/js/asset-detail.js',
-                'design/js/items_map.js'
+
+
+
 
             ]
         ]);
