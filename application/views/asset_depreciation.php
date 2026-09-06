@@ -222,7 +222,7 @@ let currentAssetType = null;
 let netBookChart = null;
 
 // Function to create or update yearly chart
-function updateYearlyChart(assetsData, selectedYear, assetName) {
+function updateYearlyChart(assetsData, selectedYear, assetName, yearlyData) {
     const ctx = document.getElementById('netBookChart');
     if(!ctx) return;
     
@@ -236,7 +236,7 @@ function updateYearlyChart(assetsData, selectedYear, assetName) {
     }
     
     // Calculate yearly data
-    let yearlyData = calculateYearlyNetBookValues(assetsData, parseInt(selectedYear));
+    yearlyData = Array.isArray(yearlyData) ? yearlyData : [];
     
     if(yearlyData.length === 0) return;
     
@@ -427,9 +427,7 @@ function loadAssetTypeDetails(id){
         // Ya phir total monthly calculation karo - aapki requirement ke hisaab se
         let monthlyArray = [0,0,0,0,0,0,0,0,0,0,0,0];
         
-        if(res.assets.length > 0 && res.assets[0].depreciation.monthly_array){
-            monthlyArray = res.assets[0].depreciation.monthly_array;
-        }
+        res.assets.forEach(a => { (a.depreciation.monthly_array || []).forEach((value, i) => { monthlyArray[i] += Number(value) || 0; }); });
         
         // Set each month individually
         for(let i=0; i<12; i++){
@@ -441,7 +439,7 @@ function loadAssetTypeDetails(id){
         $('#netBookValue').val('Net Book: ' + totalNetBook.toFixed(2));
         
         // ================ UPDATE YEARLY CHART ================
-        updateYearlyChart(res.assets, parseInt(selectedYear), res.asset_type.name);
+        updateYearlyChart(res.assets, parseInt(selectedYear), res.asset_type.name, res.yearly);
         
         // ================ ASSETS LIST SECTION ================
         // Har asset ke liye depreciation details dikhao
@@ -524,119 +522,7 @@ function savePolicy(){
 }
 
 // In the chart update function
-function calculateYearlyNetBookValues(assets, selectedYear) {
-    if(!assets || assets.length === 0) return [];
-    
-    let yearlyData = [];
-    
-    // Find min and max years
-    let minYear = Infinity;
-    let maxYear = -Infinity;
-    
-    assets.forEach(assetData => {
-        let asset = assetData.asset;
-        let purchaseDate = new Date(asset.purchase_date);
-        let purchaseYear = purchaseDate.getFullYear();
-        let depreciationMethod = asset.depreciation_method || 'Straight Line';
-        
-        if(depreciationMethod === 'Reducing Balance') {
-            minYear = Math.min(minYear, purchaseYear - 2);
-            maxYear = Math.max(maxYear, purchaseYear + 10);
-        } else {
-            let usefulLife = parseInt(asset.useful_life_years) || 1;
-            minYear = Math.min(minYear, purchaseYear - 2);
-            maxYear = Math.max(maxYear, purchaseYear + usefulLife + 2);
-        }
-    });
-    
-    // Calculate for each year
-    for(let year = minYear; year <= maxYear; year++) {
-        let totalNetBook = 0;
-        let totalCost = 0;
-        let totalDepreciation = 0;
-        let accumulatedDepreciation = 0;
-        
-        assets.forEach(assetData => {
-            let asset = assetData.asset;
-            let purchaseDate = new Date(asset.purchase_date);
-            let purchaseYear = purchaseDate.getFullYear();
-            let cost = parseFloat(asset.price_of_purchase) || 0;
-            let depreciationMethod = asset.depreciation_method || 'Straight Line';
-            
-            if(year < purchaseYear) {
-                totalNetBook += 0;
-            } else if(depreciationMethod === 'Reducing Balance') {
-                let rate = parseFloat(asset.depreciate_value) / 100 || 0.1;
-                let yearsPassed = year - purchaseYear;
-                let remainingValue = cost;
-                accumulatedDepreciation = 0;
-                
-                for(let i = 0; i < yearsPassed; i++) {
-                    let yearDep = remainingValue * rate;
-                    accumulatedDepreciation += yearDep;
-                    remainingValue = remainingValue - yearDep;
-                }
-                
-                // Add current year depreciation if we're at the current year
-                if (yearsPassed >= 0) {
-                    let currentYearDep = remainingValue * rate;
-                    accumulatedDepreciation += currentYearDep;
-                    remainingValue = remainingValue - currentYearDep;
-                }
-                
-                totalNetBook += Math.max(0, remainingValue);
-                totalCost += cost;
-                totalDepreciation += accumulatedDepreciation;
-                
-            } else {
-                // STRAIGHT LINE - CUMULATIVE CALCULATION
-                let salvage = parseFloat(asset.salvage_value) || 0;
-                let usefulLife = parseInt(asset.useful_life_years) || 1;
-                let annualDep = (cost - salvage) / usefulLife;
-                let monthlyDep = annualDep / 12;
-                
-                // Calculate months from purchase to end of current year
-                let purchaseMonth = purchaseDate.getMonth() + 1; // JavaScript months are 0-based
-                let totalMonths = 0;
-                
-                if (year > purchaseYear) {
-                    // First year (partial)
-                    totalMonths += (12 - purchaseMonth + 1);
-                    // Full years in between
-                    totalMonths += Math.min((year - purchaseYear - 1), usefulLife - 1) * 12;
-                    // Current year (full or partial)
-                    if (year <= purchaseYear + usefulLife - 1) {
-                        totalMonths += 12; // Full year
-                    } else if (year == purchaseYear + usefulLife) {
-                        // Last year - might be partial
-                        totalMonths += (purchaseMonth - 1);
-                    }
-                } else if (year == purchaseYear) {
-                    // Same year purchase
-                    totalMonths += (12 - purchaseMonth + 1);
-                }
-                
-                // Cap at useful life
-                totalMonths = Math.min(totalMonths, usefulLife * 12);
-                
-                accumulatedDepreciation = monthlyDep * totalMonths;
-                totalNetBook += Math.max(salvage, cost - accumulatedDepreciation);
-                totalCost += cost;
-                totalDepreciation += accumulatedDepreciation;
-            }
-        });
-        
-        yearlyData.push({
-            year: year,
-            netBookValue: totalNetBook,
-            totalCost: totalCost,
-            totalDepreciation: totalDepreciation,
-            isSelectedYear: year == selectedYear
-        });
-    }
-    
-    return yearlyData;
-}
+
 
 // Initialize when page loads
 $(document).ready(function() {

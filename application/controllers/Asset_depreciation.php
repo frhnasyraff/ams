@@ -92,10 +92,29 @@ public function get_asset_type_details()
     $summary['total_acc_impairment'] = 
         max(0, $summary['total_net_book_value'] - $summary['total_cost']);
 
+    $yearly = [];
+    $firstYear = (int)$year;
+    $lastYear = (int)$year;
+    foreach ($assets as $asset) {
+        $purchaseYear = (int)date('Y', strtotime($asset['purchase_date']));
+        $firstYear = min($firstYear, $purchaseYear);
+        $lastYear = max($lastYear, $purchaseYear + max(1, (int)$asset['useful_life_years']));
+    }
+    for ($chartYear = $firstYear; $chartYear <= $lastYear; $chartYear++) {
+        $point = ['year' => $chartYear, 'netBookValue' => 0, 'totalCost' => 0, 'totalDepreciation' => 0];
+        foreach ($assets as $asset) {
+            $value = $this->deprModel->calculate_depreciation($asset['price_of_purchase'], $asset['purchase_date'], $asset['useful_life_years'], $asset['salvage_value'], $chartYear, $asset['depreciation_method'], $asset['depreciate_value']);
+            $point['netBookValue'] += $value['net_book'];
+            $point['totalCost'] += $value['cost'];
+            $point['totalDepreciation'] += $value['accumulated'];
+        }
+        $yearly[] = $point;
+    }
     echo json_encode([
         'success' => true,
         'asset_type' => $assetType,
         'summary' => $summary,
+        'yearly' => $yearly,
         'assets' => $assetDetails
     ]);
 }

@@ -600,6 +600,16 @@ class Order_summary extends CI_Controller
             ];
         }
 
+        // Keep assets with missing/deleted types visible in the breakdown.
+        $knownTypes = array_map(function ($type) { return (string)$type->asset_id; }, $asset_types);
+        $unassigned = 0;
+        foreach ($equipment_counts as $typeId => $count) {
+            if (!in_array((string)$typeId, $knownTypes, true)) $unassigned += $count;
+        }
+        if ($unassigned > 0) {
+            $result[] = (object)['asset_id' => null, 'name' => 'Unassigned type', 'color' => '#64748b', 'equipment_count' => $unassigned];
+            $total += $unassigned;
+        }
         // Prepare final response
         $data = [
             'total' => $total,
@@ -848,6 +858,16 @@ class Order_summary extends CI_Controller
             ];
         }
 
+        // Keep assets with missing/deleted types visible in the breakdown.
+        $knownTypes = array_map(function ($type) { return (string)$type->asset_id; }, $asset_types);
+        $unassigned = 0;
+        foreach ($equipment_counts as $typeId => $count) {
+            if (!in_array((string)$typeId, $knownTypes, true)) $unassigned += $count;
+        }
+        if ($unassigned > 0) {
+            $result[] = (object)['asset_id' => null, 'name' => 'Unassigned type', 'color' => '#64748b', 'equipment_count' => $unassigned];
+            $total += $unassigned;
+        }
         // Prepare final response
         $data = [
             'total' => $total,
