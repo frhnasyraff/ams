@@ -918,7 +918,12 @@ public function new_maintenance_ajax_list()
             $items = $this->input->post('item');
             $vendor_part_numbers = $this->input->post('vendor_part_number');
             $manufacturer_names = $this->input->post('manufacturer_name');
-            $manufacturer_drwing_numbers = $this->input->post('manufacturer_drwing_number');
+            $manufacturer_drwing_numbers = $this->input->post('manufacturer_drawing_number');
+            if ($manufacturer_drwing_numbers === null) {
+                $manufacturer_drwing_numbers = $this->input->post('manufacturer_drwing_number');
+            }
+            $drawingColumn = $this->db->field_exists('manufacturer_drawing_number', 'add_asset_items')
+                ? 'manufacturer_drawing_number' : 'manufacturer_drwing_number';
             $manufacturer_part_numbers = $this->input->post('manufacturer_part_number');
             $items_status = $this->input->post('item_status');
             $item_types = $this->input->post('item_type');
@@ -945,7 +950,7 @@ public function new_maintenance_ajax_list()
                         'item_name' => trim($item),
                         'vendor_part_number' => isset($vendor_part_numbers[$index]) ? trim($vendor_part_numbers[$index]) : null,
                         'manufacturer_name' => isset($manufacturer_names[$index]) ? trim($manufacturer_names[$index]) : null,
-                        'manufacturer_drwing_number' => isset($manufacturer_drwing_numbers[$index]) ? trim($manufacturer_drwing_numbers[$index]) : null,
+                        $drawingColumn => isset($manufacturer_drwing_numbers[$index]) ? trim($manufacturer_drwing_numbers[$index]) : null,
                         'manufacturer_part_number' => isset($manufacturer_part_numbers[$index]) ? trim($manufacturer_part_numbers[$index]) : null,
                         'item_status_id' => isset($items_status[$index]) ? trim($items_status[$index]) : null,
                         'item_type_id' => isset($item_types[$index]) ? trim($item_types[$index]) : null,
@@ -959,6 +964,10 @@ public function new_maintenance_ajax_list()
                         'maintenance_reminder_day' => isset($maintenance_reminder_day_item[$index]) && $maintenance_reminder_day_item[$index] !== '' ? trim($maintenance_reminder_day_item[$index]) : $default_reminder_days,
                     ];
 
+                    // Do not clear an existing drawing number when the field was not submitted.
+                    if (!is_array($manufacturer_drwing_numbers) || !array_key_exists($index, $manufacturer_drwing_numbers)) {
+                        unset($item_data[$drawingColumn]);
+                    }
                     $original_item = $this->db
                         ->select('add_asset_items.*, item_status.name AS item_status_name')
                         ->join('item_status', 'item_status.id = add_asset_items.item_status_id', 'left')
