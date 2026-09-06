@@ -1411,17 +1411,17 @@
                                     <div class="col-sm-4 form-group">
                                         <label for="asset_id">Asset</label>
                                         <select name="equipment_name[]" id="asset_id" class="form-control searchable-dropdown">
-                                            <option value="<?= $items->asset_id ?>">Select Asset</option>
+                                            <option value="<?= '' ?>">Select Asset</option>
                                             <?php foreach ($equipments as $pn): ?>
                                                 <option value="<?= $pn->equipment_id ?>"
-                                                    <?= ($pn->equipment_id == $items->asset_id) ? 'selected' : ''; ?>>
+                                                    <?= ($pn->equipment_id == '') ? 'selected' : ''; ?>>
                                                     <?= $pn->equipment_name ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
 
-                                    <?= $this->steve->form_group_label_input("text", "item[]", "Component", "col-sm-4", 0, $info->item, 125); ?>
+                                    <?= $this->steve->form_group_label_input("text", "item[]", "Component", "col-sm-4", 0, '', 125); ?>
                                     <!-- Serial Number -->
                                     <?= $this->steve->form_group_label_input("text", "serial_number[]", "Serial Number", "col-sm-4", 1); ?>
 
@@ -1433,7 +1433,7 @@
                                             <option value="">Select Vendor Part Number</option>
                                             <?php foreach ($part_number as $part): ?>
                                                 <option value="<?= $part['part_number']; ?>"
-                                                    <?= ($part['part_number'] == $info->vendor_part_number) ? 'selected' : ''; ?>>
+                                                    <?= ($part['part_number'] == '') ? 'selected' : ''; ?>>
                                                     <?= $part['part_number']; ?>
                                                 </option>
                                             <?php endforeach; ?>
@@ -1441,7 +1441,7 @@
                                     </div>
 
                                     <!-- Manufacturer Name -->
-                                    <!-- <?= $this->steve->form_group_label_input("text", "manufacturer_name[]", "Manufacturer Name", "col-sm-4", 0, $info->manufacturer_name, 125); ?> -->
+                                    <!-- <?= $this->steve->form_group_label_input("text", "manufacturer_name[]", "Manufacturer Name", "col-sm-4", 0, '', 125); ?> -->
 
 
                                     <!-- Manufacturer Name with Searchable Dropdown -->
@@ -1452,7 +1452,7 @@
                                             <option value="">--Select--</option>
                                             <?php foreach ($manufacturer_number as $mn): ?>
                                                 <option value="<?= $mn->manufacturer_name ?>"
-                                                    <?= ($mn->manufacturer_name == $items->manufacturer_name) ? 'selected' : ''; ?>>
+                                                    <?= ($mn->manufacturer_name == '') ? 'selected' : ''; ?>>
                                                     <?= $mn->manufacturer_name ?>
                                                 </option>
                                             <?php endforeach; ?>
@@ -1467,7 +1467,7 @@
                                             <option value="">--Select--</option>
                                             <?php foreach ($drawing_number as $drawing): ?>
                                                 <option value="<?= $drawing['drawing_number']; ?>"
-                                                    <?= ($drawing['drawing_number'] == $info->manufacturer_drawing_number) ? 'selected' : ''; ?>>
+                                                    <?= ($drawing['drawing_number'] == '') ? 'selected' : ''; ?>>
                                                     <?= $drawing['drawing_number']; ?>
                                                 </option>
                                             <?php endforeach; ?>

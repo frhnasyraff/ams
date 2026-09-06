@@ -567,7 +567,7 @@ class Items extends CI_Controller
                 $user_in_groups = [];
 
                 // Fetch user groups associated with the equipment
-                foreach ($this->db->where('equipment_id', intval($info[0]->equipment_id))->get('equipment_group_asset')->result() as $user) {
+                foreach ($this->db->where('equipment_id', intval($items->asset_id ?? 0))->get('equipment_group_asset')->result() as $user) {
                     $user_in_groups[] = $user->equipment_group_id;
                 }
 
@@ -593,33 +593,15 @@ class Items extends CI_Controller
                 ]);
 
 
-                $equipments_assetData = $this->db->select('*')
-                    ->from('equipments_asset')
-                    ->where('equipment_id', $idd)
-                    ->get()
-                    ->row_array();
-
-
-                $stateId =  $equipments_assetData['state_id'];
-
-
-
-                $stateData = $this->db->select('*')
-                    ->from('states')
-                    ->where('id', $stateId)
-                    ->get()
-                    ->row_array();
-
-                $stateName =  $stateData['state_name'];
-
-                // Fetch locations based on the state ID
-                $locations = $this->db->select('*')
-                    ->from('locations')
-                    ->where('state_name', $stateName)
-                    ->get()
-                    ->result();
-
-
+                // The route ID identifies a component, not its parent asset.
+                $locations = [];
+                $parentAsset = null;
+                if (!empty($items->asset_id)) {
+                    $parentAsset = $this->db->get_where('equipments_asset', ['equipment_id' => $items->asset_id])->row();
+                }
+                if ($parentAsset && !empty($parentAsset->state_id)) {
+                    $locations = $this->db->get_where('locations', ['state_id' => $parentAsset->state_id])->result();
+                }
                 $ticket = $this->db->select('*')
                     ->from('item_ticket')
                     ->where('item_id', $item_id)
