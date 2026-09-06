@@ -452,6 +452,8 @@ CALL ams_add_column_if_missing('equipments_asset', 'purchased_by', 'VARCHAR(180)
 CALL ams_add_column_if_missing('equipments_asset', 'purchase_price', 'DECIMAL(12,2) DEFAULT NULL');
 CALL ams_add_column_if_missing('equipments_asset', 'branch_office_id', 'INT UNSIGNED DEFAULT NULL');
 CALL ams_add_column_if_missing('equipments_asset', 'invoice', 'VARCHAR(120) DEFAULT NULL');
+CALL ams_add_column_if_missing('equipments_asset', 'invoice_file', 'VARCHAR(255) DEFAULT NULL');
+CALL ams_add_column_if_missing('equipments_asset', 'disposal_method_id', 'INT UNSIGNED DEFAULT NULL');
 
 CALL ams_add_column_if_missing('equipments', 'branch_office_id', 'INT UNSIGNED DEFAULT NULL');
 CALL ams_add_column_if_missing('equipments', 'location_id', 'INT UNSIGNED DEFAULT NULL');

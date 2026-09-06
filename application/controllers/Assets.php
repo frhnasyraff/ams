@@ -887,7 +887,12 @@ public function new_maintenance_ajax_list()
 
 
 
-            $invoice_file_name = $existing['invoice'] ?? '';
+            $existing = $this->db->get_where('equipments_asset', ['equipment_id' => $asset_id])->row_array();
+            if (!$existing) {
+                redirect('assets?error=Asset not found');
+                return;
+            }
+            $invoice_file_name = !empty($existing['invoice_file']) ? $existing['invoice_file'] : ($existing['invoice'] ?? '');
         
                 if (isset($_FILES['invoice']) && $_FILES['invoice']['error'] == UPLOAD_ERR_OK) {
                     $invoice_tmp_name = $_FILES['invoice']['tmp_name'];
