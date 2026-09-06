@@ -91,8 +91,8 @@ class Login extends CI_Controller
 
     public function getAllAssets()
 {
-    $page = $this->input->post('page') ?: 1;
-    $perPage = $this->input->post('asset_per_page') ?: 10;
+    $page = max(1, (int) ($this->input->post('page') ?: 1));
+    $perPage = min(50, max(1, (int) ($this->input->post('asset_per_page') ?: 10)));
     $search = trim($this->input->post('search', TRUE));
     $equipmentType = $this->input->post('equipment_type');
     $equipmentGroup = $this->input->post('equipment_group');
@@ -174,7 +174,8 @@ class Login extends CI_Controller
         $this->db->where('equipments_asset.equipment_status', $equipmentGroup);
     }
 
-    // ----- Get All Matching Data (No Pagination Applied in Result) -----
+    // ----- Get Paged Data -----
+    $this->db->limit($perPage, $offset);
     $query = $this->db->get();
     $result = $query->result();
 
