@@ -1,0 +1,49 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Asset Types table regression</title></head><body>
+<table id="assettypes"><thead><tr><th>Name</th><th>Manufacturer</th><th>Vendor Part Number</th><th>Calibration</th><th>Maintenance</th><th>Actions</th></tr></thead><tbody></tbody></table>
+<pre id="test-results">Running</pre>
+<script src="../design/vendor/jquery/jquery.min.js"></script>
+<script src="../design/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../design/js/bootstrap-toggle.min.js"></script>
+<script src="../design/vendor/datatables/jquery.dataTables.min.js"></script>
+<script>
+// Same globals supplied by footer.php/scripts.js. Intentionally no amsUrl (asset-list-only helper).
+window.appBasePath = new URLSearchParams(location.search).get('base') || '';
+function appUrl(path) { path = String(path || ''); return !window.appBasePath || path.charAt(0) !== '/' || path.indexOf(window.appBasePath + '/') === 0 ? path : window.appBasePath + path; }
+function id_encode(id) { return btoa('STeVe-' + id); }
+var bootstrapToggle = {size: 'small', on: 'Active', off: 'Inactive'};
+var errors = [];
+window.addEventListener('error', event => errors.push(event.message));
+window.alert = message => errors.push(message);
+const ajax = $.ajax;
+$.ajax = function (options) {
+    if (!options.url.includes('Assettypes/ajax_list')) throw new Error('Unexpected live request blocked');
+    setTimeout(function () {
+        options.success({draw: Number(options.data.draw), recordsTotal: 2, recordsFiltered: 2, data: [
+            {asset_id: 1, name: 'Water Jetter', manufacturer_name: 'Example Manufacturer', part_number: null, calibration: 0, maintenance: 1, maintenance_frequency_year: 2, active: 1},
+            {asset_id: 2, name: '<img src=x onerror=alert(1)>', manufacturer_name: null, part_number: 'PART-2', calibration: 1, maintenance: null, active: 0}
+        ]});
+    }, 10);
+    return {readyState: 4, abort: function () {}};
+};
+</script>
+<script src="../design/js/assettypes-list.js"></script>
+<script>
+$(function () {
+    setTimeout(function () {
+        const table = $('#assettypes').DataTable();
+        const result = {
+            noLegacyHelper: typeof amsUrl === 'undefined',
+            noRuntimeErrors: errors.length === 0,
+            twoRowsRendered: $('#assettypes tbody tr').length === 2 && $('#assettypes tbody a').length === 2,
+            processingFinished: $('#assettypes_processing').css('display') === 'none',
+            editLinkUsesBasePath: $('#assettypes tbody a').first().attr('href') === appBasePath + '/assettypes/info?id=' + id_encode(1),
+            namesEscaped: $('#assettypes tbody img').length === 0 && $('#assettypes tbody a').last().text() === '<img src=x onerror=alert(1)>',
+            correctManufacturer: $('#assettypes tbody tr').first().find('td').eq(1).text() === 'Example Manufacturer',
+            unknownMaintenanceShown: $('#assettypes tbody').text().includes('Not configured'),
+            totalCount: table.page.info().recordsTotal === 2
+        };
+        document.body.dataset.testResult = Object.values(result).every(Boolean) ? 'PASS' : 'FAIL';
+        $('#test-results').text(JSON.stringify({result, errors}));
+    }, 300);
+});
+</script></body></html>

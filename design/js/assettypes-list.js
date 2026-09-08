@@ -65,7 +65,7 @@ $(document).ready(function () {
             render: $.fn.dataTable.render.text(),
             createdCell: function (td, cellData, rowData, row, col) {
                 if (!$("table.read-only").length) {
-                    $(td).empty().append($('<a>').attr('href', amsUrl('/assettypes/info?id=' + id_encode(rowData.asset_id))).attr('title', 'Edit Asset Type and maintenance').text(cellData));
+                    $(td).empty().append($('<a>').attr('href', appUrl('/assettypes/info?id=' + id_encode(rowData.asset_id))).attr('title', 'Edit Asset Type and maintenance').text(cellData));
                 }
             }
         },

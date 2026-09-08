@@ -78,7 +78,7 @@ public function index()
         'depreciation_methods' => $depreciation_methods  // यहाँ add किया
     ]);
     
-    $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=2']]);
+    $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=3']]);
 }
 
     public function info()
@@ -150,7 +150,7 @@ public function index()
                     'selected_task_ids' => $selected_task_ids, // 🔥 NEW: Pass selected task IDs
                     'depreciation_methods' => $depreciation_methods
                 ]);
-                $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=2']]);
+                $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=3']]);
             } else {
                 redirect('assettypes?error=Asset type not found');
             }
