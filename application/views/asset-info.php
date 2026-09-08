@@ -1680,9 +1680,10 @@
                 <div class="modal-body">
     <div id="dynamic-form">
         <div class="row form-entry">
-            <div class="form-group col-sm-6 date_picker_now">
+            <div class="form-group col-sm-6 date_picker">
                 <label for="form_update_date">Update Date <sup>REQUIRED</sup></label>
-                <input type="text" name="update_date" class="form-control" step="0.00001" id="form_update_date" min="0" placeholder="Update Date" value="" required="" autocomplete="off" maxlength="10">
+                <input type="text" name="update_date" class="form-control" id="form_update_date" placeholder="dd/mm/yyyy" value="" required="" autocomplete="off" maxlength="10" aria-describedby="maintenance-update-date-help">
+                <small id="maintenance-update-date-help" class="form-text text-muted">Future dates are allowed. Choose Pending for planned work. The Maintenance Date in Details is a separate asset setting.</small>
             </div>
             <div class="form-group col-sm-6">
                 <label>Maintenance Type <sup>REQUIRED</sup></label>
@@ -1721,6 +1722,7 @@
                 <label>Final Status <sup>REQUIRED</sup></label>
                 <select name="final_status" class="form-control" required>
                     <option value="">--Select--</option>
+                    <option value="pending">Pending</option>
                     <option value="complete">Complete</option>
                     <option value="in_progress">In Progress</option>
                 </select>
@@ -2748,6 +2750,7 @@ function bindMaintenanceEvents() {
                                 <label>Final Status *</label>
                                 <select name="final_status" class="form-control" required>
                                     <option value="">--Select--</option>
+                                    <option value="pending" ${response.data.final_status == 'pending' ? 'selected' : ''}>Pending</option>
                                     <option value="complete" ${response.data.final_status == 'complete' ? 'selected' : ''}>Complete</option>
                                     <option value="in_progress" ${response.data.final_status == 'in_progress' ? 'selected' : ''}>In Progress</option>
                                 </select>
@@ -2964,6 +2967,7 @@ $(document).ready(function() {
                             <div class="form-group col-sm-6">
                                 <label>Final Status</label>
                                 <select name="final_status" class="form-control" required>
+                                    <option value="pending" ${response.data.final_status == 'pending' ? 'selected' : ''}>Pending</option>
                                     <option value="complete" ${response.data.final_status == 'complete' ? 'selected' : ''}>Complete</option>
                                     <option value="in_progress" ${response.data.final_status == 'in_progress' ? 'selected' : ''}>In Progress</option>
                                 </select>
@@ -3314,6 +3318,7 @@ function initMaintenanceTable() {
                                     <label>Final Status *</label>
                                     <select name="final_status" class="form-control" required>
                                         <option value="">--Select--</option>
+                                        <option value="pending" ${response.data.final_status == 'pending' ? 'selected' : ''}>Pending</option>
                                         <option value="complete" ${response.data.final_status == 'complete' ? 'selected' : ''}>Complete</option>
                                         <option value="in_progress" ${response.data.final_status == 'in_progress' ? 'selected' : ''}>In Progress</option>
                                     </select>

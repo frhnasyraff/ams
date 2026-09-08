@@ -2170,8 +2170,17 @@ public function uploadExcel()
 
         // Required labels alone did not stop empty status/type values reaching storage.
         if (!in_array($maintenanceTypes, ['preventive', 'corrective'], true) ||
-            !in_array($finalStatuses, ['complete', 'in_progress'], true)) {
+            !in_array($finalStatuses, ['complete', 'in_progress', 'pending'], true)) {
             redirect('assets/info?id=' . $encodedId . '&error=' . rawurlencode('Select a Maintenance Type and Final Status before saving.') . '#nav-new-maintenance');
+            return;
+        }
+
+        // Allow scheduled dates, but never turn a blank/invalid entry into today.
+        $updateDates = is_string($updateDates) ? trim($updateDates) : '';
+        $recordDate = preg_match('~^\d{2}/\d{2}/\d{4}$~D', $updateDates)
+            ? DateTime::createFromFormat('!d/m/Y', $updateDates) : false;
+        if (!$recordDate || $recordDate->format('d/m/Y') !== $updateDates) {
+            redirect('assets/info?id=' . $encodedId . '&error=' . rawurlencode('Enter a valid Update Date in dd/mm/yyyy format.') . '#nav-new-maintenance');
             return;
         }
 

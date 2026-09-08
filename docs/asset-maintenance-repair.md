@@ -24,6 +24,24 @@ The repair adds only missing schema. It does not enable maintenance on all types
 
 The **Maintenance** tab contains history. Adding a maintenance record (for example preventive or corrective) is a separate action requiring `add_maintenance_log_asset`; this repair does not grant that permission.
 
+## Update Date versus the asset schedule
+
+The **Maintenance Date** in asset Details is the asset's schedule setting.
+**Update Date** in Add Maintenance is the date of the individual maintenance record;
+it is not automatically copied from Details and adding a record does not overwrite
+that setting.
+
+The Add Maintenance calendar now allows future dates, matching the Edit form.
+Choose **Pending** for planned work and **Complete** only for finished work.
+Pending is available in both Add and Edit, so editing a planned record preserves
+its status. Adding a Pending record does not run the preventive-completion logic
+or calculate another next-maintenance record. The existing completion logic is unchanged.
+Blank or invalid Add dates are rejected before any record is inserted instead of
+falling back to today's date or silently rolling an impossible date into another month.
+Date limits for purchases, mileage and consumption are unchanged.
+
+Deploy the controller and view together. No database patch is needed for this change.
+
 ## Regression tests
 
 ```sh
@@ -59,8 +77,8 @@ For the explicitly approved Admin-only repair, pull the matching code and run
 the following from `/var/www/html/ams`. The import runs only if the backup succeeds:
 
 ```sh
-umask 077
-mysqldump -u ams_user -p --no-tablespaces rams > /var/tmp/ams-before-maintenance-access-$(date +%Y%m%d-%H%M%S).sql &&
+(umask 077
+mysqldump -u ams_user -p --no-tablespaces rams > /var/tmp/ams-before-maintenance-access-$(date +%Y%m%d-%H%M%S).sql) &&
 mysql -u ams_user -p rams < rams_DB/patch_asset_maintenance_admin_access.sql
 ```
 
@@ -81,3 +99,26 @@ If it does not, check the account's actual role membership; do not grant all
 permissions. This access repair does not verify the maintenance submission flow.
 
 Testing was explicitly skipped for this patch at the user's request.
+
+## Permission denied after pulling code
+
+Keep `umask 077` inside the backup subshell above. Running it directly in the
+interactive shell can make files written by a later pull unreadable to Apache.
+The backup itself should remain private; do not loosen backup/config permissions.
+
+If the earlier standalone `umask 077` instruction was used, restore `umask 022`
+in that terminal before subsequent pulls. For the reported `61d3c8b` deployment,
+these are the exact PHP/CSS/JS files updated by that commit. If the server log
+reports `Permission denied` reading them, restore their normal source-file mode:
+
+```sh
+cd /var/www/html/ams
+umask 022
+sudo chmod 644 application/controllers/Assets.php application/controllers/Assettypes.php application/models/Steve.php \
+  application/views/asset-info.php application/views/assettypes-info.php application/views/assettypes.php application/views/header.php \
+  design/css/asset-maintenance-ui.css design/js/asset-maintenance-status.js design/js/assettypes-list.js
+```
+
+Refresh the page. No database patch or Apache restart is required for ordinary
+file-mode corrections. If access is still denied, inspect ownership, ACLs and
+parent-directory permissions; do not recursively chmod/chown the project or use 777.
