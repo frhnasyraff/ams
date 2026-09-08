@@ -45,7 +45,7 @@ $itemDetails = "<p>No items available</p>";
     <div class="maintenance-hero-copy">
         <span>Maintenance workspace</span>
         <h2>Schedule &amp; Service Calendar</h2>
-        <p>Plan upcoming work, review monthly activity and open maintenance details directly from the calendar.</p>
+        <p>Plan upcoming work and open maintenance details directly from the calendar.</p>
     </div>
     <form action="<?= site_url('Assets_Item_maintenance') ?>" method="GET" id="filter-form" class="maintenance-filter-form">
         <label for="filter">Schedule Type</label>
@@ -79,7 +79,7 @@ $itemDetails = "<p>No items available</p>";
                                     <div id='fullcalendar'></div>
                             </div>
                         </div>
-                        <aside class="maintenance-agenda-panel">
+                        <aside class="maintenance-agenda-panel d-none" aria-hidden="true">
                             <div class="maintenance-panel-heading">
                                 <div><span>Monthly queue</span><h3>Maintenance Agenda</h3></div>
                             </div>

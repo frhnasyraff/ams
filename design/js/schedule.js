@@ -71,7 +71,6 @@ $(function () {
             var date = new Date(data.view.getCurrentData().currentDate);
             var current_year = date.getUTCFullYear();
             var current_month = date.getMonth() + 1;
-            getMonthlyOrders(current_year, current_month);
             getEvents(current_year, current_month);
         },
         eventClick: function (info) {
@@ -240,8 +239,6 @@ $(function () {
         });
     }
 
-    getMonthlyOrders(new Date().getFullYear(), new Date().getMonth() + 1);
-    
     function getEvents(current_year, current_month) {
     $.ajax({
         url: maintenanceUrl('Assets_Item_maintenance/getEvents'),

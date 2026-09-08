@@ -178,7 +178,7 @@ class Assets_Item_maintenance extends CI_Controller
 
         $this
             ->load
-            ->view("footer", ["scripts" => ["design/js/moment.js", "design/js/fullCalendar.js", "design/js/schedule.js?v=3", "design/js/asset-item-maintenance.js?v=3",],]);
+            ->view("footer", ["scripts" => ["design/js/moment.js", "design/js/fullCalendar.js", "design/js/schedule.js?v=4", "design/js/asset-item-maintenance.js?v=3",],]);
     }
 
     
