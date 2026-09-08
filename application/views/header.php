@@ -799,7 +799,7 @@ $is_master_module = $current_method === 'index' && in_array($current_controller,
                     </a>
                     -->
                     <div class="topbar-page-title">
-                        <?= mb_strtoupper($title ?? '') ?><?= ($_SESSION['user']->company_name ? " - " . $_SESSION['user']->company_name : ''); ?>
+                        <?= mb_strtoupper($title ?? '') ?>
                     </div>
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -883,7 +883,7 @@ $is_master_module = $current_method === 'index' && in_array($current_controller,
 
                 <h5 style="color:rgb(2, 2, 2); font-size: 1.8rem; font-weight: bold; letter-spacing: 1px;margin: 0px 20px;">
                     <?= mb_strtoupper($title ?? '') ?>
-                    <?= ($_SESSION['user']->company_name ? " - " . $_SESSION['user']->company_name : ''); ?>
+                    
                 </h5>
 
 

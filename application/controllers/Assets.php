@@ -111,8 +111,8 @@ class Assets extends CI_Controller
 
         $totalAssets = $this->db->count_all('equipments_asset');
 
-        $totalAssetsServiceable = $this->db->where('equipment_status', 'SERVICEABLE')->count_all_results('equipments_asset');
-        $UnServiceable_assets = $this->db->where('equipment_status', 'UNSERVICEABLE')->count_all_results('equipments_asset');
+        $totalAssetsServiceable = $this->db->where("UPPER(TRIM(equipment_status)) IN ('SERVICEABLE', 'AVAILABLE', 'IN USE')", null, false)->count_all_results('equipments_asset');
+        $UnServiceable_assets = $this->db->where("UPPER(TRIM(equipment_status)) IN ('UNSERVICEABLE', 'REPAIR', 'FAULTY')", null, false)->count_all_results('equipments_asset');
         $totalAssetsInMaintenance = $this->db->where('equipment_status', 'MAINTENANCE')->count_all_results('equipments_asset');
         $totalAssetsStore = $this->db->where('equipment_status', 'STORE')->count_all_results('equipments_asset');
 
