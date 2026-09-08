@@ -109,3 +109,95 @@ html body#page-top#page-top[data-controller="assets"] #addNewMaintenancce .modal
     html body#page-top#page-top[data-controller="assettypes"] .ams-type-edit-card > .card-body { padding: 18px !important; }
     html body#page-top#page-top[data-controller="assets"] .ams-add-maintenance-btn { width: 100%; }
 }
+
+/* Dark modal polish for Assets maintenance and add-asset screens. */
+html body#page-top#page-top[data-controller="assets"] .modal-content,
+html body#page-top#page-top[data-controller="assettypes"] .modal-content {
+    background: #061326 !important;
+    color: #f4f8ff !important;
+    border: 1px solid #2b5276 !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45) !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal-header,
+html body#page-top#page-top[data-controller="assettypes"] .modal-header {
+    background: #102d4f !important;
+    color: #fff !important;
+    border-bottom: 1px solid rgba(46, 163, 255, 0.45) !important;
+    padding: 18px 24px !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal-title,
+html body#page-top#page-top[data-controller="assettypes"] .modal-title,
+html body#page-top#page-top[data-controller="assets"] .modal-header .close,
+html body#page-top#page-top[data-controller="assettypes"] .modal-header .close {
+    color: #fff !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal-body,
+html body#page-top#page-top[data-controller="assets"] .modal-footer,
+html body#page-top#page-top[data-controller="assettypes"] .modal-body,
+html body#page-top#page-top[data-controller="assettypes"] .modal-footer {
+    background: #061326 !important;
+    color: #f4f8ff !important;
+    border-color: rgba(44, 153, 255, 0.22) !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal label,
+html body#page-top#page-top[data-controller="assets"] .modal .control-label,
+html body#page-top#page-top[data-controller="assettypes"] .modal label,
+html body#page-top#page-top[data-controller="assettypes"] .modal .control-label {
+    color: #c8daf4 !important;
+    font-weight: 700 !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal :is(input.form-control, select.form-control, textarea.form-control),
+html body#page-top#page-top[data-controller="assettypes"] .modal :is(input.form-control, select.form-control, textarea.form-control) {
+    background: #081b30 !important;
+    color: #e8f3ff !important;
+    border: 1px solid #30597e !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    min-height: 42px !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal :is(input.form-control, textarea.form-control)::placeholder,
+html body#page-top#page-top[data-controller="assettypes"] .modal :is(input.form-control, textarea.form-control)::placeholder {
+    color: #8ca6c5 !important;
+    opacity: 1 !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal :is(input.form-control, select.form-control, textarea.form-control):focus,
+html body#page-top#page-top[data-controller="assettypes"] .modal :is(input.form-control, select.form-control, textarea.form-control):focus {
+    background: #0a213f !important;
+    border-color: #22c7ff !important;
+    color: #fff !important;
+    box-shadow: 0 0 0 0.2rem rgba(34, 199, 255, 0.16) !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal :is(.form-text, small),
+html body#page-top#page-top[data-controller="assettypes"] .modal :is(.form-text, small) {
+    color: #9fb7d2 !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal .select2-container--default :is(.select2-selection--single, .select2-selection--multiple),
+html body#page-top#page-top[data-controller="assettypes"] .modal .select2-container--default :is(.select2-selection--single, .select2-selection--multiple) {
+    background: #081b30 !important;
+    border-color: #30597e !important;
+    color: #e8f3ff !important;
+    min-height: 42px !important;
+    border-radius: 10px !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal .select2-selection__rendered,
+html body#page-top#page-top[data-controller="assettypes"] .modal .select2-selection__rendered {
+    color: #e8f3ff !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal .btn-primary,
+html body#page-top#page-top[data-controller="assettypes"] .modal .btn-primary {
+    background: linear-gradient(135deg, #2d6bff, #15c2f3) !important;
+    border: 0 !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+}
+html body#page-top#page-top[data-controller="assets"] .modal :is(.btn-default, .btn-secondary, .border_success),
+html body#page-top#page-top[data-controller="assettypes"] .modal :is(.btn-default, .btn-secondary, .border_success) {
+    background: #0b1d36 !important;
+    border: 1px solid rgba(143, 190, 255, 0.75) !important;
+    color: #dceaff !important;
+    font-weight: 700 !important;
+}
