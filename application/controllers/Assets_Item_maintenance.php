@@ -178,7 +178,7 @@ class Assets_Item_maintenance extends CI_Controller
 
         $this
             ->load
-            ->view("footer", ["scripts" => ["design/js/moment.js", "design/js/fullCalendar.js", "design/js/schedule.js?v=2", "design/js/asset-item-maintenance.js?v=3",],]);
+            ->view("footer", ["scripts" => ["design/js/moment.js", "design/js/fullCalendar.js", "design/js/schedule.js?v=3", "design/js/asset-item-maintenance.js?v=3",],]);
     }
 
     
@@ -313,18 +313,21 @@ class Assets_Item_maintenance extends CI_Controller
                     $formattedinMaintenance[] = [
                         'id' => count($formattedinMaintenance) + 1,
                         'start' => date('Y-m-d', strtotime($data->maintenance_records !== "No Data" ? $data->maintenance_records : $data->maintenance_date)),
+                        'title' => $data->equipment_name ?: $data->ticket_number,
                         'data' => $data
                     ];
                 } elseif ($statusKey === "in_progress") {
                     $formattedInProgress[] = [
                         'id' => count($formattedInProgress) + 1,
                         'start' => date('Y-m-d', strtotime($data->maintenance_records)),
+                        'title' => $data->equipment_name ?: $data->ticket_number,
                         'data' => $data
                     ];
                 } elseif ($statusKey === "complete") {
                     $formattedComplete[] = [
                         'id' => count($formattedComplete) + 1,
                         'start' => date('Y-m-d', strtotime($data->maintenance_records)),
+                        'title' => $data->equipment_name ?: $data->ticket_number,
                             'data' => (object)[
                             "ticket_number" => $data->ticket_number,
                             "equipment_id" => $data->equipment_id,
