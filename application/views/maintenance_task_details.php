@@ -63,7 +63,7 @@
                                                     <th>Task Name</th>
                                                     <th>Assigned User</th>
                                                     <th>Cost</th>
-                                                    <th>File</th>
+                                                    <th>Remarks</th>
                                                     <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>

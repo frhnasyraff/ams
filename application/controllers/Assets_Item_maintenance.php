@@ -1762,6 +1762,27 @@ public function get_tasks_ajax()
                 ];
             }
 
+            if (empty($data) && $this->db->table_exists('maintenance_task_done') && !empty($maintenance_id)) {
+                $doneTasks = $this->db->select('task_done, remarks')
+                    ->from('maintenance_task_done')
+                    ->where('equipment_maintenance_id', $maintenance_id)
+                    ->order_by('created_at', 'ASC')
+                    ->get()
+                    ->result();
+
+                foreach ($doneTasks as $task) {
+                    $remarks = trim((string) ($task->remarks ?? ''));
+                    $data[] = [
+                        'task_name' => $task->task_done ?: '--',
+                        'assigned_user' => '--',
+                        'cost' => '--',
+                        'file' => $remarks !== '' ? htmlspecialchars($remarks, ENT_QUOTES, 'UTF-8') : '<span class="text-muted">No remarks</span>',
+                        'status' => $this->getStatusBadge('completed'),
+                        'actions' => '<span class="text-muted">View only</span>',
+                    ];
+                }
+            }
+
             echo json_encode([
                 'draw' => intval($this->input->post('draw')),
                 'recordsTotal' => count($data),
