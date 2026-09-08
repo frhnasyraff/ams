@@ -474,3 +474,213 @@
     }
 
 }
+/* AMS maintenance calendar dark UI refresh */
+.maintenance-workspace-page {
+    color: #eef7ff;
+}
+.maintenance-workspace-page .maintenance-hero,
+.maintenance-workspace-page .maintenance-status-strip,
+.maintenance-workspace-page .maintenance-calendar-panel,
+.maintenance-workspace-page .maintenance-agenda-panel {
+    background: #071528 !important;
+    border: 1px solid #214a72 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+}
+.maintenance-workspace-page .maintenance-calendar-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+    gap: 18px;
+    align-items: stretch;
+}
+.maintenance-workspace-page .maintenance-calendar-panel,
+.maintenance-workspace-page .maintenance-agenda-panel {
+    padding: 16px;
+}
+.maintenance-workspace-page .maintenance-panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+.maintenance-workspace-page .maintenance-panel-heading span,
+.maintenance-workspace-page .maintenance-hero-copy span {
+    color: #5bdcff !important;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.maintenance-workspace-page .maintenance-panel-heading h3,
+.maintenance-workspace-page .maintenance-hero-copy h2 {
+    color: #fff !important;
+    margin: 4px 0 0;
+    font-weight: 900;
+}
+.maintenance-workspace-page .maintenance-panel-heading p,
+.maintenance-workspace-page .maintenance-hero-copy p,
+.maintenance-workspace-page .maintenance-empty-agenda span {
+    color: #8fb0d4 !important;
+}
+.maintenance-workspace-page .filter-orders {
+    background: #081b30 !important;
+    color: #eef7ff !important;
+    border: 1px solid #2f75aa !important;
+    border-radius: 10px;
+    min-height: 42px;
+    margin-bottom: 0;
+}
+.maintenance-calendar-body,
+.maintenance-agenda-body {
+    background: #051123;
+    border: 1px solid rgba(47, 117, 170, 0.65);
+    border-radius: 12px;
+    overflow: hidden;
+}
+#fullcalendar {
+    padding: 0 !important;
+    color: #eef7ff;
+}
+#fullcalendar .fc-toolbar.fc-header-toolbar {
+    background: #0d2a4e;
+    border-bottom: 1px solid rgba(55, 148, 218, 0.35);
+    margin: 0 !important;
+    padding: 12px 14px;
+}
+#fullcalendar .fc-toolbar-chunk .fc-toolbar-title {
+    color: #fff !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+}
+#fullcalendar .fc-button-primary,
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary,
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-prev-button,
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-next-button,
+#fullcalendar .fc-toolbar-chunk .fc-button-group .fc-button-primary.fc-today-button {
+    background: #0a1d36 !important;
+    border: 1px solid #2d6692 !important;
+    color: #bfeaff !important;
+    border-radius: 8px !important;
+    padding: 7px 12px !important;
+    text-transform: capitalize;
+    box-shadow: none !important;
+}
+#fullcalendar .fc-button-primary:not(:disabled):hover,
+#fullcalendar .fc-button-primary:not(:disabled).fc-button-active {
+    background: linear-gradient(135deg, #256cff, #15bdf1) !important;
+    color: #fff !important;
+}
+#fullcalendar .fc-button-primary.fc-button-active::after {
+    display: none !important;
+}
+#fullcalendar .fc-view-harness,
+#fullcalendar .fc-scrollgrid,
+#fullcalendar .fc-theme-standard td,
+#fullcalendar .fc-theme-standard th {
+    border-color: rgba(60, 117, 164, 0.4) !important;
+}
+#fullcalendar .fc-col-header-cell {
+    background: #102b4c !important;
+    color: #eaf6ff !important;
+    height: 46px;
+    vertical-align: middle;
+}
+#fullcalendar .fc-daygrid-day {
+    background: #07172b !important;
+}
+#fullcalendar .fc-daygrid-day-frame {
+    min-height: 116px;
+    padding: 8px !important;
+}
+#fullcalendar .fc-day-today {
+    background: rgba(255, 184, 64, 0.09) !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 184, 64, 0.4);
+}
+#fullcalendar .fc-daygrid-day-number {
+    color: #8fceff !important;
+    font-weight: 800;
+    font-size: 12px;
+}
+#fullcalendar .fc-day-other .fc-daygrid-day-number {
+    color: rgba(143, 206, 255, 0.28) !important;
+}
+#fullcalendar .fc-daygrid-day-events {
+    display: block !important;
+    margin-top: 20px !important;
+}
+#fullcalendar .fc-daygrid-event,
+#fullcalendar .fc-event {
+    display: block !important;
+    background: linear-gradient(135deg, #1f7cff, #15bdf1) !important;
+    border: 1px solid rgba(126, 226, 255, 0.75) !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    margin: 4px 0 !important;
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    box-shadow: 0 8px 18px rgba(7, 156, 208, 0.18);
+}
+#fullcalendar .fc-event-title,
+#fullcalendar .fc-event-main,
+#fullcalendar .fc-event-time {
+    color: #fff !important;
+    white-space: normal !important;
+}
+#fullcalendar .fc-daygrid-event-dot {
+    display: none !important;
+}
+.maintenance-agenda-panel {
+    min-height: 520px;
+}
+.maintenance-agenda-body {
+    min-height: 420px;
+    padding: 16px;
+}
+.maintenance-empty-agenda {
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    color: #cfe7ff;
+}
+.maintenance-empty-agenda i {
+    width: 58px;
+    height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #245d8a;
+    border-radius: 14px;
+    background: #0b213a;
+    color: #39c9ff;
+    font-size: 24px;
+}
+.maintenance-empty-agenda strong {
+    color: #fff;
+    font-size: 15px;
+}
+.schedule-card {
+    background: #081b30 !important;
+    border-radius: 12px !important;
+    color: #eef7ff !important;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+.schedule-card .content .wrapper .value {
+    color: #fff !important;
+}
+@media (max-width: 1100px) {
+    .maintenance-workspace-page .maintenance-calendar-layout {
+        grid-template-columns: 1fr;
+    }
+    .maintenance-agenda-panel,
+    .maintenance-agenda-body {
+        min-height: auto;
+    }
+}

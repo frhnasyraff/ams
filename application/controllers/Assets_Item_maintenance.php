@@ -170,7 +170,7 @@ class Assets_Item_maintenance extends CI_Controller
 
         $this
             ->load
-            ->view("header", ["title" => "ASSETS & Components MAINTENANCE", "title2" => "ASSETS & ITEMS MAINTENANCE", "styles" => ["design/css/schedule.css", "design/css/fullcalendar/full-calendar.css",],]);
+            ->view("header", ["title" => "ASSETS & Components MAINTENANCE", "title2" => "ASSETS & ITEMS MAINTENANCE", "styles" => ["design/css/schedule.css?v=3", "design/css/fullcalendar/full-calendar.css",],]);
 
         $this
             ->load
@@ -178,7 +178,7 @@ class Assets_Item_maintenance extends CI_Controller
 
         $this
             ->load
-            ->view("footer", ["scripts" => ["design/js/moment.js", "design/js/fullCalendar.js", "design/js/schedule.js?v=2", "design/js/asset-item-maintenance.js?v=2",],]);
+            ->view("footer", ["scripts" => ["design/js/moment.js", "design/js/fullCalendar.js", "design/js/schedule.js?v=2", "design/js/asset-item-maintenance.js?v=3",],]);
     }
 
     
