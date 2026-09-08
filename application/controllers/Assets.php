@@ -7,6 +7,7 @@ class Assets extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper('asset_status');
 
         if (!$this->user_model->logged_in() || !$this->user_model->has_perm('list_equipments')) {
             die(redirect('/order_summary?error=No permission to view this content.'));
@@ -65,6 +66,7 @@ class Assets extends CI_Controller
 
         $assetStatus = $this->db->select('*')
             ->from('asset_status')
+            ->where_in('name', ams_asset_status_names())
             ->get()
             ->result();
 
@@ -249,7 +251,7 @@ class Assets extends CI_Controller
             $query = $this->db->get();
             $itemTypes = $query->result();
             $states = $this->db->select('*')->from('states')->get()->result();
-            $assetStatus = $this->db->select('*')->from('asset_status')->get()->result();
+            $assetStatus = $this->db->select('*')->from('asset_status')->where_in('name', ams_asset_status_names())->get()->result();
             $assetTypes = $this->db->select('*')->from('asset_types')->get()->result();
             $faulty = $this->db->select('*')
                 ->from('fault_type_color_code')
@@ -838,8 +840,8 @@ public function new_maintenance_ajax_list()
         // Check if user has permission and if ID is present
         if ($this->user_model->has_perm('edit_equipments') || $this->input->post('id')) {
             // Validate equipment_status value
-            $valid_statuses = array('Inuse', 'Maintenance', 'Available', 'Repair', 'Dispose', 'Scrap');
-            $equipment_status = $this->input->post('equipment_status');
+            $valid_statuses = ams_asset_status_names();
+            $equipment_status = strtoupper(trim((string) $this->input->post('equipment_status')));
             if (!in_array($equipment_status, $valid_statuses)) {
                 // Invalid equipment_status value
                 echo json_encode(array('success' => false, 'error' => 'Invalid equipment status value'));
@@ -1060,7 +1062,7 @@ public function new_maintenance_ajax_list()
                 'invoice_file' => $invoice_file_name,
                 'purchase_date' => $this->input->post('purchase_date') ? $this->steve->to_date($this->input->post('purchase_date')) : null,
                 'price_of_purchase' => $this->input->post('price_of_purchase') ?: null,
-                'equipment_status' => $this->input->post('equipment_status') ?: null,
+                'equipment_status' => ams_normalize_asset_status($this->input->post('equipment_status')),
                 'location_id' => $this->input->post('location_id') ?: null,
                 'state_id' => $this->input->post('state_id') ?: null,
                 'ownership' => $this->input->post('ownership') ?: null,
@@ -1301,10 +1303,10 @@ public function new_maintenance_ajax_list()
                     $this->db->reset_query();
 
                     if ($last_maintenance[0]->in_out == "In maintenance") {
-                        $this->db->set("equipment_status", "Maintenance");
+                        $this->db->set("equipment_status", "MAINTENANCE");
                         $this->db->set("active", 0);
                     } else {
-                        $this->db->set("equipment_status", "In use");
+                        $this->db->set("equipment_status", "SERVICEABLE");
                         $this->db->set("active", 1);
                     }
 
@@ -1393,7 +1395,7 @@ public function new_maintenance_ajax_list()
             'maintenance_reminder_day' => $this->input->post('maintenance_reminder_day') ?: $default_reminder_days,
             'faulty_type_id' => $this->input->post('faulty_type') ?: null,
             // Legacy used lowercase 'faulty', which does not match the equipment_status enum cleanly.
-            'equipment_status' => $this->input->post('faulty_type') ? 'FAULTY' : ($this->input->post('equipment_status') ?: null)
+            'equipment_status' => $this->input->post('faulty_type') ? 'UNSERVICEABLE' : ams_normalize_asset_status($this->input->post('equipment_status'))
         ];
 
         if ($this->db->insert('equipments_asset', $equipment_data)) {
@@ -1613,7 +1615,7 @@ public function uploadExcel()
                     'price_of_purchase'     => isset($headerMap['price_of_purchase']) 
                                                 ? floatval($rowData[$headerMap['price_of_purchase']] ?? 0) : 0,
                     'equipment_status'      => isset($headerMap['equipment_status']) 
-                                                ? strtoupper(trim($rowData[$headerMap['equipment_status']] ?? 'ACTIVE')) : 'ACTIVE',
+                                                ? ams_normalize_asset_status($rowData[$headerMap['equipment_status']] ?? null) : 'UNSERVICEABLE',
                     'state_id'              => isset($headerMap['state_id']) 
                                                 ? intval($rowData[$headerMap['state_id']] ?? 0) : 0,
                     'location_id'           => isset($headerMap['location_id']) 
@@ -2377,13 +2379,13 @@ public function updateMaintenance()
                         $asset_manufacturer = !empty($row[2]) ? $row[2] : NULL;
                         $asset_type = !empty($row[3]) ? $row[3] : NULL;
                         $branch = !empty($row[4]) ? $row[4] : NULL;
-                        $status = !empty($row[5]) ? $row[5] : NULL;
+                        $status = ams_normalize_asset_status($row[5] ?? null);
                         $notes = !empty($row[6]) ? $row[6] : NULL;
                         $safe_load = !empty($row[7]) ? $row[7] : NULL;
 
                         if (!empty($status))
-                            if (!in_array($status, ['In use', 'Maintenance', 'Standby', 'Available', 'Repair', 'Dispose', 'Scrap'])) {
-                                die(redirect("assets/index?error=Equipment status should be in (In use, Maintenance, Standby , Available, Repair, 'Dispose', 'Scrap') in row " . ($i - 1)));
+                            if (!in_array($status, ams_asset_status_names())) {
+                                die(redirect("assets/index?error=Equipment status must be SERVICEABLE, UNSERVICEABLE, MAINTENANCE, STORE or AVAILABLE in row " . ($i - 1)));
                             }
 
                         // check if registration number exists

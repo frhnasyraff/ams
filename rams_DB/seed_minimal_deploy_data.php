@@ -733,7 +733,7 @@ try {
     }
 
     $assetIds = [];
-    $statuses = ['In use', 'In use', 'Maintenance', 'Standby'];
+    $statuses = ['SERVICEABLE', 'UNSERVICEABLE', 'MAINTENANCE', 'STORE', 'AVAILABLE'];
     for ($i = 1; $i <= 24; $i++) {
         $typeId = $assetTypeIds[($i - 1) % count($assetTypeIds)];
         $locationId = $locationIds[($i - 1) % count($locationIds)];

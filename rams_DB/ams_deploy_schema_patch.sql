@@ -1,6 +1,6 @@
 -- AMS deployment schema patch
 -- Run this after importing rams_DB/rams_import_safe.sql and before seed_minimal_deploy_data.php.
--- Safe to re-run: creates missing tables and adds missing columns only.
+-- Safe to re-run: creates missing tables/columns and widens the legacy asset-status ENUM.
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -538,3 +538,5 @@ CREATE TABLE IF NOT EXISTS logs_item_maintenance_task_done (
  updated_at DATETIME NULL,
  KEY item_maintenance_idx (item_maintenance_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- Allow the five current asset statuses when starting from a legacy ENUM dump.
+ALTER TABLE equipments_asset MODIFY COLUMN equipment_status VARCHAR(80) NULL DEFAULT 'UNSERVICEABLE';

@@ -214,7 +214,7 @@ try {
     $dashboardColours = [
         ['SERVICEABLE', '#22c55e'], ['UNSERVICEABLE', '#f43f5e'],
         ['MAINTENANCE', '#f59e0b'], ['STORE', '#8b5cf6'],
-        ['AVAILABLE', '#0ea5e9'], ['IN USE', '#a855f7'],
+        ['AVAILABLE', '#0ea5e9'],
     ];
     foreach ($dashboardColours as [$name, $colour]) {
         upsert($db, 'dashboard_status_colors', 'id', ['name' => $name], [
@@ -329,7 +329,7 @@ try {
     // Fleet assets distributed across Malaysia, with financial metadata.
     // ---------------------------------------------------------------------
     $assetTypes = rows($db, 'SELECT asset_id, name FROM asset_types WHERE active = 1 ORDER BY asset_id');
-    $assetStatuses = ['SERVICEABLE', 'SERVICEABLE', 'In use', 'AVAILABLE', 'STORE', 'MAINTENANCE', 'UNSERVICEABLE', 'In use', 'SERVICEABLE', 'SERVICEABLE'];
+    $assetStatuses = ['SERVICEABLE', 'SERVICEABLE', 'SERVICEABLE', 'AVAILABLE', 'STORE', 'MAINTENANCE', 'UNSERVICEABLE', 'SERVICEABLE', 'SERVICEABLE', 'SERVICEABLE'];
     $assetIds = [];
     $assetNames = [];
     for ($i = 1; $i <= 60; $i++) {

@@ -84,6 +84,7 @@ class Assets extends CI_Controller
         $data = [
             'equipment_registration' => $this->input->post('equipment_registration'),
             'equipment_name'         => $this->input->post('equipment_name'),
+            'equipment_status'       => 'AVAILABLE',
             'equipment_type'         => $this->input->post('equipment_type'),
         ];
 
