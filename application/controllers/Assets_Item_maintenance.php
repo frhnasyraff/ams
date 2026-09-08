@@ -1675,8 +1675,9 @@ public function task_details($equipment_id, $maintenance_id = null)
         error_log("ðŸ“Š Tasks Found: " . count($task_lists));
 
         // âœ… STEP 2: Existing maintenance tasks get karo (agar hain to)
+        $taskDetailsTableExists = $this->db->table_exists('equipment_maintenance_tasks');
         $existing_tasks = [];
-        if ($maintenance_id) {
+        if ($maintenance_id && $taskDetailsTableExists) {
             $existing_tasks = $this->db->select('
                 emt.*, 
                 tl.name as task_name, 
@@ -1741,6 +1742,35 @@ public function get_tasks_ajax()
     error_log("ðŸŽ¯ GET_TASKS_AJAX - Equipment: $equipment_id, Maintenance: $maintenance_id");
 
     try {
+        if (!$this->db->table_exists('equipment_maintenance_tasks')) {
+            $tasks = $this->db->select('tl.id as task_list_id, tl.name as task_name', false)
+                ->from('asset_type_tasks atl')
+                ->join('task_list tl', 'tl.id = atl.task_list_id', 'left')
+                ->where('atl.asset_type_id', "(SELECT equipment_type FROM equipments_asset WHERE equipment_id = " . $this->db->escape($equipment_id) . " LIMIT 1)", false)
+                ->get()
+                ->result();
+
+            $data = [];
+            foreach ($tasks as $task) {
+                $data[] = [
+                    'task_name' => $task->task_name ?: '--',
+                    'assigned_user' => '--',
+                    'cost' => '--',
+                    'file' => '<span class="text-muted">No file</span>',
+                    'status' => $this->getStatusBadge('pending'),
+                    'actions' => '<span class="text-muted">No task detail table</span>',
+                ];
+            }
+
+            echo json_encode([
+                'draw' => intval($this->input->post('draw')),
+                'recordsTotal' => count($data),
+                'recordsFiltered' => count($data),
+                'data' => $data,
+            ]);
+            return;
+        }
+
         $this->db->select('DISTINCT
             tl.id as task_list_id,
             tl.name as task_name,
@@ -1864,6 +1894,11 @@ public function delete_task()
     error_log("ðŸ—‘ï¸ Deleting task with ID: " . $task_id);
     
     try {
+        if (!$this->db->table_exists('equipment_maintenance_tasks')) {
+            echo json_encode(['success' => false, 'message' => 'Task detail table is not installed on this server.']);
+            return;
+        }
+
         // âœ… APNE ACTUAL PRIMARY KEY KE HISAB SE
         // Pehle check karein kya primary key 'id' hai ya 'equipment_maintenance_task_id'
         $table_fields = $this->db->list_fields('equipment_maintenance_tasks');
@@ -1914,6 +1949,11 @@ public function update_task()
     $status = $this->input->post('status');
 
     try {
+        if (!$this->db->table_exists('equipment_maintenance_tasks')) {
+            echo json_encode(['success' => false, 'message' => 'Task detail table is not installed on this server.']);
+            return;
+        }
+
         // âœ… VALIDATE REQUIRED FIELDS
         if (empty($task_list_id)) {
             throw new Exception('Task List ID is required');
@@ -2037,6 +2077,10 @@ public function update_task()
 
 private function checkAllTasksComplete($equipment_id, $maintenance_id)
 {
+    if (!$this->db->table_exists('equipment_maintenance_tasks')) {
+        return false;
+    }
+
     // Count total tasks for this maintenance
     $total = $this->db->where('equipment_id', $equipment_id)
         ->where('equipment_maintenance_id', $maintenance_id)
@@ -2128,6 +2172,10 @@ private function updateNextMaintenanceDate($equipment_id, $maintenance_id)
 
 private function insertMaintenanceTasks($equipment_id, $maintenance_id)
 {
+    if (!$this->db->table_exists('equipment_maintenance_tasks')) {
+        return true;
+    }
+
     // Get equipment type
     $equipment = $this->db->select('equipment_type')
         ->from('equipments_asset')
