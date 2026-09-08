@@ -13,4 +13,8 @@
 #assettypes .ams-type-flag { font-size: 12px; font-weight: 700; }
 #assettypes .ams-type-note { display: block; margin-top: 4px; font-size: 11px; color: #9cb6d4; white-space: normal; }
 #assettypes .ams-type-unknown { color: #ffca68; }
+#assettypes td.ams-type-actions-cell { min-width: 214px !important; }
+#assettypes .ams-type-actions { display: flex !important; align-items: center !important; justify-content: center !important; flex-wrap: wrap; gap: 8px !important; }
+#assettypes .ams-type-edit { min-width: 70px; min-height: 36px; margin: 0 !important; }
+#assettypes .ams-type-edit:focus-visible { outline: 2px solid #70d8ff; outline-offset: 3px; }
 @media (max-width: 600px) { .ams-access-denied { padding: 22px; margin: 12px 0; } }

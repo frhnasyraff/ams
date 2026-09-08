@@ -78,7 +78,7 @@
                     <div class="modal-body row">
 
 
-                        <?= $this->steve->form_group_label_input("text", "name", "Asset Type Name", "col-sm-12", 0, '', 30); ?>
+                        <?= $this->steve->form_group_label_input("text", "name", "Asset Type Name", "col-sm-12", 1, '', 30); ?>
 
                         <!-- Manufacturer Name with Searchable Dropdown -->
                         <div class="col-md-12 mb-4 uppercase">
@@ -110,8 +110,7 @@
                             <select class="form-control" name="depreciation_method_id" id="depreciation_method">
                                 <option value="">-- Select --</option>
                                 <?php foreach ($depreciation_methods as $dm): ?>
-                                    <option value="<?= $dm->id ?>"
-                                        <?= ($dm->id == $info->depreciation_method_id) ? 'selected' : '' ?>>
+                                    <option value="<?= $dm->id ?>">
                                         <?= $dm->depreciation_method ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -124,7 +123,7 @@
                                 <label>Useful Life (Years)</label>
                                 <input type="number" class="form-control"
                                     name="useful_life_years"
-                                    value="<?= $info->useful_life_years ?>">
+                                    value="">
                             </div>
 
                             <div class="col-md-6 mb-4">
@@ -132,7 +131,7 @@
                                 <input type="number" step="0.01"
                                     class="form-control"
                                     name="salvage_value"
-                                    value="<?= $info->salvage_value ?>">
+                                    value="">
                             </div>
 
                         </div>
@@ -141,7 +140,7 @@
                         <div id="reducing_balance_field" style="display:none">
                             <label>Depreciate Value (%)</label>
                             <input type="number" name="depreciate_value" class="form-control"
-                                value="<?= $info->depreciate_value ?>">
+                                value="">
                         </div>
 
 

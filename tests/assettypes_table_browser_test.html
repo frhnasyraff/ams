@@ -34,10 +34,13 @@ $(function () {
         const result = {
             noLegacyHelper: typeof amsUrl === 'undefined',
             noRuntimeErrors: errors.length === 0,
-            twoRowsRendered: $('#assettypes tbody tr').length === 2 && $('#assettypes tbody a').length === 2,
+            twoRowsRendered: $('#assettypes tbody tr').length === 2 && $('#assettypes tbody td:first-child a').length === 2,
             processingFinished: $('#assettypes_processing').css('display') === 'none',
             editLinkUsesBasePath: $('#assettypes tbody a').first().attr('href') === appBasePath + '/assettypes/info?id=' + id_encode(1),
-            namesEscaped: $('#assettypes tbody img').length === 0 && $('#assettypes tbody a').last().text() === '<img src=x onerror=alert(1)>',
+            namesEscaped: $('#assettypes tbody img').length === 0 && $('#assettypes tbody td:first-child a').last().text() === '<img src=x onerror=alert(1)>',
+            explicitEditButtons: $('#assettypes tbody .ams-type-edit').length === 2 && $('#assettypes tbody .ams-type-edit').first().text().trim() === 'Edit',
+            editButtonsUseMatchingAsset: $('#assettypes tbody .ams-type-edit').toArray().every((link, index) => $(link).attr('href') === appBasePath + '/assettypes/info?id=' + id_encode(index + 1)),
+            stateActionsRetained: $('#assettypes tbody input[data-toggle="toggle"]').length === 2 && $('#assettypes tbody input[data-id="1"]').prop('checked') && !$('#assettypes tbody input[data-id="2"]').prop('checked'),
             correctManufacturer: $('#assettypes tbody tr').first().find('td').eq(1).text() === 'Example Manufacturer',
             unknownMaintenanceShown: $('#assettypes tbody').text().includes('Not configured'),
             totalCount: table.page.info().recordsTotal === 2

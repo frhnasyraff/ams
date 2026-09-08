@@ -116,17 +116,29 @@ $(document).ready(function () {
         },
 
         {
-    "data": "active",
-    createdCell: function (td, cellData, rowData, row, col) {
-        if (!$("table.read-only").length) {
-            const checkboxHtml = '<input type="checkbox" ' +
-                (rowData.active != 0 ? 'checked' : '') +
-                ' data-toggle="toggle" data-on="Active" data-off="Inactive" data-style="status-text-toggle" data-id="' + rowData.asset_id + '" />';
+            "data": "active",
+            createdCell: function (td, cellData, rowData, row, col) {
+                if (!$("table.read-only").length) {
+                    const editLink = $('<a>')
+                        .addClass('ams-type-edit master-row-action master-row-action--edit')
+                        .attr('href', appUrl('/assettypes/info?id=' + id_encode(rowData.asset_id)))
+                        .attr('title', 'Edit Asset Type and maintenance')
+                        .append($('<i>').addClass('fa fa-edit').attr('aria-hidden', 'true'))
+                        .append(document.createTextNode(' Edit'));
+                    const stateToggle = $('<input>')
+                        .attr('type', 'checkbox')
+                        .prop('checked', rowData.active != 0)
+                        .attr('data-toggle', 'toggle')
+                        .attr('data-on', 'Active')
+                        .attr('data-off', 'Inactive')
+                        .attr('data-style', 'status-text-toggle')
+                        .attr('data-id', rowData.asset_id);
 
-            $(td).addClass("text-center status-only-action-cell").html(checkboxHtml);
+                    $(td).addClass('text-center status-only-action-cell ams-type-actions-cell')
+                        .empty().append($('<div>').addClass('ams-type-actions').append(editLink, stateToggle));
+                }
+            }
         }
-    }
-}
 
 
         ]

@@ -73,7 +73,7 @@ function sub_menu_item($name, $url, $menu = '', $root = 0)
     <?php if (strtolower($this->router->fetch_class()) === 'order_summary'): ?>
         <link href="<?= site_url('design/css/ams-summary-layout.css?v=1'); ?>" rel="stylesheet">
     <?php elseif (strtolower($this->router->fetch_class()) === 'assettypes'): ?>
-        <link href="<?= site_url('design/css/asset-types-admin.css?v=1'); ?>" rel="stylesheet">
+        <link href="<?= site_url('design/css/asset-types-admin.css?v=2'); ?>" rel="stylesheet">
     <?php endif; ?>
     <?php if (in_array(strtolower($this->router->fetch_class()), ['assets', 'items'], true)) { ?>
         <link href="<?= site_url('design/css/asset-component-forms.css?v=1'); ?>" rel="stylesheet">

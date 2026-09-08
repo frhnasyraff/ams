@@ -78,7 +78,7 @@ public function index()
         'depreciation_methods' => $depreciation_methods  // यहाँ add किया
     ]);
     
-    $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=3']]);
+    $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=4']]);
 }
 
     public function info()
@@ -150,7 +150,7 @@ public function index()
                     'selected_task_ids' => $selected_task_ids, // 🔥 NEW: Pass selected task IDs
                     'depreciation_methods' => $depreciation_methods
                 ]);
-                $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=3']]);
+                $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=4']]);
             } else {
                 redirect('assettypes?error=Asset type not found');
             }
@@ -304,7 +304,7 @@ public function update()
         $asset_id = (int) $this->input->post('id');
 
         // Basic fields
-        $name               = $this->input->post('name', true);
+        $name               = $this->asset_type_name_from_form($asset_id);
         $manufacturer       = $this->input->post('manufacturer');
         $vendor_part_number = $this->input->post('vendor_part_number');
         $calibration        = $this->input->post('calibration') ? '1' : '0';
@@ -344,14 +344,13 @@ public function update()
         } else {
             // Straight Line
             $this->db->set([
-                'useful_life_years' => $useful_life_years,
-                'salvage_value'     => $salvage_value,
+                'useful_life_years' => $useful_life_years === '' ? null : $useful_life_years,
+                'salvage_value'     => $salvage_value === '' ? null : $salvage_value,
                 'depreciate_value'  => null
             ]);
         }
 
-        $this->db->where('asset_id', $asset_id);
-        $this->db->update('asset_types');
+        $this->save_asset_type_row($asset_id);
 
         // =======================
         // UPDATE asset_type_items
@@ -407,9 +406,9 @@ public function update()
 
 public function add()
 {
-    if ($this->user_model->has_perm('add_assettypes') && $this->input->post('name')) {
+    if ($this->user_model->has_perm('add_assettypes')) {
 
-        $name               = $this->input->post('name', true);
+        $name               = $this->asset_type_name_from_form();
         $manufacturer       = $this->input->post('manufacturer');
         $vendor_part_number = $this->input->post('vendor_part_number');
         $calibration        = $this->input->post('calibration') ? '1' : '0';
@@ -447,13 +446,13 @@ public function add()
             ]);
         } else {
             $this->db->set([
-                'useful_life_years' => $useful_life_years,
-                'salvage_value'     => $salvage_value,
+                'useful_life_years' => $useful_life_years === '' ? null : $useful_life_years,
+                'salvage_value'     => $salvage_value === '' ? null : $salvage_value,
                 'depreciate_value'  => null
             ]);
         }
 
-        $this->db->insert('asset_types');
+        $this->save_asset_type_row();
         $asset_type_id = $this->db->insert_id();
 
         // =======================
@@ -648,6 +647,63 @@ public function add()
     //     }
     //     }
 
+
+    private function asset_type_name_from_form($asset_id = null)
+    {
+        $value = $this->input->post('name', true);
+        $name = is_string($value) ? trim($value) : '';
+        if ($name === '') {
+            redirect('assettypes?error=' . rawurlencode('Please enter an Asset Type Name.'));
+        }
+
+        // Use the database collation, matching the unique index, and include inactive types.
+        $this->db->select('asset_id')->where('name', $name);
+        if ($asset_id !== null) {
+            $this->db->where('asset_id !=', $asset_id);
+        }
+        if ($this->db->get('asset_types')->row()) {
+            $this->duplicate_asset_type_response();
+        }
+        return $name;
+    }
+
+    private function duplicate_asset_type_response()
+    {
+        redirect('assettypes?error=' . rawurlencode(
+            'An Asset Type with this name already exists. Edit the existing type or use a different name. Check inactive types too.'
+        ));
+    }
+
+    private function save_asset_type_row($asset_id = null)
+    {
+        // The unique index remains the final guard for simultaneous submissions.
+        $previousDebug = $this->db->db_debug;
+        $this->db->db_debug = false;
+        $saved = false;
+        $errorCode = 0;
+        try {
+            $saved = $asset_id === null
+                ? $this->db->insert('asset_types')
+                : $this->db->where('asset_id', $asset_id)->update('asset_types');
+            if (!$saved) {
+                $errorCode = (int) ($this->db->error()['code'] ?? 0);
+            }
+        } catch (Throwable $e) {
+            $errorCode = (int) $e->getCode();
+        } finally {
+            $this->db->db_debug = $previousDebug;
+        }
+
+        if (!$saved) {
+            // Stop before changing component/task links or writing a success log.
+            $this->db->trans_rollback();
+            if ($errorCode === 1062) {
+                $this->duplicate_asset_type_response();
+            }
+            log_message('error', 'Asset type save failed (database code ' . $errorCode . ').');
+            redirect('assettypes?error=' . rawurlencode('Unable to save the Asset Type. Please retry or contact the administrator.'));
+        }
+    }
 
     private function settings_response($payload, $status = 200)
     {
