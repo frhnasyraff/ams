@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid maintenance-task-details-page">
     <div class="row">
         <div class="col-12">
             <div class="card shadow mb-4">

@@ -684,3 +684,80 @@
         min-height: auto;
     }
 }
+
+/* Schedule details modal/card dark polish */
+.schedule-modal .modal-dialog .modal-content,
+.schedule-card {
+    background: #071528 !important;
+    color: #eef7ff !important;
+    border-radius: 18px !important;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42) !important;
+}
+.schedule-modal .modal-body,
+.schedule-card .card-body {
+    background: #071528 !important;
+    color: #eef7ff !important;
+    border-radius: 18px !important;
+}
+.schedule-modal .content .wrapper .key,
+.schedule-card .content .wrapper .key {
+    color: #5bdcff !important;
+    font-weight: 700 !important;
+}
+.schedule-modal .content .wrapper .value,
+.schedule-card .content .wrapper .value {
+    color: #fff !important;
+    font-weight: 800 !important;
+}
+.schedule-modal .content .wrapper .items,
+.schedule-card .content .wrapper .items,
+.schedule-modal .item-box,
+.schedule-card .item-box {
+    color: #cfe7ff !important;
+}
+.schedule-modal .header .right p,
+.schedule-card .header .right p {
+    color: #8fb0d4 !important;
+}
+.schedule-modal .header .right .status,
+.schedule-card .header .right .status {
+    background: rgba(54, 205, 255, 0.12) !important;
+    border: 1px solid rgba(54, 205, 255, 0.35) !important;
+    color: #bfeaff !important;
+}
+.schedule-modal.planned .header .right .status,
+.schedule-card.planned .header .right .status {
+    background: rgba(255, 184, 64, 0.12) !important;
+    border-color: rgba(255, 184, 64, 0.45) !important;
+    color: #ffd27f !important;
+}
+.schedule-modal.completed .header .right .status,
+.schedule-card.completed .header .right .status {
+    background: rgba(55, 218, 154, 0.12) !important;
+    border-color: rgba(55, 218, 154, 0.45) !important;
+    color: #91f0c8 !important;
+}
+.schedule-modal .details-btn,
+.schedule-card .details-btn {
+    background: linear-gradient(135deg, #2d6bff, #15c2f3) !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+}
+.maintenance-task-details-page .card,
+.maintenance-task-details-page .table {
+    background: #071528 !important;
+    color: #eef7ff !important;
+    border-color: #214a72 !important;
+}
+.maintenance-task-details-page .card-header,
+.maintenance-task-details-page .table th {
+    background: #102b4c !important;
+    color: #fff !important;
+    border-color: #214a72 !important;
+}
+.maintenance-task-details-page .table td {
+    border-color: rgba(60, 117, 164, 0.4) !important;
+    color: #eef7ff !important;
+}

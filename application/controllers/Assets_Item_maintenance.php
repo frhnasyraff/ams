@@ -170,7 +170,7 @@ class Assets_Item_maintenance extends CI_Controller
 
         $this
             ->load
-            ->view("header", ["title" => "ASSETS & Components MAINTENANCE", "title2" => "ASSETS & ITEMS MAINTENANCE", "styles" => ["design/css/schedule.css?v=3", "design/css/fullcalendar/full-calendar.css",],]);
+            ->view("header", ["title" => "ASSETS & Components MAINTENANCE", "title2" => "ASSETS & ITEMS MAINTENANCE", "styles" => ["design/css/schedule.css?v=4", "design/css/fullcalendar/full-calendar.css",],]);
 
         $this
             ->load
@@ -200,6 +200,7 @@ class Assets_Item_maintenance extends CI_Controller
                 equipments_asset.*, 
                 COALESCE(latest_maintenance_asset.final_status, "IN-MAINTENANCE") AS final_status, 
                 latest_maintenance_asset.update_date,
+                latest_maintenance_asset.equipment_maintenance_id AS equipment_maintenance_id,
                 latest_maintenance_asset.maintenance_type_id AS maintenance_type,
                 latest_maintenance_asset.faulty_type,
                 latest_task_done.task_done AS task_done,
@@ -271,6 +272,7 @@ class Assets_Item_maintenance extends CI_Controller
                 $table_data[] = (object) [
                     "ticket_number" => $row->ticket_number,
                     "equipment_id" => $row->equipment_id,
+                    "equipment_maintenance_id" => $row->equipment_maintenance_id,
                     "equipment_name" => $row->equipment_name,
                     "maintenance_date" => $row->issue_date,
                     "equipment_type_name" => $row->equipment_type_name,
@@ -306,19 +308,20 @@ class Assets_Item_maintenance extends CI_Controller
                 }
 
                 // Organize maintenance statuses properly
-                if ($data->final_status === "IN-MAINTENANCE") {
+                $statusKey = strtolower((string) $data->final_status);
+                if ($data->final_status === "IN-MAINTENANCE" || $statusKey === "pending") {
                     $formattedinMaintenance[] = [
                         'id' => count($formattedinMaintenance) + 1,
-                        'start' => date('Y-m-d', strtotime($data->maintenance_date)),
+                        'start' => date('Y-m-d', strtotime($data->maintenance_records !== "No Data" ? $data->maintenance_records : $data->maintenance_date)),
                         'data' => $data
                     ];
-                } elseif ($data->final_status === "in_progress") { // Ensure case matches database values
+                } elseif ($statusKey === "in_progress") {
                     $formattedInProgress[] = [
                         'id' => count($formattedInProgress) + 1,
                         'start' => date('Y-m-d', strtotime($data->maintenance_records)),
                         'data' => $data
                     ];
-                } elseif ($data->final_status === "complete") { // Ensure case matches database values
+                } elseif ($statusKey === "complete") {
                     $formattedComplete[] = [
                         'id' => count($formattedComplete) + 1,
                         'start' => date('Y-m-d', strtotime($data->maintenance_records)),
@@ -387,7 +390,9 @@ class Assets_Item_maintenance extends CI_Controller
                     DISTINCT CONCAT(
                         equipment_maintenance_asset.equipment_maintenance_id,
                         '||',
-                        equipment_maintenance_asset.update_date
+                        equipment_maintenance_asset.update_date,
+                        '||',
+                        equipment_maintenance_asset.final_status
                     )
                     ORDER BY equipment_maintenance_asset.update_date ASC
                     SEPARATOR ','
@@ -397,8 +402,8 @@ class Assets_Item_maintenance extends CI_Controller
             ->join("asset_types", "asset_types.asset_id = equipments_asset.equipment_type", "left")
             ->join("store_location", "store_location.id = equipments_asset.store_location_id", "left")
             ->join("add_asset_items", "add_asset_items.asset_id = equipments_asset.equipment_id", "left")
-            // âœ… Join only completed maintenance records (for history)
-            ->join("equipment_maintenance_asset", "equipment_maintenance_asset.equipment_id = equipments_asset.equipment_id AND equipment_maintenance_asset.final_status = 'complete'", "left")
+            // Include scheduled preventive records so pending items appear on the calendar too.
+            ->join("equipment_maintenance_asset", "equipment_maintenance_asset.equipment_id = equipments_asset.equipment_id AND equipment_maintenance_asset.maintenance_type_id = 2", "left")
             ->join('(
                 SELECT mtd.*
                 FROM maintenance_task_done mtd
@@ -489,8 +494,9 @@ class Assets_Item_maintenance extends CI_Controller
                         $pair = trim($pair);
                         if (empty($pair) || strpos($pair, '||') === false) continue;
 
-                        list($hist_maintenance_id, $past_date) = explode('||', $pair, 2);
+                        list($hist_maintenance_id, $past_date, $hist_status) = array_pad(explode('||', $pair, 3), 3, 'complete');
                         $past_date = trim($past_date);
+                        $hist_status = strtolower(trim((string) $hist_status));
 
                         if (empty($past_date) || $past_date == '0000-00-00' || strtolower($past_date) === 'null') continue;
 
@@ -507,8 +513,8 @@ class Assets_Item_maintenance extends CI_Controller
                             "store_location_name"    => $equipment->store_location_name,
                             "items"                  => $itemArray,
                             "maintenance_records"    => $past_date,
-                            "remarks"                => "Completed",
-                            "final_status"           => "complete",
+                            "remarks"                => ($hist_status === "complete") ? "Completed" : "Pending",
+                            "final_status"           => ($hist_status === "complete") ? "complete" : "PENDING",
                         ];
                         $i++;
                     }
@@ -554,9 +560,9 @@ class Assets_Item_maintenance extends CI_Controller
                     "data" => $order
                 ];
 
-                if ($order->final_status === "PENDING") {
+                if (strtolower((string) $order->final_status) === "pending") {
                     $formattedinMaintenance[] = $formatted_record;
-                } elseif ($order->final_status === "complete") {
+                } elseif (strtolower((string) $order->final_status) === "complete") {
                     $formattedComplete[] = $formatted_record;
                 } else {
                     $formattedInProgress[] = $formatted_record;
@@ -954,10 +960,11 @@ class Assets_Item_maintenance extends CI_Controller
 
                 // Determine CSS class and status text
                 // We want PENDING â†’ red (planned), complete â†’ green (completed)
-                if ($data->final_status === "PENDING") {
+                $statusKey = strtolower((string) $data->final_status);
+                if ($statusKey === "pending") {
                     $class = "planned";
                     $statusText = "PENDING";
-                } elseif ($data->final_status === "complete") {
+                } elseif ($statusKey === "complete") {
                     $class = "completed";
                     $statusText = "Completed";
                 } else {
@@ -966,7 +973,7 @@ class Assets_Item_maintenance extends CI_Controller
                 }
 
                 // Replan button (only for PENDING)
-                $replanButtonHtml = ($data->final_status === "PENDING")
+                $replanButtonHtml = ($statusKey === "pending")
                     ? "<div class='right replan-button-container replan'>
                         <button type='button' class='float-right btn btn-primary btn-sm open-replan-modal'
                             data-bs-toggle='modal' data-bs-target='#replanModal'
@@ -1430,10 +1437,11 @@ class Assets_Item_maintenance extends CI_Controller
                 }
 
                 // Determine CSS class and status text
-                if ($data->final_status === "PENDING") {
+                $statusKey = strtolower((string) $data->final_status);
+                if ($statusKey === "pending") {
                     $class = "planned";
                     $statusText = "PENDING";
-                } elseif ($data->final_status === "complete") {
+                } elseif ($statusKey === "complete") {
                     $class = "completed";
                     $statusText = "Completed";
                 } else {
@@ -1442,7 +1450,7 @@ class Assets_Item_maintenance extends CI_Controller
                 }
 
                 // Replan button (only for PENDING)
-                $replanButtonHtml = ($data->final_status === "PENDING")
+                $replanButtonHtml = ($statusKey === "pending")
                     ? "<div class='right replan-button-container replan'>
                         <button type='button' class='float-right btn btn-primary btn-sm open-replan-modal'
                             data-bs-toggle='modal' data-bs-target='#replanModal'
@@ -1557,8 +1565,13 @@ public function task_details($equipment_id, $maintenance_id = null)
             show_error('Equipment not found with ID: ' . $equipment_id);
         }
 
-        // âœ… STEP 1: Equipment Type se Task List get karo
-        $task_lists = $this->db->select('task_list.id, task_list.name, task_list.frequency_in_days')
+        $taskListFields = $this->db->list_fields('task_list');
+        $taskListSelect = in_array('frequency_in_days', $taskListFields, true)
+            ? 'task_list.id, task_list.name, task_list.frequency_in_days'
+            : 'task_list.id, task_list.name, NULL AS frequency_in_days';
+
+        // Load task lists from the asset type; older databases do not have frequency_in_days.
+        $task_lists = $this->db->select($taskListSelect, false)
             ->from('asset_type_tasks')
             ->join('task_list', 'task_list.id = asset_type_tasks.task_list_id')
             ->where('asset_type_tasks.asset_type_id', $equipment->equipment_type)
@@ -1598,7 +1611,8 @@ public function task_details($equipment_id, $maintenance_id = null)
             'title2' => 'Maintenance Task Details',
             'styles' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css',
-                'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css'
+                'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css',
+                'design/css/schedule.css?v=4'
             ]
         ]);
         
