@@ -359,7 +359,6 @@ class Assets_Item_maintenance extends CI_Controller
                 equipment_maintenance_asset.equipment_id,
                 equipment_maintenance_asset.update_date,
                 equipment_maintenance_asset.final_status,
-                equipment_maintenance_asset.remarks,
                 equipments_asset.equipment_name,
                 equipments_asset.equipment_registration,
                 asset_types.name AS equipment_type_name,
@@ -385,7 +384,6 @@ class Assets_Item_maintenance extends CI_Controller
                 ->group_by('equipment_maintenance_asset.equipment_id')
                 ->group_by('equipment_maintenance_asset.update_date')
                 ->group_by('equipment_maintenance_asset.final_status')
-                ->group_by('equipment_maintenance_asset.remarks')
                 ->group_by('equipments_asset.equipment_name')
                 ->group_by('equipments_asset.equipment_registration')
                 ->group_by('asset_types.name')
@@ -426,7 +424,7 @@ class Assets_Item_maintenance extends CI_Controller
                         'store_location_name' => $record->store_location_name,
                         'items' => $itemArray,
                         'maintenance_records' => $record->update_date,
-                        'remarks' => $record->remarks,
+                        'remarks' => '',
                         'final_status' => ($statusKey === 'complete') ? 'complete' : (($statusKey === 'in_progress') ? 'in_progress' : 'PENDING'),
                     ],
                 ];
