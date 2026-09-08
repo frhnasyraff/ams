@@ -48,3 +48,36 @@ mysql -u ams_user -p rams < rams_DB/patch_assettypes_admin_access.sql
 This separate patch resolves exactly one active role named **Admin** or **Administrator**, adds missing permission definitions and grants list/add/edit Asset Types plus the two parent menu permissions to that role only. It does not grant generic delete access, change user-role membership, or remove/change other roles' existing grants. It aborts if the Admin role cannot be identified unambiguously. No role IDs are hard-coded. This grant is deliberately not included in the general schema migration.
 
 Refresh after applying the patch. If the logged-in user still lacks access, check that the account is actually assigned to that Admin role in User Roles; an account display name of Admin is not proof of its assigned role. Do not grant all permissions as a workaround.
+
+## Missing Add New Maintenance button / Admin-only grant
+
+The asset Maintenance tab and `Assets::addMaintenace()` both require
+`add_maintenance_log_asset` to add a record. The Asset Types access patch above
+does not grant this separate permission.
+
+For the explicitly approved Admin-only repair, pull the matching code and run
+the following from `/var/www/html/ams`. The import runs only if the backup succeeds:
+
+```sh
+umask 077
+mysqldump -u ams_user -p --no-tablespaces rams > /var/tmp/ams-before-maintenance-access-$(date +%Y%m%d-%H%M%S).sql &&
+mysql -u ams_user -p rams < rams_DB/patch_asset_maintenance_admin_access.sql
+```
+
+The standalone patch creates the permission if missing and grants only
+`add_maintenance_log_asset` to exactly one active role named Admin or Administrator.
+An existing permission keeps its category. A new definition uses Asset Maintenance.
+No role IDs are hard-coded. Missing/ambiguous Admin roles, duplicate definitions,
+or non-transactional permission tables stop the repair without applying grants.
+It does not grant maintenance edit/delete access, modify role memberships or
+user-specific permissions, revoke other roles' existing grants, or change assets,
+dates, tasks, or maintenance records. It is deliberately separate from the general
+deployment patch, and can be applied again without duplicating the grant.
+
+After a successful import, the output should list the resolved Admin role and
+`add_maintenance_log_asset`. Refresh an asset's Maintenance tab while logged in
+with an account assigned to that role. **Add New Maintenance** should appear.
+If it does not, check the account's actual role membership; do not grant all
+permissions. This access repair does not verify the maintenance submission flow.
+
+Testing was explicitly skipped for this patch at the user's request.
