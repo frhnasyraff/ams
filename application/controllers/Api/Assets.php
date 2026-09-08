@@ -34,33 +34,20 @@ class Assets extends CI_Controller
             return errorResponse('Validation failed', $this->form_validation->error_array());
         }
 
-        $assetId = $this->input->post('asset_id');
-        $rfid    = $this->input->post('rfid');
-
-        $asset = $this->db->select('*')
-            ->from('equipments_asset')
-            ->where('equipment_id ', $assetId)
-            ->get()
-            ->row();
-
-        if (!$asset) {
-
-            return successResponse('Asset not found', [
-                'status' => false
-            ]);
+        $this->load->library('asset_rfid_binding');
+        try {
+            list($code, $message, $data) = $this->asset_rfid_binding->bind(
+                $this->input->post('asset_id'), $this->input->post('rfid')
+            );
+        } catch (Throwable $error) {
+            log_message('error', 'RFID binding failed: ' . $error->getMessage());
+            return errorResponse('RFID binding could not be confirmed. Refresh before retrying.', [], 500);
         }
-
-
-        $this->db->where('equipment_id ', $assetId)->update('equipments_asset', ['rfid' => $rfid]);
-
-        return successResponse('RFID updated successfully', [
-            'status'   => true,
-            'equipment_id ' => $assetId,
-            'rfid'     => $rfid
-        ]);
+        if ($code !== 200) {
+            return errorResponse($message, [], $code);
+        }
+        return successResponse($message, $data);
     }
-
-
     public function get_asset_types()
     {
         $result = $this->db->select('asset_id, name')
