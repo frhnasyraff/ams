@@ -160,20 +160,19 @@
     </div>
 </nav>
 
-<div class="row fade tab-pane active show" id="nav-details" role="tabpanel">
+<div class="tab-content component-workspace">
+<div class="fade tab-pane active show" id="nav-details" role="tabpanel" aria-labelledby="nav-details-tab">
     <div class="col-md-8">
         <div class="card shadow mb-4 tabradius">
             <div class="card-body">
                 <div class="bg-white card-header py-3">
                     <h6 class="m-0 font-weight-bold text_warning_color">Edit Component</h6>
-                    <a onclick="return confirm('Are you sure to this this record?')"
+                    <a onclick="return confirm('Are you sure you want to delete this component?')" aria-label="Delete component"
                         href="<?= base_url('items/deleteItem') . '?id=' . $items->id . '&assetid=' . $this->steve->id_encode($items->asset_id) ?>"
                         class=" btn-danger mt-3"><i class="fa fa-trash trash-icon"></i></a>
                 </div>
                 <form id="formA" class="form-horizontal" action="<?= site_url("items/update"); ?>" method="post">
-                    <div class="row">
-                        <div class="item-section row">
-                            <div class="modal-body row">
+                    <div class="row component-form-grid">
 
                                 <input type="hidden" id="item_id" name="item_id" value="<?= $items->id; ?>">
 
@@ -182,7 +181,7 @@
 
 
                                 <div class="col-sm-4 form-group">
-                                    <label for="asset_id">Asset</label>
+                                    <label for="asset_id">Linked Asset</label>
                                     <select name="asset_id" id="asset_id" class="form-control searchable-dropdown">
                                         <option value="<?= $items->asset_id ?>">Select Asset</option>
                                         <?php foreach ($equipments as $pn): ?>
@@ -214,7 +213,7 @@
 
                                 <!-- Manufacturer Name with Searchable Dropdown -->
                                 <div class="form-group col-sm-4 uppercase">
-                                    <label for="manufacturer_dropdown">Manufacturer Name</label><br />
+                                    <label for="manufacturer_name">Manufacturer Name</label><br />
                                     <select name="manufacturer_name" id="manufacturer_name"
                                         class="form-control searchable-dropdown">
                                         <option value="">--Select--</option>
@@ -345,19 +344,17 @@
                                 </div>
 
                                 <!-- Faulty Type Checkbox -->
-                                <div class="col-md-6">
-                                    <label for="">Check for Faulty Type</label>
+                                <div class="col-12 component-fault-toggle">
                                     <input type="checkbox" class="edit_faulty_type_toggle_item"
                                         id="faulty_type_toggle_item">
+                                    <label for="faulty_type_toggle_item">Specify faulty type</label>
                                 </div>
-                            </div> <!-- End modal-body -->
-                        </div>
                     </div>
 
-                    <div class="text-center mt-4">
+                    <div class="component-form-actions">
                         <input type="hidden" name="id" value="<?= $items->asset_id; ?>" />
-                        <button type="submit" class="btn btn-primary text-white font-weight-bold">Save changes</button>
-                        <a class="btn border_success text_successb" data-dismiss="modal" href=".">Go back</a>
+                        <a class="btn component-back-btn" href="<?= site_url('items'); ?>">Back to Components</a>
+                        <button type="submit" class="btn btn-primary text-white font-weight-bold">Save Changes</button>
                     </div>
                 </form>
 
@@ -367,11 +364,11 @@
 
 
 
-    <div class="col-md-4">
+    <div class="col-md-4 component-sidebar">
         <div class="card shadow mb-4 tabradius">
             <div class="card-body">
                 <div class="bg-white card-header py-3">
-                    <h6 class="bg-white m-0 font-weight-bold text-primary">Component Picture</h6>
+                    <h6 class="bg-white m-0 font-weight-bold text-primary">Component Pictures</h6>
                 </div>
                 <div class="row">
                     <!-- Gallery Section -->
@@ -379,9 +376,6 @@
                     <div class="row col-md-12 mt-2">
                         <div class="col-md-12">
                             <div id="picture-gallery" class="gallery">
-                                <div class="row col-md-12" style="justify-content: center;">
-                                    <h6 class="m-0 font-weight-bold text-warning">Component Pictures</h6>
-                                </div>
 
                                 <?php
                                 // Initialize a flag to check if pictures are found for the current item
@@ -389,7 +383,7 @@
 
                                 // Loop through pictures and display those that match the current item's id
                                 foreach ($pictures as $picture) {
-                                    if ($picture->add_asset_items_id == $item->id) {
+                                    if ($picture->add_asset_items_id == $items->id) {
                                         $hasPictures = true;  // Set flag to true if a match is found
                                 ?>
                                         <!-- Display each picture with a click event to delete -->
@@ -404,7 +398,7 @@
 
                                 // If no pictures found for the item, show a message
                                 if (!$hasPictures) {
-                                    echo "<p>No pictures available for this Component.</p>";
+                                    echo '<p class="component-empty-state">No pictures added yet.</p>';
                                 }
                                 ?>
                             </div>
@@ -415,23 +409,25 @@
                     <!-- Upload Section -->
                     <div class="col-md-12 mt-2">
                         <div id="drop-area" class="drop-area">
-                            <p>Drag and drop your images here</p>
+                            <p>Drop images here or choose files</p>
                             <label for="fileElem" class="btn btn-primary file-choose-btn">Choose Files</label>
                             <input type="file" id="fileElem" class="file-input" name="item_picture" multiple
                                 accept="image/*" style="display:none" />
                         </div>
                         <div id="gallery" class="gallery mt-3"></div>
-                        <center>
-                            <button type="button" id="saveBtn" class="btn btn-primary mt-2 mb-5 save-btn">Save</button>
-                        </center>
+                        <div class="component-upload-actions">
+                            <button type="button" id="saveBtn" class="btn btn-primary save-btn">Save Pictures</button>
+                        </div>
                     </div>
 
                 </div>
+            </div>
+        </div>
                 <!-- QR Code Section -->
-                <div class="row tabradius">
+                <div class="card shadow mb-4 tabradius component-qr-card">
                     <div class="card-body">
                         <div class="bg-white card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-warning">QR Code Generator</h6>
+                            <h6 class="m-0 font-weight-bold text-warning">Component QR Code</h6>
                         </div>
 
                         <div class="table-responsive">
@@ -478,8 +474,6 @@
                                 </div>
                             <?php endif; ?>
                         </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -487,7 +481,7 @@
 </div>
 
 
-<div class="row fade tab-pane active show" id="nav-new-maintenance" role="tabpanel">
+<div class="row fade tab-pane" id="nav-new-maintenance" role="tabpanel" aria-labelledby="nav-new-maintenance-tab">
     <div class="col-md-7">
         <div class="card shadow mb-4 tabradius">
             <div class="card-body">
@@ -550,6 +544,7 @@
         </div>
     </div>
 </div>
+</div><!-- End component workspace tabs -->
 <!-- eye icone button modal  -->
 <div class="modal fade" id="equipmentModal" tabindex="-1" aria-labelledby="equipmentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
