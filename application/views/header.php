@@ -78,6 +78,12 @@ function sub_menu_item($name, $url, $menu = '', $root = 0)
     <?php if (in_array(strtolower($this->router->fetch_class()), ['assets', 'items'], true)) { ?>
         <link href="<?= site_url('design/css/asset-component-forms.css?v=1'); ?>" rel="stylesheet">
     <?php } ?>
+    <?php if (in_array(strtolower($this->router->fetch_class()), ['assets', 'assettypes'], true)) { ?>
+        <link href="<?= site_url('design/css/asset-maintenance-ui.css?v=1'); ?>" rel="stylesheet">
+    <?php } ?>
+    <?php if (strtolower($this->router->fetch_class()) === 'assets') { ?>
+        <script src="<?= site_url('design/js/asset-maintenance-status.js?v=1'); ?>"></script>
+    <?php } ?>
     <?php if ($_SESSION['user']->default_font) { ?>
         <link
             href="https://fonts.googleapis.com/css?family=<?= $_SESSION['user']->default_font; ?>:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"

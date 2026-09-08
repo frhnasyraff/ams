@@ -406,7 +406,7 @@
                                 <option value="">--Select--</option>
                                 <?php foreach ($drawing_numbers as $dn) { ?>
                                     <option value="<?= $dn->drawing_number ?>"
-                                        <?= ($dn->drawing_number == $info->manufacturer_drwing_number) ? 'selected' : ''; ?>>
+                                        <?= ($dn->drawing_number == ($info->manufacturer_drawing_number ?? $info->manufacturer_drwing_number ?? '')) ? 'selected' : ''; ?>>
                                         <?= $dn->drawing_number ?></option>
                                 <?php } ?>
                             </select>
@@ -758,24 +758,24 @@
                                             <!-- maintenance Details -->
                                             <div class="form-group col-sm-4 uppercase maintenance_date_item"
                                                 id="maintenance_date_item_edit"
-                                                style="<?= ($items->maintenance == 1) ? 'display: block;' : 'display: none;' ?>">
+                                                style="<?= (($item->maintenance ?? 0) == 1 || !empty($item->maintenance_date)) ? 'display: block;' : 'display: none;' ?>">
                                                 <label>Maintenance Date</label><br />
-                                                <input type="date" class="form-control" value="<?= $items->maintenance_date ?>"
-                                                    name="maintenance_date_item" placeholder="Maintenance Date">
+                                                <input type="date" class="form-control" value="<?= html_escape($item->maintenance_date ?? '') ?>"
+                                                    name="maintenance_date_item[]" placeholder="Maintenance Date">
                                             </div>
 
                                             <div class="form-group col-sm-4 uppercase" id="frequency_year_item_edit"
-                                                style="<?= ($items->maintenance == 1) ? 'display: block;' : 'display: none;' ?>">
-                                                <label>Frequency In years</label><br />
-                                                <input type="text" class="form-control" value="<?= $items->frequency_year ?>"
-                                                    name="frequency_year_item" placeholder="2">
+                                                style="<?= (($item->maintenance ?? 0) == 1 || !empty($item->maintenance_date)) ? 'display: block;' : 'display: none;' ?>">
+                                                <label>Maintenance Frequency (services/year)</label><br />
+                                                <input type="number" min="1" max="365" step="1" class="form-control" value="<?= html_escape($item->frequency_year ?? '') ?>"
+                                                    name="frequency_year_item[]" placeholder="2">
                                             </div>
 
                                             <div class="form-group col-sm-4 uppercase" id="maintenance_reminder_day_item_edit"
-                                                style="<?= ($items->maintenance == 1) ? 'display: block;' : 'display: none;' ?>">
+                                                style="<?= (($item->maintenance ?? 0) == 1 || !empty($item->maintenance_date)) ? 'display: block;' : 'display: none;' ?>">
                                                 <label>Reminder In Days</label><br />
-                                                <input type="text" class="form-control" value="<?= $items->maintenance_reminder_day ?>"
-                                                    name="maintenance_reminder_day_item" placeholder="30">
+                                                <input type="number" min="0" class="form-control" value="<?= html_escape($item->maintenance_reminder_day ?? '') ?>"
+                                                    name="maintenance_reminder_day_item[]" placeholder="30">
                                             </div>
 
                                             <div class="col-md-12"></div>
@@ -1342,15 +1342,15 @@
         <div class="card shadow mb-4 tabradius">
             <div class="card-body">
                 <div class="bg-white card-header py-3">
-                    <h6 class="m-0 font-weight-bold text_warning_color">
-                        Maintenance
+                    <div class="ams-maintenance-heading">
+                        <h6 class="m-0 font-weight-bold text_warning_color">Maintenance</h6>
                         <?php if ($this->user_model->has_perm("add_maintenance_log_asset")) { ?>
-                            <a class="float-right mr-2" href="#addNewMaintenancce" data-toggle="modal"
+                            <a class="ams-add-maintenance-btn" href="#addNewMaintenancce" data-toggle="modal"
                                 data-target="#addNewMaintenancce" title="Add new maintenance">
                                 <i class="fa fa-plus"></i> Add New Maintenance
                             </a>
                         <?php } ?>
-                    </h6>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-borderless table-striped" id="equipment_new_maintenance" width="100%"
@@ -1398,7 +1398,7 @@
                                             <?= htmlspecialchars($row->ticket_number) ?>
                                         </span>
                                     </td>
-                                    <td><?= mb_strtolower($row->details_of_issue) ?></td>
+                                    <td><?= html_escape(mb_strtolower($row->details_of_issue ?? '')) ?></td>
                                     <td><?= date('d-m-Y', strtotime($row->issue_date)) ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -1686,7 +1686,7 @@
             </div>
             <div class="form-group col-sm-6">
                 <label>Maintenance Type <sup>REQUIRED</sup></label>
-                <select name="maintenance_type" class="form-control maintenance-type">
+                <select name="maintenance_type" class="form-control maintenance-type" required>
                     <option value="">--Select--</option>
                     <option value="preventive">Preventive</option>
                     <option value="corrective">Corrective</option>
@@ -1719,10 +1719,10 @@
 
             <div class="form-group col-sm-6">
                 <label>Final Status <sup>REQUIRED</sup></label>
-                <select name="final_status" class="form-control">
+                <select name="final_status" class="form-control" required>
                     <option value="">--Select--</option>
                     <option value="complete">Complete</option>
-                    <option value="in_progress">Inprogress</option>
+                    <option value="in_progress">In Progress</option>
                 </select>
             </div>
         </div>
@@ -1913,7 +1913,7 @@
                         <div class="itemSection">
                             <div class="modal-body row">
 
-                                <?= $this->steve->form_group_label_input("text", "item[]", "Component", "col-sm-4", 0, $info->item, 125); ?>
+                                <?= $this->steve->form_group_label_input("text", "item[]", "Component", "col-sm-4", 0, '', 125); ?>
 
                                 <!-- item type  -->
                                 <div class="form-group col-sm-4 uppercase">
@@ -1954,7 +1954,7 @@
                                 <div class="col-sm-4 form-group">
                                     <label for="manufacturer_drawing_number">Drawing Number</label>
                                     <select name="manufacturer_drawing_number[]"
-                                        id="manufacturer_drawing_number_<?= $key; ?>" class="form-control">
+                                        id="manufacturer_drawing_number_add" class="form-control">
                                         <option value="">-- Select --</option>
                                         <?php foreach ($drawing_numbers as $drawing_number): ?>
                                             <option value="<?= $drawing_number->drawing_number ?>">
@@ -2609,19 +2609,7 @@ function initNewMaintenanceTable() {
             },
             { 
                 "data": "final_status",
-                "render": function(data) {
-                    if (!data) return '<span class="badge badge-secondary">N/A</span>';
-                    
-                    var badgeClass = 'badge-';
-                    if (data === 'complete') {
-                        badgeClass = 'badge-success';
-                    } else if (data === 'in_progress') {
-                        badgeClass = 'badge-warning';
-                    } else {
-                        badgeClass = 'badge-secondary';
-                    }
-                    return `<span class="badge ${badgeClass}">${data.replace('_', ' ')}</span>`;
-                }
+                "render": amsMaintenanceStatus
             },
             { 
                 "data": "created_at",
@@ -3106,9 +3094,8 @@ function initMaintenanceTable() {
             "url": "<?= site_url('assets/new_maintenance_ajax_list'); ?>",
             "type": "POST",
             "data": function(d) {
-                return {
-                    id: "<?= $info->equipment_id; ?>"
-                };
+                d.id = "<?= $info->equipment_id; ?>";
+                return d;
             },
             "beforeSend": function() {
                 // Table ke upar ek simple loader show karo
@@ -3139,17 +3126,7 @@ function initMaintenanceTable() {
             },
             { 
                 "data": "final_status",
-                "render": function(data) {
-                    var badgeClass = 'badge-';
-                    if (data === 'complete') {
-                        badgeClass = 'badge-success';
-                    } else if (data === 'in_progress') {
-                        badgeClass = 'badge-warning';
-                    } else {
-                        badgeClass = 'badge-secondary';
-                    }
-                    return `<span class="badge ${badgeClass}">${data}</span>`;
-                }
+                "render": amsMaintenanceStatus
             },
             { 
                 "data": "created_at",

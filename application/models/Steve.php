@@ -211,7 +211,7 @@ class Steve extends CI_Model
         // Adding the joins
         if ($joins) {
             foreach ($joins as $join) {
-                $this->db->join($join[0], $join[1], ($join[2] ? $join[2] : "left"));
+                $this->db->join($join[0], $join[1], (!empty($join[2]) ? $join[2] : "left"));
             }
         }
 

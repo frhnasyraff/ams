@@ -146,6 +146,14 @@ $(document).ready(function () {
 
     $.fn.dataTable.ext.errMode = 'none';
 
+    // Use the same depreciation layout on both the Add modal and Edit form.
+    $('#depreciation_method').on('change.amsTypeDepreciation', function () {
+        const label = $(this).find(':selected').text().toLowerCase();
+        const reducing = label.includes('reducing') || label.includes('research');
+        $('#straight_line_fields').toggle(!reducing).find('input').prop('disabled', reducing);
+        $('#reducing_balance_field').toggle(reducing).find('input').prop('disabled', !reducing);
+    }).triggerHandler('change.amsTypeDepreciation');
+
     // calibration-check
 
     $('#calibration-check').on('change', function () {

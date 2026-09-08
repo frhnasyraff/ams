@@ -1342,20 +1342,46 @@ public function new_maintenance_ajax_list()
 
         $this->load->model('asset_logs');
 
+        // Deployments use either the corrected drawing column or its legacy spelling.
+        $assetDrawingColumn = $this->db->field_exists('manufacturer_drawing_number', 'equipments_asset')
+            ? 'manufacturer_drawing_number'
+            : ($this->db->field_exists('manufacturer_drwing_number', 'equipments_asset') ? 'manufacturer_drwing_number' : null);
+        $itemDrawingColumn = $this->db->field_exists('manufacturer_drawing_number', 'add_asset_items')
+            ? 'manufacturer_drawing_number'
+            : ($this->db->field_exists('manufacturer_drwing_number', 'add_asset_items') ? 'manufacturer_drwing_number' : null);
+        $assetDrawing = $this->input->post('drawing_number') ?: null;
+        $itemDrawings = $this->input->post('manufacturer_drawing_number');
+        if ($itemDrawings === null) $itemDrawings = $this->input->post('manufacturer_drwing_number');
+        $itemDrawings = is_array($itemDrawings) ? $itemDrawings : [];
+        if (($assetDrawing !== null && $assetDrawingColumn === null) ||
+            ($itemDrawingColumn === null && array_filter($itemDrawings, function ($value) { return $value !== '' && $value !== null; }))) {
+            redirect('assets?error=' . rawurlencode('Drawing number storage is not configured. Contact the administrator before saving a drawing number.'));
+            return;
+        }
+
 
         $invoice_file_name = '';
         if (isset($_FILES['invoice']) && $_FILES['invoice']['error'] == UPLOAD_ERR_OK) {
             $invoice_tmp_name = $_FILES['invoice']['tmp_name'];
             $invoice_file_name = time() . "-invoice-" . basename($_FILES['invoice']['name']);
-            $target_folder = realpath("uploads/asset_invoice");
-            @mkdir($target_folder, 0777, true);
+            $target_folder = FCPATH . 'uploads/asset_invoice';
+            if (!is_dir($target_folder) && !mkdir($target_folder, 0755, true)) {
+                redirect('assets?error=Unable to create the invoice upload folder');
+                return;
+            }
             
             // Get file extension
             $file_ext = pathinfo($_FILES['invoice']['name'], PATHINFO_EXTENSION);
             $allowed_extensions = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png');
             
             if (in_array(strtolower($file_ext), $allowed_extensions)) {
-                move_uploaded_file($invoice_tmp_name, $target_folder . '/' . $invoice_file_name);
+                if (!move_uploaded_file($invoice_tmp_name, $target_folder . '/' . $invoice_file_name)) {
+                    redirect('assets?error=Unable to upload the invoice. Please retry');
+                    return;
+                }
+            } else {
+                redirect('assets?error=Unsupported invoice file format');
+                return;
             }
         }
 
@@ -1384,7 +1410,6 @@ public function new_maintenance_ajax_list()
             'location_id' => $this->input->post('location_id') ?: null,
             'vendor_part_number_id' => $this->input->post('vendor_part_number_id') ?: null,
             'serial_number' => $this->input->post('serial_number') ?: null,
-            'manufacturer_drwing_number' => $this->input->post('drawing_number') ?: null,
             'store_location_id' => $this->input->post('store_location') ?: null,
             'disposal_method_id' => $this->input->post('disposal_method_id') ?: null,
             'useful_life_years' => $this->input->post('useful_life_years') ?: null,
@@ -1399,6 +1424,10 @@ public function new_maintenance_ajax_list()
             // Legacy used lowercase 'faulty', which does not match the equipment_status enum cleanly.
             'equipment_status' => $this->input->post('faulty_type') ? 'UNSERVICEABLE' : ams_normalize_asset_status($this->input->post('equipment_status'))
         ];
+
+        if ($assetDrawingColumn !== null) {
+            $equipment_data[$assetDrawingColumn] = $assetDrawing;
+        }
 
         if ($this->db->insert('equipments_asset', $equipment_data)) {
             $asset_id = $this->db->insert_id();
@@ -1439,7 +1468,7 @@ public function new_maintenance_ajax_list()
             if (!empty($items_names) && is_array($items_names)) {
                 $base_upload_directory_path = realpath('storage') . '/Asset-item-' . $asset_id;
                 @mkdir($base_upload_directory_path, 0777, true);
-                $item_pictures = $_FILES['item_picture'];
+                $item_pictures = $_FILES['item_picture'] ?? [];
 
                 foreach ($items_names as $index => $item_name) {
                     if (empty($item_name)) {
@@ -1452,19 +1481,22 @@ public function new_maintenance_ajax_list()
                         'item_name' => trim($item_name),
                         'vendor_part_number' => $this->input->post('vendor_part_number')[$index] ?? null,
                         'manufacturer_name' => $this->input->post('manufacturer_name')[$index] ?? null,
-                        'manufacturer_drwing_number' => $this->input->post('manufacturer_drwing_number')[$index] ?? null,
                         'manufacturer_part_number' => $this->input->post('manufacturer_part_number')[$index] ?? null,
                         'item_type_id' => $this->input->post('item_type')[$index] ?? null,
-                        'faulty_type_id' => $this->input->post('faulty_type_item')[$index] ?: null,
+                        'faulty_type_id' => ($this->input->post('faulty_type_item')[$index] ?? '') ?: null,
                         'item_status_id' => $this->input->post('item_status')[$index] ?? null,
                         'store_location_id' => $this->input->post('store_location_item')[$index] ?? null,
                         'calibration_date' => $this->input->post('calibration_date_item')[$index] ?? null,
                         'frequency_day' => $this->input->post('frequency_day_item')[$index] ?? null,
                         'reminder_day' => $this->input->post('reminder_day_item')[$index] ?? null,
                         'maintenance_date' => $this->input->post('maintenance_date_item')[$index] ?? null,
-                        'frequency_year' => $this->input->post('frequency_year_item')[$index] ?: $default_frequency_year,
-                        'maintenance_reminder_day' => $this->input->post('maintenance_reminder_day_item')[$index] ?: $default_reminder_days,
+                        'frequency_year' => ($this->input->post('frequency_year_item')[$index] ?? '') ?: $default_frequency_year,
+                        'maintenance_reminder_day' => ($this->input->post('maintenance_reminder_day_item')[$index] ?? '') === '' ? $default_reminder_days : $this->input->post('maintenance_reminder_day_item')[$index],
                     ];
+
+                    if ($itemDrawingColumn !== null) {
+                        $item_data[$itemDrawingColumn] = ($itemDrawings[$index] ?? '') ?: null;
+                    }
 
                     // Handle item picture upload
                     if (isset($item_pictures['name'][$index]) && !empty($item_pictures['name'][$index])) {
@@ -2136,6 +2168,13 @@ public function uploadExcel()
         $finalStatuses = $this->input->post('final_status');
         $remarks = $this->input->post('remarks');
 
+        // Required labels alone did not stop empty status/type values reaching storage.
+        if (!in_array($maintenanceTypes, ['preventive', 'corrective'], true) ||
+            !in_array($finalStatuses, ['complete', 'in_progress'], true)) {
+            redirect('assets/info?id=' . $encodedId . '&error=' . rawurlencode('Select a Maintenance Type and Final Status before saving.') . '#nav-new-maintenance');
+            return;
+        }
+
         // Get the current timestamp for created_at and updated_at
         $currentTimestamp = date('Y-m-d H:i:s');
 
@@ -2312,6 +2351,14 @@ public function updateMaintenance()
 {
     $maintenanceId = $this->input->post('maintenance_id');
     $equipmentId = $this->input->post('equipment_id');
+
+    if (!in_array($this->input->post('maintenance_type'), ['preventive', 'corrective'], true) ||
+        !in_array($this->input->post('final_status'), ['complete', 'in_progress', 'pending'], true)) {
+        $this->output->set_content_type('application/json')->set_output(json_encode([
+            'success' => false, 'message' => 'Select a Maintenance Type and Final Status before saving.'
+        ]));
+        return;
+    }
     
     // Update main maintenance record
     $maintenanceData = [

@@ -74,8 +74,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" action="<?= site_url("assettypes/add"); ?>" method="post">
-                    <div class="modal-body row">
+                <form class="form-horizontal ams-type-form" action="<?= site_url("assettypes/add"); ?>" method="post">
+                    <div class="modal-body row ams-type-grid">
 
 
                         <?= $this->steve->form_group_label_input("text", "name", "Asset Type Name", "col-sm-12", 1, '', 30); ?>
@@ -144,7 +144,7 @@
                         </div>
 
 
-                        <div class="col-md-12 mb-4">
+                        <div class="col-md-12 mb-4 ams-type-full">
                             <label for="task_lists_add">Task Lists</label>
                             <select name="task_lists[]" id="task_lists_add" class="form-control select2-multiple" multiple="multiple">
                                 <?php foreach ($task_lists as $task): ?>
@@ -179,7 +179,7 @@
 
                         <div class="col-md-4 mb-4">
 
-                            <button type="checkbox" id="itm_qty" class="form-control btn btn-primary" value="0"> Add Items Qty </button>
+                            <button type="button" id="itm_qty" class="btn btn-primary" value="0"> Add Component </button>
 
                         </div>
 

@@ -1,7 +1,6 @@
 <!-- Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
-<!-- jQuery (required for Select2) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Keep the shared jQuery instance and its registered plugins. -->
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
 <style>
@@ -33,7 +32,7 @@
 }
 </style>
 
-<div class="card shadow mb-4 tabradius">
+<div class="card shadow mb-4 tabradius ams-type-edit-card">
 
     <div class="card-body">
 
@@ -41,9 +40,9 @@
             <h6 class="bg-white m-0 font-weight-bold text-primary">Edit asset type</h6>
         </div>
 
-        <form class="form-horizontal" action="<?= site_url('assettypes/update'); ?>" method="post">
-            <div class="row">
-                <?= $this->steve->form_group_label_input("text", "name", "Asset Name", "col-md-12", 0, $info->name); ?>
+        <form class="form-horizontal ams-type-form" action="<?= site_url('assettypes/update'); ?>" method="post">
+            <div class="row ams-type-grid">
+                <?= $this->steve->form_group_label_input("text", "name", "Asset Type Name", "col-md-12 ams-type-full", 1, html_escape($info->name)); ?>
                 <!-- Manufacturer Name with Searchable Dropdown -->
                 <div class="col-md-6 mb-4 uppercase">
                     <label for="manufacturer_dropdown">Manufacturer</label><br />
@@ -91,7 +90,7 @@
                         <label>Useful Life (Years)</label>
                         <input type="number" class="form-control"
                             name="useful_life_years"
-                            placeholder="Useful Life in Years" min="0">
+                            placeholder="Useful Life in Years" min="0" value="<?= html_escape($info->useful_life_years ?? '') ?>">
                     </div>
 
                     <div class="col-md-12 mb-4">
@@ -99,7 +98,7 @@
                         <input type="number" step="0.01"
                             class="form-control"
                             name="salvage_value"
-                            placeholder="Salvage Value" min="0">
+                            placeholder="Salvage Value" min="0" value="<?= html_escape($info->salvage_value ?? '') ?>">
                     </div>
 
                 </div>
@@ -108,11 +107,11 @@
                 <div id="reducing_balance_field" style="display:none">
                     <label>Depreciate Value (%)</label>
                     <input type="number" name="depreciate_value" class="form-control"
-                        value="<?= $info->depreciate_value ?>">
+                        value="<?= html_escape($info->depreciate_value ?? '') ?>">
                 </div>
 
 
-                <div class="col-md-12 mb-4">
+                <div class="col-md-12 mb-4 ams-type-full">
                     <label for="task_lists">Task Lists</label>
                     <select name="task_lists[]" id="task_lists" class="form-control select2-multiple" multiple="multiple">
                         <?php foreach ($task_lists as $task): ?>
@@ -128,7 +127,7 @@
 
                 <!-- Calibration Checkbox -->
                 <div class="col-md-3 mb-4">
-                    <label for="calibration-check-edit">Check For Calibration 1</label>
+                    <label for="calibration-check-edit">Check For Calibration</label>
                     <input type="checkbox" name="calibration" id="calibration-check-edit" value="1"
                         <?= ($info->calibration == 1) ? 'checked' : ''; ?>>
                 </div>
@@ -155,7 +154,7 @@
                 <?php if (($info->maintenance ?? null) === null): ?>
                     <p class="col-12 alert alert-warning">Maintenance has not been configured for this Asset Type. Review Check For Maintenance and save.</p>
                 <?php endif; ?>
-                <div id="dynamic-item-container" class="col-md-12">
+                <div id="dynamic-item-container" class="col-md-12 ams-type-full">
                     <?php if (!empty($asset_type_items)): ?>
                         <?php foreach ($asset_type_items as $item): ?>
                             <div class="dynamic-item-row mb-2 d-flex align-items-center">
@@ -190,10 +189,10 @@
             </div>
 
             <!-- Submit and Back Buttons with Center Alignment -->
-            <div class="text-center mt-4">
+            <div class="text-center mt-4 ams-type-form-actions">
                 <input type="hidden" name="id" value="<?= $info->asset_id; ?>" />
                 <button type="submit" class="btn btn-primary me-2">Save changes</button>
-                <a class="btn btn-secondary" href=".">Go back</a>
+                <a class="btn btn-secondary" href="<?= site_url('assettypes'); ?>">Go back</a>
             </div>
         </form>
 
