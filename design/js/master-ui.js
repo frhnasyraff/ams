@@ -79,7 +79,7 @@
         },
         assettypes: {
             title: 'Asset Types', category: 'Asset & Component', icon: 'fa-shapes',
-            description: 'Configure asset categories, vendor references and service requirements.',
+            description: 'Define asset categories and maintenance requirements. Colors and task templates are managed separately.',
             listTitle: 'Asset Type Directory', listDescription: 'Review calibration and maintenance settings by asset type.', action: 'Add Asset Type'
         },
         assetstatus: {
@@ -218,6 +218,7 @@
 
         var $workspace = $('#content > .container-fluid').first().addClass('master-workspace');
         if (!$workspace.length) return;
+        if ($workspace.find('.ams-access-denied').length) return;
 
         $('#content > h5').first().addClass('master-legacy-page-title').attr('aria-hidden', 'true');
 

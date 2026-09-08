@@ -165,10 +165,7 @@ class Order_summary extends CI_Controller
         }
 
 
-        if ($overdue_assets_count > 0) {
-            // Generate alert for the specific equipment
-            $asset_maintenanceAlertMessage = "{$overdue_assets_count}";
-        }
+        $asset_maintenanceAlertMessage = (string) $overdue_assets_count;
 
 
 
@@ -509,6 +506,7 @@ class Order_summary extends CI_Controller
             'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js',
             'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.4.0/dist/chartjs-plugin-datalabels.min.js',
             'design/js/graph-colors.js',
+            'design/js/summary-chart-canvas-fix.js',
             'design/js/order-summary.js',
             'design/js/order-summaryMaintenance.js',
             'design/js/store-summary.js',

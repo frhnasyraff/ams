@@ -26,8 +26,19 @@ class Assettypes extends CI_Controller
                 $this->output->_display();
                 exit;
             }
-        } elseif (!$this->user_model->logged_in() || !$this->user_model->has_perm('list_assettypes')) {
-            die(redirect('/order_summary?error=No permission to view this content.'));
+        } elseif (!$this->user_model->logged_in()) {
+            die(redirect('/?error=Please log in.'));
+        } elseif (!$this->user_model->has_perm('list_assettypes')) {
+            $this->output->set_status_header(403);
+            if (in_array(strtolower($this->router->fetch_method()), ['index', 'info'], true)) {
+                $this->load->view('header', ['title' => 'Asset Types']);
+                $this->load->view('assettypes-access');
+                $this->load->view('footer', ['scripts' => []]);
+            } else {
+                $this->settings_response(['status' => false, 'error' => 'Asset Types access required.', 'data' => []], 403);
+            }
+            $this->output->_display();
+            exit;
         }
     }
 
@@ -67,7 +78,7 @@ public function index()
         'depreciation_methods' => $depreciation_methods  // यहाँ add किया
     ]);
     
-    $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js']]);
+    $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=2']]);
 }
 
     public function info()
@@ -139,7 +150,7 @@ public function index()
                     'selected_task_ids' => $selected_task_ids, // 🔥 NEW: Pass selected task IDs
                     'depreciation_methods' => $depreciation_methods
                 ]);
-                $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js']]);
+                $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=2']]);
             } else {
                 redirect('assettypes?error=Asset type not found');
             }
@@ -163,7 +174,7 @@ public function index()
         //             'asset_type_items' => $asset_type_items,
         //             'item_types' => $item_types // Pass the asset type items data to the view
         //         ]);
-        //         $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js']]);
+        //         $this->load->view('footer', ['scripts' => ['design/js/assettypes-list.js?v=2']]);
         //     } else {
         //         redirect('assettypes?error=Asset type not found');
         //     }
@@ -174,8 +185,13 @@ public function index()
 
     public function ajax_list()
     {
-        $search[] = ['asset_types.active', 1];
-        die($this->steve->datatables_mysql('asset_types', ['name', 'manufacturer', 'vendor_part_number', 'manufacturer_name', 'part_number', 'rental_price', 'selling_price', 'rental_duration', 'active'], [], [['vendor_manufacturing_number', 'vendor_manufacturing_number.id = asset_types.manufacturer'], ['vendor_part_number', 'vendor_part_number.id = asset_types.vendor_part_number']]));
+        // Select type identity explicitly: joined tables also contain id/active fields.
+        $this->output->set_content_type('application/json')->set_output($this->steve->datatables_mysql(
+            'asset_types', ['asset_types.name', 'manufacturer_name', 'part_number'], [],
+            [['vendor_manufacturing_number', 'vendor_manufacturing_number.id = asset_types.manufacturer', 'left'],
+             ['vendor_part_number', 'vendor_part_number.id = asset_types.vendor_part_number', 'left']],
+            'asset_types.*, vendor_manufacturing_number.manufacturer_name, vendor_part_number.part_number'
+        ));
     }
 
     public function search_ajax()
@@ -187,7 +203,7 @@ public function index()
 
     public function state_ajax()
     {
-        if ($this->user_model->has_perm('assettypes') && $this->input->post('id')) {
+        if ($this->user_model->has_perm('edit_assettypes') && $this->input->post('id')) {
             die($this->steve->active_toggle('asset_types', 'asset_id'));
         }
     }

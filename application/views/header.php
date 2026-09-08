@@ -70,6 +70,11 @@ function sub_menu_item($name, $url, $menu = '', $root = 0)
 
     <link href="<?= site_url('design/css/styles.css?15'); ?>" rel="stylesheet">
     <link href="<?= site_url('design/css/steve-dark-theme.css?76'); ?>" rel="stylesheet">
+    <?php if (strtolower($this->router->fetch_class()) === 'order_summary'): ?>
+        <link href="<?= site_url('design/css/ams-summary-layout.css?v=1'); ?>" rel="stylesheet">
+    <?php elseif (strtolower($this->router->fetch_class()) === 'assettypes'): ?>
+        <link href="<?= site_url('design/css/asset-types-admin.css?v=1'); ?>" rel="stylesheet">
+    <?php endif; ?>
     <?php if (in_array(strtolower($this->router->fetch_class()), ['assets', 'items'], true)) { ?>
         <link href="<?= site_url('design/css/asset-component-forms.css?v=1'); ?>" rel="stylesheet">
     <?php } ?>
@@ -685,7 +690,9 @@ $is_master_module = $current_method === 'index' && in_array($current_controller,
                                     <?= sub_menu_item("Asset Groups", "asset_groups"); ?>
                                 <?php } ?>
                                 <?php if ($this->user_model->has_perm("list_assettypes")) { ?>
-                                    <?= sub_menu_item("Asset Types", "assettypes"); ?>
+                                    <?= sub_menu_item("Asset Types · Maintenance", "assettypes"); ?>
+                                <?php } elseif ($this->user_model->has_perm('assign_permissions')) { ?>
+                                    <?= sub_menu_item("Asset Types · Access setup", "assettypes"); ?>
                                 <?php } ?>
                                 <?= sub_menu_item("Component Types", "item_type", 'cubes'); ?>
                                 <?= sub_menu_item("Asset Statuses", "AssetStatus"); ?>

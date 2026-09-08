@@ -34,3 +34,17 @@ node tests/asset_maintenance_fields_test.js
 Open `tests/asset_maintenance_browser_test.html` in a browser for local DOM/retry tests. It uses bundled JavaScript and simulated responses, with no live API calls.
 
 `rams_DB` is ignored by default. Include the standalone SQL explicitly when preparing a release; do not stage other database dumps.
+
+## Missing Asset Types menu / Admin access
+
+The menu and controller require `list_assettypes`. Asset Type Colors is a different master. A denied direct link now shows an access setup page (HTTP 403) rather than redirecting to Summary. Accounts allowed to assign permissions also see an Access setup link under Masters.
+
+For the user-requested **Admin-only grant**, back up the database and run:
+
+```sh
+mysql -u ams_user -p rams < rams_DB/patch_assettypes_admin_access.sql
+```
+
+This separate patch resolves exactly one active role named **Admin** or **Administrator**, adds missing permission definitions and grants list/add/edit Asset Types plus the two parent menu permissions to that role only. It does not grant generic delete access, change user-role membership, or remove/change other roles' existing grants. It aborts if the Admin role cannot be identified unambiguously. No role IDs are hard-coded. This grant is deliberately not included in the general schema migration.
+
+Refresh after applying the patch. If the logged-in user still lacks access, check that the account is actually assigned to that Admin role in User Roles; an account display name of Admin is not proof of its assigned role. Do not grant all permissions as a workaround.

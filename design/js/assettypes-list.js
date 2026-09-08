@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     $('#assettypes').DataTable({
         "processing": true,
-        "serverSide": false,
+        "serverSide": true,
         "responsive": true,
         "autoWidth": true,
         "pageLength": 10,
@@ -58,19 +58,22 @@ $(document).ready(function () {
             }
         },
         "order": [
-            [1, "asc"]
+            [0, "asc"]
         ],
         "columns": [{
             "data": "name",
+            render: $.fn.dataTable.render.text(),
             createdCell: function (td, cellData, rowData, row, col) {
                 if (!$("table.read-only").length) {
-                    $(td).html('<a href="/assettypes/info?id=' + id_encode(rowData.asset_id) + '" title="View Asset Types">' + cellData + '</a>');
+                    $(td).empty().append($('<a>').attr('href', amsUrl('/assettypes/info?id=' + id_encode(rowData.asset_id))).attr('title', 'Edit Asset Type and maintenance').text(cellData));
                 }
             }
         },
 
         {
-            "data": "manufacturer",
+            "data": "manufacturer_name",
+            defaultContent: '—',
+            render: $.fn.dataTable.render.text(),
             createdCell: function (td, cellData, rowData, row, col) {
                 if (!$("table.read-only").length) {
                     rowData.manufacturer == "" ? "" : rowData.manufacturer_name;
@@ -80,6 +83,8 @@ $(document).ready(function () {
 
         {
             "data": "part_number",
+            defaultContent: '—',
+            render: $.fn.dataTable.render.text(),
             createdCell: function (td, cellData, rowData, row, col) {
                 if (!$("table.read-only").length) {
                 }
@@ -102,13 +107,11 @@ $(document).ready(function () {
         {
             "data": "maintenance",
             createdCell: function (td, cellData, rowData, row, col) {
-                let html;
-                if (cellData == 1) {
-                    html = "<h6>Yes</h6>";
-                } else {
-                    html = "<h6>No</h6>";
+                const unknown = cellData === null || cellData === '';
+                $(td).empty().append($('<span>').addClass('ams-type-flag' + (unknown ? ' ams-type-unknown' : '')).text(unknown ? 'Not configured' : (cellData == 1 ? 'Required' : 'Not required')));
+                if (cellData == 1 && rowData.maintenance_frequency_year) {
+                    $(td).append($('<small>').addClass('ams-type-note').text(rowData.maintenance_frequency_year + ' services / year'));
                 }
-                $(td).html(html);
             }
         },
 

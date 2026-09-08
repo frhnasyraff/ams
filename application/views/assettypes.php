@@ -24,11 +24,11 @@
 
 <!-- Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
-<!-- jQuery (required for Select2) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Use the application's existing jQuery instance; do not replace registered plugins. -->
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
 
+<aside class="ams-assettypes-help"><strong>Set up maintenance here</strong><p>Open an Asset Type, enable <b>Check For Maintenance</b>, and set the frequency/reminder. Then set the Maintenance Date on each asset. Asset Type Colors only controls display colors; Maintenance Tasks holds task templates.</p></aside>
 <div class="card shadow mb-4 tabradius">
 
     <div class="card-body">

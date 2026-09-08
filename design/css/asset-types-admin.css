@@ -1,0 +1,16 @@
+.ams-access-denied { max-width: 800px; margin: 28px auto; padding: 32px; border: 1px solid #254868; border-radius: 20px; background: #0b1d35; color: #e6f4ff; }
+.ams-access-denied h1 { margin: 16px 0; font-size: 26px; font-weight: 700; }
+.ams-access-denied h1, .ams-access-denied strong, .ams-assettypes-help strong { color: #f4f9ff !important; }
+.ams-access-denied p { color: #b0c6e0; line-height: 1.7; }
+.ams-access-icon { display: grid; place-items: center; width: 54px; height: 54px; margin-bottom: 20px; border-radius: 14px; color: #4bdbfc; background: #133656; font-size: 24px; }
+.ams-access-help, .ams-assettypes-help { padding: 18px 22px; margin: 20px 0; border: 1px solid #275273; border-radius: 14px; background: #102744; color: #c9dfef; line-height: 1.7; }
+.ams-access-help p { margin: 8px 0 0; }
+.ams-access-help code { color: #6ed9fc; overflow-wrap: anywhere; }
+.ams-access-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.ams-assettypes-help strong { display: block; color: #fff; }
+.ams-assettypes-help p { margin: 6px 0 0; }
+#assettypes th, #assettypes td { width: auto !important; }
+#assettypes .ams-type-flag { font-size: 12px; font-weight: 700; }
+#assettypes .ams-type-note { display: block; margin-top: 4px; font-size: 11px; color: #9cb6d4; white-space: normal; }
+#assettypes .ams-type-unknown { color: #ffca68; }
+@media (max-width: 600px) { .ams-access-denied { padding: 22px; margin: 12px 0; } }

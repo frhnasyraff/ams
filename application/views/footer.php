@@ -114,7 +114,7 @@
 <?php }
 } ?>
 
-<script type="text/javascript" src="<?= site_url('design/js/master-ui.js?3'); ?>"></script>
+<script type="text/javascript" src="<?= site_url('design/js/master-ui.js?4'); ?>"></script>
 
 <script type="text/javascript">
   $(".worker_employment_types_selection #form_type").change(function() {

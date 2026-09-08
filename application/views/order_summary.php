@@ -1,427 +1,79 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="row mb-3">
-            <!-- <div class="col-lg-4 col-md-6 mb-2">
-
-                <a href="<?= site_url('Assets_Item_calibration/index') ?>" class="d-block text-decoration-none">
-                    <div class="alert-box <?= $alertMessage > 0 ? 'red' : 'green' ?>">
-                        <div class="left">
-                            <h2>Asset Calibration</h2>
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div class="right">
-                            <h6 class="counter"><?= $alertMessage ?></h6>
-                        </div>
-                    </div>
-                </a>
-
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-2">
-
-                <a href="<?= site_url('Assets_Item_calibration/index') ?>" class="d-block text-decoration-none">
-                    <div class="alert-box <?= $itemalertMessage > 0 ? 'red' : 'green' ?>">
-                        <div class="left">
-                            <h2>Item Calibration</h2>
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div class="right">
-                            <h6 class="counter"><?= $itemalertMessage ?></h6>
-                        </div>
-                    </div>
-                </a>
-
-            </div> -->
-
-            <div class="col-lg-4 col-md-6 mb-2">
-
-                <a href="<?= site_url('Assets_Item_maintenance?filter=corrective') ?>" class="d-block text-decoration-none">
-                    <div class="alert-box <?= $asset_maintenanceAlertMessage > 0 ? 'red' : 'green' ?>">
-                        <div class="left">
-                            <h2>Asset Maintenance</h2>
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div class="right">
-                            <h6 class="counter"><?= $asset_maintenanceAlertMessage ?></h6>
-                        </div>
-                    </div>
-                </a>
-
-            </div>
+<?php
+$assetCards = [
+    ['Total assets', $totalAssets ?? 0, 'assets', 'cube'],
+    ['Locations', $totalLocations ?? 0, 'Location_summary', 'map-marker-alt'],
+    ['Serviceable', $totalAssetsServiceable ?? 0, 'assets?filter=SERVICEABLE', 'check-circle'],
+    ['Unserviceable', $UnServiceable_assets ?? 0, 'assets?filter=UNSERVICEABLE', 'exclamation-circle'],
+    ['In maintenance', $totalAssetsInMaintenance ?? 0, 'assets?filter=MAINTENANCE', 'tools'],
+];
+$componentCards = [
+    ['Total components', $total_items ?? 0, 'items'],
+    ['In store', $storelocationItemCount ?? 0, 'items?filter=STORE'],
+    ['Serviceable', $ServiceableCount ?? 0, 'items?filter=SERVICEABLE'],
+    ['Unserviceable', $UnserviceableCount ?? 0, 'items?filter=UNSERVICEABLE'],
+    ['In maintenance', $MaintinenceItemCount ?? 0, 'items?filter=MAINTENANCE'],
+];
+$summaryCharts = [
+    ['Asset quantity', 'By asset type', 'pie-chart-quantity', 'pie-chart-asset-quantity', 'assets-quantity', 'cube'],
+    ['Assets by location', 'Current assignments', 'pie-chart-location', 'pie-chart-asset-location', 'breakdown-list-location', 'map-marker-alt'],
+    ['Serviceable assets', 'Ready for operation', 'pie-chart-asset', 'pie-chart-asset-total', 'breakdown-list-asset-summary', 'shield-alt'],
+    ['Unserviceable assets', 'Requiring attention', 'pie-chart-faulty', 'pie-chart-asset-faulty', 'breakdown-list-faulty', 'exclamation-triangle'],
+    ['Maintenance activity', 'Recorded maintenance', 'pie-chart-maintenance', 'pie-chart-asset-maintenance', 'breakdown-list-maintenance', 'tools'],
+];
+?>
+<main class="ams-order-summary">
+    <header class="ams-summary-heading">
+        <div><span class="ams-eyebrow">Overview</span><h1>Asset Summary</h1><p>Asset availability, maintenance and locations in one place.</p></div>
+        <a class="ams-maintenance-link" href="<?= site_url('Assets_Item_maintenance?filter=corrective') ?>">
+            <i class="fas fa-tools" aria-hidden="true"></i>
+            <span>Maintenance alerts <strong><?= isset($asset_maintenanceAlertMessage) ? (int) $asset_maintenanceAlertMessage : '—' ?></strong></span>
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
+    </header>
+    <section class="ams-summary-kpis" aria-label="Asset totals">
+        <?php foreach ($assetCards as $index => $card): ?>
+            <a class="ams-summary-kpi" href="<?= site_url($card[2]) ?>" <?= $index === 4 ? 'id="maintenance-box"' : '' ?>>
+                <i class="fas fa-<?= $card[3] ?>" aria-hidden="true"></i><div><span><?= $card[0] ?></span><h2><?= (int) $card[1] ?></h2></div>
+            </a>
+        <?php endforeach; ?>
+    </section>
+    <details class="ams-component-overview">
+        <summary>Component overview</summary>
+        <div class="ams-summary-kpis">
+            <?php foreach ($componentCards as $card): ?>
+                <a class="ams-summary-kpi" href="<?= site_url($card[2]) ?>"><div><span><?= $card[0] ?></span><h2><?= (int) $card[1] ?></h2></div></a>
+            <?php endforeach; ?>
         </div>
-
-        <!-- <?php if (!empty($item_maintenanceAlertMessage)): ?>
-            <div class="alert alert-danger d-flex align-items-center" role="alert">
-                <span class="fas fa-exclamation-triangle mr-4"></span>
-                <div>
-                    <?php echo $item_maintenanceAlertMessage; ?>
+    </details>
+    <section class="ams-summary-charts" aria-label="Asset breakdowns">
+        <?php foreach ($summaryCharts as $chart): ?>
+            <article class="ams-summary-card">
+                <header><span class="ams-summary-icon"><i class="fas fa-<?= $chart[5] ?>" aria-hidden="true"></i></span><div><h2><?= $chart[0] ?></h2><p><?= $chart[1] ?></p></div></header>
+                <div class="ams-summary-chart-body">
+                    <div class="ams-summary-chart"><canvas id="<?= $chart[2] ?>" aria-label="<?= $chart[0] ?>" role="img"></canvas><div class="ams-donut-total"><p id="<?= $chart[3] ?>">—</p></div></div>
+                    <div id="<?= $chart[4] ?>" class="ams-summary-breakdown" aria-live="polite"><p>Loading breakdown…</p></div>
                 </div>
+            </article>
+        <?php endforeach; ?>
+        <article class="ams-summary-card ams-fleet-card">
+            <header><span class="ams-summary-icon"><i class="fas fa-chart-line" aria-hidden="true"></i></span><div><h2>Fleet insights</h2><p>Current asset readiness</p></div></header>
+            <div class="ams-fleet-metrics">
+                <div><span>Total assets</span><strong><?= (int) ($totalAssets ?? 0) ?></strong></div>
+                <div><span>Serviceable</span><strong><?= ($totalAssets ?? 0) > 0 ? round(($totalAssetsServiceable / $totalAssets) * 100) : 0 ?>%</strong></div>
+                <div><span>Locations</span><strong><?= (int) ($totalLocations ?? 0) ?></strong></div>
+                <div><span>In maintenance</span><strong><?= (int) ($totalAssetsInMaintenance ?? 0) ?></strong></div>
             </div>
-        <?php endif; ?> -->
-
-    </div>
-
-    <div class="col-lg-12">
-
-        <div class="row mb-3 justify-content-around">
-            <div class="col-lg-2 col-md-3 mb-2">
-                <a href="<?= site_url('assets') ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box green">
-                        <h4>Asset Quantity</h4>
-                        <h2><?= $totalAssets ?></h2>
-                       
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-2 col-md-3 mb-2">
-                <a href="<?= site_url('Location_summary') ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box blue">
-                        <h4>Location Quantity</h4>
-                        <h2><?= $totalLocations ?></h2>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-2 col-md-3 mb-2">
-            <a href="<?= site_url('assets?filter=' . urlencode("SERVICEABLE")) ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box green">
-                        <h4>Serviceable</h4>
-                        <h2><?= $totalAssetsServiceable ?></h2>
-                        <!-- <div class="percentage-changes">
-                            <span class="up">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                    fill="none" stroke="#27ae60" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-arrow-up">
-                                    <line x1="12" y1="19" x2="12" y2="5"></line>
-                                    <polyline points="5 12 12 5 19 12"></polyline>
-                                </svg>
-                                90%
-                            </span>
-                            <p class="white-line">|</p>
-                            <span class="down">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                    fill="none" stroke="#e74c3c" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-arrow-down">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                </svg>
-                                10%
-                            </span>
-                        </div> -->
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-2 col-md-3 mb-2">
-            <a href="<?= site_url('assets?filter=' . urlencode("UNSERVICEABLE")) ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box blue" id="faulty-box">
-                        <h4>UnServiceable</h4>
-                        <!-- <i class="fas fa-exclamation-triangle"></i> -->
-                        <h2></h2>
-                        <!-- <h2><?= $faulty_assets?></h2> -->
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-2 col-md-3 mb-2">
-            <a href="<?= site_url('assets?filter=' . urlencode("MAINTENANCE")) ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box green" id="maintenance-box">
-                        <h4>Asset In Maintenance</h4>
-                        <h2></h2>
-                        <!-- <h2><?= $totalAssetsInMaintenance ?></h2>                        -->
-                    </div>
-                </a>
-            </div>
-        </div>
-
-
-
-        <div class="row mb-3 justify-content-around">
-            <div class="col-lg-2 col-md-3 mb-2">
-                <a href="<?= site_url('items') ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box blue">
-                        <h4>Items Quantity</h4>
-                        <h2><?= $total_items ?></h2>
-                        <!-- <div class="percentage-changes">
-                            <span class="up">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                    fill="none" stroke="#27ae60" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-arrow-up">
-                                    <line x1="12" y1="19" x2="12" y2="5"></line>
-                                    <polyline points="5 12 12 5 19 12"></polyline>
-                                </svg>
-                                90%
-                            </span>
-                            <p class="white-line">|</p>
-                            <span class="down">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                    fill="none" stroke="#e74c3c" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-arrow-down">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                </svg>
-                                10%
-                            </span>
-                        </div> -->
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-2 col-md-3 mb-2">
-                <a href="<?= site_url('items?filter=' . urlencode("STORE")) ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box green">
-                        <h4>STORE</h4>
-                        <h2><?= $storelocationItemCount ?></h2>
-                        <!-- <div class="percentage-changes">
-                            <span class="up">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                    fill="none" stroke="#27ae60" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-arrow-up">
-                                    <line x1="12" y1="19" x2="12" y2="5"></line>
-                                    <polyline points="5 12 12 5 19 12"></polyline>
-                                </svg>
-                                90%
-                            </span>
-                            <p class="white-line">|</p>
-                            <span class="down">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                    fill="none" stroke="#e74c3c" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-arrow-down">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                </svg>
-                                10%
-                            </span>
-                        </div> -->
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-2 col-md-3 mb-2">
-                <a href="<?= site_url('items?filter=' . urlencode("SERVICEABLE")) ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box blue">
-                        <h4>Items Serviceable</h4>
-                        <h2><?= $ServiceableCount ?></h2>
-                        
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-2 col-md-3 mb-2">
-<a href="<?= site_url('items?filter=' . urlencode("UNSERVICEABLE")) ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box green">
-                        <h4>UnServiceable</h4>
-                        <h2><?= $UnserviceableCount ?></h2>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-lg-2 col-md-3 mb-2">
-                 <a href="<?= site_url('items?filter=' . urlencode("MAINTENANCE")) ?>" class="d-block text-decoration-none">
-                    <div class="expiry-box blue">
-                        <h4>Items In Maintenance</h4>
-                        <h2><?= $MaintinenceItemCount ?></h2>
-                        <!-- <div class="percentage-changes">
-                            <span class="up">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                    fill="none" stroke="#27ae60" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-arrow-up">
-                                    <line x1="12" y1="19" x2="12" y2="5"></line>
-                                    <polyline points="5 12 12 5 19 12"></polyline>
-                                </svg>
-                                90%
-                            </span>
-                            <p class="white-line">|</p>
-                            <span class="down">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                    fill="none" stroke="#e74c3c" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-arrow-down">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                </svg>
-                                10%
-                            </span>
-                        </div> -->
-                    </div>
-                </a>
-            </div>
-
-            
-        </div>
-
-
-        <div class="row">
-            <div class="col-12">
-                <div class="pie-chart-section">
-
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="pie-chart-section">
-
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="summary-panel-heading"><div class="summary-heading-icon"><i class="fas fa-layer-group"></i></div><div><h4 class="pie-chart-heading">Summary</h4><p>Asset overview and operational status</p></div></div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-6 mb-2 d-flex">
-                                        <div class="pie-container summary-ref-card summary-ref-card-cyan blue d-flex flex-column h-100"><div class="summary-ref-card-head"><span><i class="fas fa-cube"></i></span><strong>Asset Quantity</strong></div><div class="summary-ref-main"><div class="position-relative"><canvas id="pie-chart-quantity"
-                                                    style="width:100%;height: 180px"></canvas>
-                                                <div class="donut-absolute-center text-center">
-                                                    <p id="pie-chart-asset-quantity"></p>
-                                                </div>
-                                            </div>
-                                            <div id="assets-quantity" class="mt-auto" style="margin: 10px;">
-                                                <div class="breakdown-list">
-                                                    <div class="breakdown-item breakdown-headings">
-                                                        <div class="type-heading" style="color: #FF9100;">Type</div>
-                                                        <div class="total-heading" style="color: #FF9100;">Total</div>
-                                                        <div class="percent-heading" style="color: #FF9100;">Color</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-6 mb-2 d-flex">
-                                        <div class="pie-container summary-ref-card summary-ref-card-purple green d-flex flex-column h-100"><div class="summary-ref-card-head"><span><i class="fas fa-map-marker-alt"></i></span><strong>Assets by Location</strong></div><div class="summary-ref-main"><div class="position-relative"><canvas id="pie-chart-location"
-                                                    style="width:100%;height: 180px"></canvas>
-                                                <div class="donut-absolute-center text-center">
-                                                    <p id="pie-chart-asset-location"></p>
-                                                </div>
-                                            </div>
-                                            <div id="breakdown-list-location" class="mt-auto" style="margin: 10px;">
-                                                <div class="breakdown-list">
-                                                    <div class="breakdown-item breakdown-headings">
-                                                        <div class="type-heading" style="color: #FF9100;">Type</div>
-                                                        <div class="total-heading" style="color: #FF9100;">Total</div>
-                                                        <div class="percent-heading" style="color: #FF9100;">Color</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-6 mb-2 d-flex">
-                                        <div class="pie-container summary-ref-card summary-ref-card-blue creem d-flex flex-column h-100"><div class="summary-ref-card-head"><span><i class="fas fa-shield-alt"></i></span><strong>Asset Serviceable</strong></div><div class="summary-ref-main"><div class="position-relative"><canvas id="pie-chart-asset" style="width:100%;height: 180px"></canvas>
-                                                <div class="donut-absolute-center text-center">
-                                                    <p id="pie-chart-asset-total"></p>
-                                                </div>
-                                            </div>
-                                            <div id="breakdown-list-asset-summary" class="mt-auto"
-                                                style="margin: 10px;">
-                                                <div class="breakdown-list">
-                                                    <div class="breakdown-item breakdown-headings">
-                                                        <div class="type-heading" style="color: #FF9100;">Type</div>
-                                                        <div class="total-heading" style="color: #FF9100;">Total</div>
-                                                        <div class="percent-heading" style="color: #FF9100;">Color</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-6 mb-2 d-flex">
-                                        <div class="pie-container summary-ref-card summary-ref-card-red blue d-flex flex-column h-100"><div class="summary-ref-card-head"><span><i class="fas fa-exclamation-triangle"></i></span><strong>Unserviceable Assets</strong></div><div class="summary-ref-main"><div class="position-relative"><canvas id="pie-chart-faulty" style="width:100%;height: 180px"></canvas>
-                                                <div class="donut-absolute-center text-center">
-                                                    <p id="pie-chart-asset-faulty"></p>
-                                                </div>
-                                            </div>
-                                            <div id="breakdown-list-faulty" class="mt-auto" style="margin: 10px;">
-                                                <div class="breakdown-list mt-auto">
-                                                    <div class="breakdown-item breakdown-headings">
-                                                        <div class="type-heading" style="color: #FF9100;">Type</div>
-                                                        <div class="total-heading" style="color: #FF9100;">Total</div>
-                                                        <div class="percent-heading" style="color: #FF9100;">Color</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-6 mb-2 d-flex">
-                                        <div class="pie-container summary-ref-card summary-ref-card-purple green d-flex flex-column h-100"><div class="summary-ref-card-head"><span><i class="fas fa-wrench"></i></span><strong>Asset Maintenance</strong></div><div class="summary-ref-main"><div class="position-relative"><canvas id="pie-chart-maintenance"
-                                                    style="width:100%;height: 180px"></canvas>
-                                                <div class="donut-absolute-center text-center">
-                                                    <p id="pie-chart-asset-maintenance"></p>
-                                                </div>
-                                            </div>
-                                            <div id="breakdown-list-maintenance" class="mt-auto" style="margin: 10px;">
-                                                <div class="breakdown-list">
-                                                    <div class="breakdown-item breakdown-headings">
-                                                        <div class="type-heading" style="color: #FF9100;">Type</div>
-                                                        <div class="total-heading" style="color: #FF9100;">Total</div>
-                                                        <div class="percent-heading" style="color: #FF9100;">Color</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-6 mb-2 d-flex">
-                                        <div class="pie-container blue fleet-insights-card d-flex flex-column h-100">
-                                            <?php // Legacy store chart canvas kept hidden so the existing store-summary.js can still initialise safely. ?>
-                                            <div class="legacy-store-chart d-none">
-                                                <canvas id="pie-chart-store-summary" style="width:100%;height: 1px"></canvas>
-                                                <p id="pie-chart-store-summary-total"></p>
-                                                <div id="breakdown-list-store-summary"></div>
-                                            </div>
-                                            <div class="fleet-insights-content">
-                                                <div class="summary-card-title"><span><i class="fas fa-chart-line"></i></span> Fleet Insights</div>
-                                                <div class="fleet-insight-grid">
-                                                    <div class="fleet-insight-box"><span class="fleet-icon cyan"><i class="fas fa-cube"></i></span><small>Total Assets</small><strong><?= $totalAssets ?></strong><em>All registered assets</em></div>
-                                                    <div class="fleet-insight-box"><span class="fleet-icon green"><i class="fas fa-shield-alt"></i></span><small>Serviceable %</small><strong><?= $totalAssets > 0 ? round(($totalAssetsServiceable / $totalAssets) * 100) : 0 ?>%</strong><em><?= $totalAssetsServiceable ?> of <?= $totalAssets ?> assets</em></div>
-                                                    <div class="fleet-insight-box"><span class="fleet-icon amber"><i class="fas fa-map-marker-alt"></i></span><small>Locations</small><strong><?= $totalLocations ?></strong><em>Across all locations</em></div>
-                                                    <div class="fleet-insight-box"><span class="fleet-icon violet"><i class="fas fa-tools"></i></span><small>Maintenance</small><strong><?= $totalAssetsInMaintenance ?? 0 ?></strong><em>Activities recorded</em></div>
-                                                </div>
-                                                <div class="fleet-status-strip"><i class="fas fa-sparkles"></i><div><strong>All systems operational</strong><small>Excellent fleet status across the board.</small></div></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-7 mb-5 mt-5 order-lg-0 order-md-1">
-
-        <table class="table" id="home" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>System Name</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-    </div>
-
-
-
-    <div class="col-lg-5 mb-5 mt-5 order-lg-1 order-md-0">
-        <div id="map" style="height: 350px; width: 98%"></div>
-        <div class='quake-info'>
-            <!-- <div><strong>Magnitude:</strong> <span id='mag'></span></div> -->
-            <div><strong>Location:</strong> <span id='loc'></span></div>
-            <div><strong>Asset Type:</strong> <span id='asset_type'></span></div>
-            <div><strong>Asset Name:</strong> <span id='asset_name'></span></div>
-            <div><strong>Asset Number:</strong> <span id='asset_num'></span></div>
-            <!-- <div><strong>Date:</strong> <span id='date'></span></div> -->
-        </div>
-    </div>
-
-
-
-</div>
-
+            <p class="ams-fleet-note">Based on registered asset statuses. Review maintenance records for individual schedules.</p>
+            <div class="d-none" aria-hidden="true"><canvas id="pie-chart-store-summary"></canvas><p id="pie-chart-store-summary-total"></p><div id="breakdown-list-store-summary"></div></div>
+        </article>
+    </section>
+    <section class="ams-summary-bottom" aria-label="Asset records and map">
+        <article class="ams-summary-card ams-summary-records"><header><div><h2>Asset records</h2><p>Search and review current assignments.</p></div></header>
+            <div class="ams-summary-table-wrap"><table class="table" id="home" width="100%" cellspacing="0"><thead><tr><th>System Name</th><th>Location</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+        </article>
+        <article class="ams-summary-card ams-summary-map"><header><div><h2>Asset locations</h2><p>Select a marker to view its asset.</p></div></header>
+            <div id="map"></div>
+            <div class="quake-info"><div><strong>Location:</strong> <span id="loc"></span></div><div><strong>Asset Type:</strong> <span id="asset_type"></span></div><div><strong>Asset Name:</strong> <span id="asset_name"></span></div><div><strong>Asset Number:</strong> <span id="asset_num"></span></div></div>
+        </article>
+    </section>
+</main>
