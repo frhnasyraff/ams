@@ -165,7 +165,8 @@ class Assets extends CI_Controller
             'scripts' => [
                 'design/js/datepicker.js',
                 'design/vendor/moment.js-2.24.0/moment.min.js',
-                'design/js/assets-list.js?v=5',
+                'design/js/asset-maintenance-fields.js?v=1',
+                'design/js/assets-list.js?v=6',
                 'https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js',
                 'https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js',
                 'design/js/helper.js',
@@ -187,7 +188,7 @@ class Assets extends CI_Controller
 
             $this->load->view('header', ['title' => 'Items Info - ' . $info[0]->item_name, 'styles' => ['design/vendor/dropzone/min/dropzone.min.css', 'design/css/multi-select.css', 'design/css/datepicker.css', 'design/css/custom-select.css']]);
             $this->load->view('item-info', ['info' => $info[0]]);
-            $this->load->view('footer', ['scripts' => ['design/vendor/dropzone/min/dropzone.min.js', 'design/js/datepicker.js', 'design/js/jquery.multi-select.js', 'design/js/assets-list.js']]);
+            $this->load->view('footer', ['scripts' => ['design/vendor/dropzone/min/dropzone.min.js', 'design/js/datepicker.js', 'design/js/jquery.multi-select.js', 'design/js/asset-maintenance-fields.js?v=1', 'design/js/assets-list.js?v=6']]);
         }
     }
 
@@ -388,7 +389,8 @@ class Assets extends CI_Controller
                         'design/js/datepicker.js',
                         'design/js/jquery.multi-select.js',
                         'design/js/asset_logs.js',
-                        'design/js/assets-list.js'
+                        'design/js/asset-maintenance-fields.js?v=1',
+                        'design/js/assets-list.js?v=6'
                     ]
                 ]);
             } else {
@@ -1077,9 +1079,9 @@ public function new_maintenance_ajax_list()
                 'frequency_day' => $this->input->post('frequency_day') ?: null,
                 'reminder_day' => $this->input->post('reminder_day') ?: null,
                 'vendor_part_number_id' => $this->input->post('vendor_part_number_id') ?: null,
-                'maintenance_date' => $this->input->post('maintenance_date') ?: null,
-                'frequency_year' => $this->input->post('frequency_year') ?: $default_frequency_year,
-                'maintenance_reminder_day' => $this->input->post('maintenance_reminder_day') ?: $default_reminder_days,
+                'maintenance_date' => $this->input->post('maintenance_date') === null ? ($existing['maintenance_date'] ?? null) : ($this->input->post('maintenance_date') ?: null),
+                'frequency_year' => $this->input->post('frequency_year') === null ? ($existing['frequency_year'] ?? $default_frequency_year) : ($this->input->post('frequency_year') ?: $default_frequency_year),
+                'maintenance_reminder_day' => $this->input->post('maintenance_reminder_day') === null ? ($existing['maintenance_reminder_day'] ?? $default_reminder_days) : ($this->input->post('maintenance_reminder_day') === '' ? $default_reminder_days : $this->input->post('maintenance_reminder_day')),
             ];
 
             $changed_fields_asset = [];
@@ -1392,7 +1394,7 @@ public function new_maintenance_ajax_list()
             'reminder_day' => $this->input->post('reminder_day') ?: null,
             'maintenance_date' => $this->input->post('maintenance_date') ?: null,
             'frequency_year' => $this->input->post('frequency_year') ?: $default_frequency_year,
-            'maintenance_reminder_day' => $this->input->post('maintenance_reminder_day') ?: $default_reminder_days,
+            'maintenance_reminder_day' => $this->input->post('maintenance_reminder_day') === null || $this->input->post('maintenance_reminder_day') === '' ? $default_reminder_days : $this->input->post('maintenance_reminder_day'),
             'faulty_type_id' => $this->input->post('faulty_type') ?: null,
             // Legacy used lowercase 'faulty', which does not match the equipment_status enum cleanly.
             'equipment_status' => $this->input->post('faulty_type') ? 'UNSERVICEABLE' : ams_normalize_asset_status($this->input->post('equipment_status'))

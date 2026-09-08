@@ -388,8 +388,11 @@ $assetKpis = [
                             <select class="form-control" id="equipment_type_calibration" name="equipment_type">
                                 <option value="">--Select--</option>
                                 <?php foreach ($assetTypes as $et) { ?>
-                                    <option value="<?= $et->asset_id; ?>" data-manufacturer="<?= $et->manufacturer_id; ?>"
-                                        data-part-number="<?= $et->part_number_id; ?>">
+                                    <option value="<?= $et->asset_id; ?>" data-manufacturer="<?= $et->manufacturer_id ?? ''; ?>"
+                                        data-part-number="<?= $et->part_number_id ?? ''; ?>"
+                                        data-maintenance="<?= html_escape($et->maintenance ?? '') ?>"
+                                        data-maintenance-frequency="<?= html_escape($et->maintenance_frequency_year ?? '') ?>"
+                                        data-maintenance-reminder="<?= html_escape($et->maintenance_reminder_days ?? '') ?>">
                                         <?= $et->name ?>
                                     </option>
                                 <?php } ?>
@@ -590,18 +593,19 @@ $assetKpis = [
 
                         <!-- maintenance -->
 
-                        <div class="form-group col-sm-4 uppercase" id="maintenance_date" style="display: none;">
+                        <div class="form-group col-sm-4 uppercase" id="maintenance_date">
                             <label>Maintenance Date</label><br />
                             <input type="date" class="form-control" name="maintenance_date"
                                 placeholder="1st maintenance Date">
                         </div>
 
-                        <div class="form-group col-sm-4 uppercase" id="frequency_year" style="display: none;">
-                            <label>Frequency In Years</label><br />
-                            <input type="text" class="form-control" name="frequency_year" placeholder="2">
+                        <div class="form-group col-sm-4 uppercase" id="frequency_year">
+                            <label>Maintenance Frequency (services/year)</label><br />
+                            <input type="number" min="1" max="365" step="1" class="form-control" name="frequency_year" placeholder="e.g. 2">
+                            <small class="form-text">1 = yearly; 2 = every 6 months; 4 = every 3 months.</small>
                         </div>
 
-                        <div class="form-group col-sm-4 uppercase" id="maintenance_reminder_day" style="display: none;">
+                        <div class="form-group col-sm-4 uppercase" id="maintenance_reminder_day">
                             <label>Reminder In Days</label><br />
                             <input type="text" class="form-control" name="maintenance_reminder_day" placeholder="30">
                         </div>

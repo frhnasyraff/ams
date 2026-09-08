@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Asset maintenance browser regression</title></head><body>
+<form>
+  <div class="form-group"><select id="equipment_type_calibration_edit">
+    <option value="">Select</option>
+    <option value="1" data-maintenance="1" data-maintenance-frequency="4" data-maintenance-reminder="7" selected>Enabled</option>
+    <option value="2" data-maintenance="0">Disabled</option>
+    <option value="3" data-maintenance="">Unconfigured</option>
+  </select></div>
+  <div class="form-group" id="date-field"><input name="maintenance_date" type="date" value="2026-09-10"></div>
+  <div class="form-group"><input name="frequency_year" value="3"></div>
+  <div class="form-group"><input name="maintenance_reminder_day" value="0"></div>
+</form>
+<pre id="results">Running</pre>
+<script src="../design/vendor/jquery/jquery.min.js"></script>
+<script src="../design/js/asset-maintenance-fields.js"></script>
+<script>
+$(function () {
+  const result = {};
+  const type = $('#equipment_type_calibration_edit');
+  const date = $('[name=maintenance_date]');
+  const frequency = $('[name=frequency_year]');
+  const reminder = $('[name=maintenance_reminder_day]');
+  const visible = () => $('#date-field').css('display') !== 'none';
+  result.savedInitial = visible() && date.val() === '2026-09-10' && frequency.val() === '3' && reminder.val() === '0';
+  type.val('2').trigger('change');
+  result.disabledPreservesDate = visible() && date.val() === '2026-09-10';
+  date.val(''); frequency.val(''); reminder.val('');
+  type.trigger('change');
+  result.disabledBlankHidden = !visible();
+  type.val('1').trigger('change');
+  result.enabledDefaults = visible() && frequency.val() === '4' && reminder.val() === '7';
+  type.val('3').trigger('change');
+  result.unconfiguredVisible = visible() && $('.ams-maintenance-note').text().includes('not configured');
+  date.val('2026-10-01'); frequency.val('2'); reminder.val('0');
+  amsMaintenance.failed(type, {responseJSON: {error: '<b>test failure</b>'}});
+  result.errorSafeAndRetryable = $('.ams-maintenance-error b').length === 0 && $('.ams-maintenance-error button').length === 1;
+  result.failedRetainsValues = date.val() === '2026-10-01' && frequency.val() === '2' && reminder.val() === '0';
+  amsMaintenance.apply(type, {status: true, asset_id: 2, maintenance: 0});
+  result.staleResponseIgnored = visible() && $('.ams-maintenance-error button').length === 1;
+  // Simulate a JSON retry with no network or live server access.
+  window.amsUrl = path => path;
+  let retry;
+  const ajax = $.ajax;
+  $.ajax = options => { result.retryRequestsCurrentType = options.data.asset_id === '3' && options.dataType === 'json'; retry = $.Deferred(); return retry.promise(); };
+  $('.ams-maintenance-error button').trigger('click');
+  retry.resolve({status: true, asset_id: 3, maintenance: 1, maintenance_frequency_year: 12, maintenance_reminder_days: 30});
+  $.ajax = ajax;
+  result.retryRetainsValues = date.val() === '2026-10-01' && frequency.val() === '2' && reminder.val() === '0';
+  result.retryClearsError = $('.ams-maintenance-error').css('display') === 'none';
+  document.getElementById('results').textContent = JSON.stringify(result);
+  document.body.dataset.testResult = Object.values(result).every(Boolean) ? 'PASS' : 'FAIL';
+});
+</script></body></html>

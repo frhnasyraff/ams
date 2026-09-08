@@ -141,6 +141,20 @@
                 </div>
 
                 <!-- Dynamic Item Type Rows -->
+                <div class="col-md-6 mb-4">
+                    <label for="maintenance-frequency">Default Maintenance Frequency (services/year)</label>
+                    <input id="maintenance-frequency" class="form-control" type="number" min="1" max="365" step="1"
+                        name="maintenance_frequency_year" value="<?= html_escape($info->maintenance_frequency_year ?? '') ?>">
+                    <small class="form-text">1 = yearly; 2 = every 6 months. Applies only to blank asset fields; existing schedules stay unchanged.</small>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label for="maintenance-reminder">Default Reminder (days before)</label>
+                    <input id="maintenance-reminder" class="form-control" type="number" min="0" max="3650" step="1"
+                        name="maintenance_reminder_days" value="<?= html_escape($info->maintenance_reminder_days ?? '') ?>">
+                </div>
+                <?php if (($info->maintenance ?? null) === null): ?>
+                    <p class="col-12 alert alert-warning">Maintenance has not been configured for this Asset Type. Review Check For Maintenance and save.</p>
+                <?php endif; ?>
                 <div id="dynamic-item-container" class="col-md-12">
                     <?php if (!empty($asset_type_items)): ?>
                         <?php foreach ($asset_type_items as $item): ?>

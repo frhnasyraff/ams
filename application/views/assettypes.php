@@ -160,14 +160,23 @@
 
                         <div class="col-md-12 mb-4">
                             <label for=""> Check For Calibration </label>
-                            <input type="checkbox" name="calibration" id="calibration-check" value="0">
+                            <input type="checkbox" name="calibration" id="calibration-check" value="1">
                         </div>
                         <div class="col-md-12 mb-4">                            
                             <label for=""> Check For Maintenance </label>
-                            <input type="checkbox" name="maintenance" id="maintenance-check" value="0">
+                            <input type="checkbox" name="maintenance" id="maintenance-check" value="1">
                         </div>
 
                         <div id="item-container"></div>
+                        <div class="col-md-6 mb-4">
+                            <label for="maintenance-frequency-add">Default Maintenance Frequency (services/year)</label>
+                            <input id="maintenance-frequency-add" class="form-control" type="number" min="1" max="365" step="1" name="maintenance_frequency_year">
+                            <small class="form-text">1 = yearly; 2 = every 6 months. Used for blank asset fields only.</small>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="maintenance-reminder-add">Default Reminder (days before)</label>
+                            <input id="maintenance-reminder-add" class="form-control" type="number" min="0" max="3650" step="1" name="maintenance_reminder_days">
+                        </div>
 
                         <div class="col-md-4 mb-4">
 

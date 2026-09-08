@@ -8,7 +8,25 @@ class Assettypes extends CI_Controller
     {
         parent::__construct();
 
-        if (!$this->user_model->logged_in() || !$this->user_model->has_perm('list_assettypes')) {
+        $this->load->library('Asset_type_maintenance');
+        if (strtolower($this->router->fetch_method()) === 'asset_calibration') {
+            if (!$this->user_model->logged_in()) {
+                $this->settings_response(['status' => false, 'error' => 'Please log in again.'], 401);
+                $this->output->_display();
+                exit;
+            }
+            $allowed = Asset_type_maintenance::can_lookup(
+                $this->user_model->has_perm('list_assettypes'),
+                $this->user_model->has_perm('list_equipments'),
+                $this->user_model->has_perm('add_equipments'),
+                $this->user_model->has_perm('edit_equipments')
+            );
+            if (!$allowed) {
+                $this->settings_response(['status' => false, 'error' => 'No permission to read asset type settings.'], 403);
+                $this->output->_display();
+                exit;
+            }
+        } elseif (!$this->user_model->logged_in() || !$this->user_model->has_perm('list_assettypes')) {
             die(redirect('/order_summary?error=No permission to view this content.'));
         }
     }
@@ -275,6 +293,7 @@ public function update()
         $vendor_part_number = $this->input->post('vendor_part_number');
         $calibration        = $this->input->post('calibration') ? '1' : '0';
         $maintenance        = $this->input->post('maintenance') ? '1' : '0';
+        $maintenanceDefaults = $this->maintenance_defaults_from_form();
 
         // Depreciation fields
         $depreciation_method_id = $this->input->post('depreciation_method_id') ?: null;
@@ -293,6 +312,8 @@ public function update()
             'vendor_part_number'     => $vendor_part_number,
             'calibration'            => $calibration,
             'maintenance'            => $maintenance,
+            'maintenance_frequency_year' => $maintenanceDefaults['maintenance_frequency_year'],
+            'maintenance_reminder_days' => $maintenanceDefaults['maintenance_reminder_days'],
             'depreciation_method_id' => $depreciation_method_id
         ]);
 
@@ -377,6 +398,7 @@ public function add()
         $vendor_part_number = $this->input->post('vendor_part_number');
         $calibration        = $this->input->post('calibration') ? '1' : '0';
         $maintenance        = $this->input->post('maintenance') ? '1' : '0';
+        $maintenanceDefaults = $this->maintenance_defaults_from_form();
 
         // Depreciation
         $depreciation_method_id = $this->input->post('depreciation_method_id') ?: null;
@@ -395,6 +417,8 @@ public function add()
             'vendor_part_number'     => $vendor_part_number,
             'calibration'            => $calibration,
             'maintenance'            => $maintenance,
+            'maintenance_frequency_year' => $maintenanceDefaults['maintenance_frequency_year'],
+            'maintenance_reminder_days' => $maintenanceDefaults['maintenance_reminder_days'],
             'depreciation_method_id' => $depreciation_method_id
         ]);
         
@@ -609,61 +633,48 @@ public function add()
     //     }
 
 
+    private function settings_response($payload, $status = 200)
+    {
+        $this->output->set_status_header($status)
+            ->set_content_type('application/json')
+            ->set_header('Cache-Control: no-store')
+            ->set_output(json_encode($payload));
+    }
+
     public function asset_calibration()
     {
-        if (isset($_POST['asset_id'])) {
-            $assetId = $_POST['asset_id'];
+        if ($this->input->method(true) !== 'POST') {
+            $this->settings_response(['status' => false, 'error' => 'POST required.'], 405);
+            return;
+        }
+        $previousDebug = $this->db->db_debug;
+        $this->db->db_debug = false; // Return JSON, never an HTML database error page.
+        try {
+            $result = $this->asset_type_maintenance->lookup($this->input->post('asset_id'));
+            $this->settings_response($result);
+        } catch (InvalidArgumentException $e) {
+            $this->settings_response(['status' => false, 'error' => $e->getMessage()], 400);
+        } catch (Throwable $e) {
+            log_message('error', 'Asset type settings lookup failed: ' . $e->getMessage());
+            $status = in_array($e->getCode(), [404, 503], true) ? $e->getCode() : 503;
+            $message = $status === 404 ? 'Asset type not found.' :
+                'Unable to load asset type settings. Ask the administrator to apply patch_asset_type_maintenance.sql, then retry.';
+            $this->settings_response(['status' => false, 'error' => $message], $status);
+        } finally {
+            $this->db->db_debug = $previousDebug;
+        }
+    }
 
-            // Sanitize the input (optional, for added security)
-            $assetId = intval($assetId);
-
-            // Query the database for asset type details
-            $data = $this->db->select('*')
-                ->from('asset_types')
-                ->where('asset_id', $assetId)
-                ->get()
-                ->row(); // Use ->row() for a single result
-
-            // Query the database for related asset items
-            $data1 = $this->db->select('asset_type_items.* , item_types.calibration, item_types.maintenance , vendor_manufacturing_number.manufacturer_name as manufacturer , vendor_part_number.part_number as vendor_part_number')
-                ->from('asset_type_items')
-                ->join('item_types', 'asset_type_items.item_type_id = item_types.id')
-                ->join('vendor_manufacturing_number', 'vendor_manufacturing_number.id = item_types.manufacturer ', 'Left')
-                ->join('vendor_part_number', 'vendor_part_number.id = item_types.vendor_part_number', 'Left')
-                ->where('asset_type_id', $assetId)
-                ->get()
-                ->result(); // Use ->result() to get multiple rows
-
-            // Prepare the items data
-            $items = [];
-            foreach ($data1 as $item) {
-                $items[] = [
-                    'item_type_id' => $item->item_type_id, // or whatever field you want to include
-                    'qty' => $item->quantity,
-                    'manufacturer' => $item->manufacturer,
-                    'vendor_part_number' => $item->vendor_part_number,
-                    'calibration' => $item->calibration,
-                    'maintenance' => $item->maintenance
-                ];
-            }
-
-            // Return JSON response
-            header('Content-Type: application/json');
-            if ($data) {
-                echo json_encode([
-                    'calibration' => $data->calibration, // Calibration status
-                    'maintenance' => $data->maintenance, // maintenance status
-                    'manufacturer' => $data->manufacturer, // Manufacturer
-                    'vpn' => $data->vendor_part_number, // Vendor part number
-                    'items' => $items // Return the array of items correctly
-                ]);
-            } else {
-                echo json_encode(['calibration' => 0, 'items' => []]);
-            }
-        } else {
-            // Return an error response if asset_id is not provided
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'Asset ID not provided']);
+    private function maintenance_defaults_from_form()
+    {
+        try {
+            return Asset_type_maintenance::defaults(
+                $this->input->post('maintenance_frequency_year'),
+                $this->input->post('maintenance_reminder_days')
+            );
+        } catch (InvalidArgumentException $e) {
+            show_error($e->getMessage(), 400);
+            exit;
         }
     }
 

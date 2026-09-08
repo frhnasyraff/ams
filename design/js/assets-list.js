@@ -633,17 +633,9 @@ $(document).ready(function () {
 		}
 	});
 
-	// for maintenence
+	// Component checkbox behaviour is separate from the parent asset schedule.
 	$("#maintenence_asset_item").change(function () {
-		if ($(this).is(":checked")) {
-			$(
-				"#maintenence_date_item, #frequency_year_item, #maintenence_reminder_day_item"
-			).show();
-		} else {
-			$(
-				"#maintenence_date_item, #frequency_year_item, #maintenence_reminder_day_item"
-			).hide();
-		}
+		$("#maintenence_date_item, #frequency_year_item, #maintenence_reminder_day_item").toggle($(this).is(":checked"));
 	});
 
 	// check box for New item
@@ -682,7 +674,7 @@ $(document).ready(function () {
 
 	// Initially hide fields
 	$(
-		"#calibration_date, #frequency_day, #reminder_day, #maintenance_date, #frequency_year, #maintenance_reminder_day"
+		"#calibration_date, #frequency_day, #reminder_day"
 	).hide();
 
 	// Toggle fields based on checkbox state
@@ -760,8 +752,15 @@ $(document).ready(function () {
 			// url: "/assettypes/asset_calibration", // PHP file to handle the check
 			url: amsUrl("/assettypes/asset_calibration"),
 			method: "POST",
+			dataType: "json",
+			timeout: 12000,
+			error: function (xhr) {
+				if (String($('#equipment_type_calibration_edit').val()) === String(asset_calibration_edit)) window.amsMaintenance.failed('#equipment_type_calibration_edit', xhr);
+			},
 			data: { asset_id: asset_calibration_edit },
 			success: function (response) {
+				if (String($('#equipment_type_calibration_edit').val()) !== String(asset_calibration_edit)) return;
+				if (!window.amsMaintenance.matches(response, asset_calibration_edit)) { window.amsMaintenance.failed('#equipment_type_calibration_edit'); return; }
 				console.log(response);
 				// Parse response (assuming response is JSON with 'calibration' field)
 
@@ -777,17 +776,7 @@ $(document).ready(function () {
 					$("#reminder_day").hide();
 				}
 
-				if (response.maintenance == 1) {
-					// Show maintenance fields if maintenance is required
-					$("#maintenance_date").show();
-					$("#frequency_year").show();
-					$("#maintenance_reminder_day").show();
-				} else {
-					// Hide maintenance fields if not required
-					$("#maintenance_date").hide();
-					$("#frequency_year").hide();
-					$("#maintenance_reminder_day").hide();
-				}
+				window.amsMaintenance.apply('#equipment_type_calibration_edit', response);
 			},
 		});
 	} else {
@@ -795,9 +784,6 @@ $(document).ready(function () {
 		$("#calibration_date").hide();
 		$("#frequency_day").hide();
 		$("#reminder_day").hide();
-		$("#maintenance_date").hide();
-		$("#frequency_year").hide();
-		$("#maintenance_reminder_day").hide();
 	}
 });
 
@@ -1075,6 +1061,7 @@ $(document).on("click", ".view-details", function () {
 // });
 
 $(document).on("change", "#equipment_type_calibration", function () {
+	const typeSelect = this;
 	const assetId = $(this).val();
 	const selectedManufacturer = $(this).find(":selected").data("manufacturer");
 	const selectedPartNumber = $(this).find(":selected").data("part-number");
@@ -1088,8 +1075,15 @@ $(document).on("change", "#equipment_type_calibration", function () {
 			// url: "/assettypes/asset_calibration", // Your existing endpoint to check calibration and get related asset items
 			url: amsUrl("/assettypes/asset_calibration"),
 			method: "POST",
+			dataType: "json",
+			timeout: 12000,
+			error: function (xhr) {
+				if (String($(typeSelect).val()) === String(assetId)) window.amsMaintenance.failed(typeSelect, xhr);
+			},
 			data: { asset_id: assetId },
 			success: function (response) {
+				if (String($(typeSelect).val()) !== String(assetId)) return;
+				if (!window.amsMaintenance.matches(response, assetId)) { window.amsMaintenance.failed(typeSelect); return; }
 				console.log(response);
 
 				// Handle Calibration fields based on response
@@ -1103,15 +1097,7 @@ $(document).on("change", "#equipment_type_calibration", function () {
 					$("#reminder_day").hide().val("");
 				}
 
-				if (response.maintenance == 1) {
-					$("#maintenance_date").show();
-					$("#frequency_year").show();
-					$("#maintenance_reminder_day").show();
-				} else {
-					$("#maintenance_date").hide().val("");
-					$("#frequency_year").hide().val("");
-					$("#maintenance_reminder_day").hide().val("");
-				}
+				window.amsMaintenance.apply(typeSelect, response);
 
 				// Show and auto-select manufacturer and part number fields
 				if (response.manufacturer || response.vpn) {
@@ -1143,9 +1129,6 @@ $(document).on("change", "#equipment_type_calibration", function () {
 		$("#frequency_day").hide().val("");
 		$("#reminder_day").hide().val("");
 
-		$("#maintenance_date").hide().val("");
-		$("#frequency_year").hide().val("");
-		$("#maintenance_reminder_day").hide().val("");
 
 		// Hide manufacturer and part number fields and reset values
 		$("#manufacturerField").hide().val("");
@@ -1400,6 +1383,7 @@ $(document).on("change", ".item-type-calibration", function () {
 
 // Asset Calibration edit
 $(document).on("change", "#equipment_type_calibration_edit", function () {
+	const typeSelect = this;
 	const assetId = $(this).val();
 	// This will now display the selected asset ID
 
@@ -1409,8 +1393,15 @@ $(document).on("change", "#equipment_type_calibration_edit", function () {
 			// url: "/assettypes/asset_calibration", // PHP file to handle the check
 			url: amsUrl("/assettypes/asset_calibration"),
 			method: "POST",
+			dataType: "json",
+			timeout: 12000,
+			error: function (xhr) {
+				if (String($(typeSelect).val()) === String(assetId)) window.amsMaintenance.failed(typeSelect, xhr);
+			},
 			data: { asset_id: assetId },
 			success: function (response) {
+				if (String($(typeSelect).val()) !== String(assetId)) return;
+				if (!window.amsMaintenance.matches(response, assetId)) { window.amsMaintenance.failed(typeSelect); return; }
 				console.log(response);
 				// Parse response (assuming response is JSON with 'calibration' field)
 
@@ -1426,19 +1417,7 @@ $(document).on("change", "#equipment_type_calibration_edit", function () {
 					$("#reminder_day").hide().val("");
 				}
 
-				if (response.maintenance == 1) {
-					// Show calibration fields if calibration is required
-
-					$("#maintenance_date").show();
-					$("#frequency_year").show();
-					$("#maintenance_reminder_day").show();
-				} else {
-					// Hide calibration fields if not required
-
-					$("#maintenance_date").hide().val("");
-					$("#frequency_year").hide().val("");
-					$("#maintenance_reminder_day").hide().val("");
-				}
+				window.amsMaintenance.apply(typeSelect, response);
 			},
 		});
 	} else {
@@ -1446,9 +1425,6 @@ $(document).on("change", "#equipment_type_calibration_edit", function () {
 		$("#calibration_date").hide().val("");
 		$("#frequency_day").hide().val("");
 		$("#reminder_day").hide().val("");
-		$("#maintenance_date").hide().val("");
-		$("#frequency_year").hide().val("");
-		$("#maintenance_reminder_day").hide().val("");
 	}
 });
 
