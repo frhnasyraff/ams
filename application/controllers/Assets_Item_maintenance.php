@@ -354,6 +354,98 @@ class Assets_Item_maintenance extends CI_Controller
 
         if ($maintenanceType == 2) {
 
+            $records = $this->db->select("
+                equipment_maintenance_asset.equipment_maintenance_id,
+                equipment_maintenance_asset.equipment_id,
+                equipment_maintenance_asset.update_date,
+                equipment_maintenance_asset.final_status,
+                equipment_maintenance_asset.remarks,
+                equipments_asset.equipment_name,
+                equipments_asset.equipment_registration,
+                asset_types.name AS equipment_type_name,
+                store_location.name AS store_location_name,
+                GROUP_CONCAT(
+                    DISTINCT CONCAT(
+                        add_asset_items.item_name,
+                        ' (',
+                        IFNULL(add_asset_items.manufacturer_name, 'No Manufacturer'),
+                        ')'
+                    )
+                    SEPARATOR ', '
+                ) AS asset_items
+            ", false)
+                ->from('equipment_maintenance_asset')
+                ->join('equipments_asset', 'equipments_asset.equipment_id = equipment_maintenance_asset.equipment_id', 'left')
+                ->join('asset_types', 'asset_types.asset_id = equipments_asset.equipment_type', 'left')
+                ->join('store_location', 'store_location.id = equipments_asset.store_location_id', 'left')
+                ->join('add_asset_items', 'add_asset_items.asset_id = equipments_asset.equipment_id', 'left')
+                ->where('equipment_maintenance_asset.maintenance_type_id', 2)
+                ->where('equipment_maintenance_asset.update_date IS NOT NULL', null, false)
+                ->group_by('equipment_maintenance_asset.equipment_maintenance_id')
+                ->group_by('equipment_maintenance_asset.equipment_id')
+                ->group_by('equipment_maintenance_asset.update_date')
+                ->group_by('equipment_maintenance_asset.final_status')
+                ->group_by('equipment_maintenance_asset.remarks')
+                ->group_by('equipments_asset.equipment_name')
+                ->group_by('equipments_asset.equipment_registration')
+                ->group_by('asset_types.name')
+                ->group_by('store_location.name')
+                ->get()
+                ->result();
+
+            $formattedinMaintenance = [];
+            $formattedInProgress = [];
+            $formattedComplete = [];
+
+            foreach ($records as $index => $record) {
+                $itemArray = [];
+                if (!empty($record->asset_items)) {
+                    foreach (explode(', ', $record->asset_items) as $item) {
+                        preg_match('/(.*?)\s*\((.*?)\)/', $item, $matches);
+                        $itemArray[] = [
+                            'item_name' => $matches[1] ?? $item,
+                            'manufacturer_name' => $matches[2] ?? 'No Manufacturer',
+                        ];
+                    }
+                }
+
+                $statusKey = strtolower(trim((string) $record->final_status));
+                $event = [
+                    'id' => $index + 1,
+                    'start' => date('Y-m-d', strtotime($record->update_date)),
+                    'title' => $record->equipment_name,
+                    'data' => (object) [
+                        'equipment_id' => $record->equipment_id,
+                        'equipment_maintenance_id' => $record->equipment_maintenance_id,
+                        'equipment_name' => $record->equipment_name,
+                        'interval' => $record->update_date,
+                        'interval_end_date' => $record->update_date,
+                        'maintenance_date' => $record->update_date,
+                        'equipment_type_name' => $record->equipment_type_name,
+                        'equipment_registration' => $record->equipment_registration,
+                        'store_location_name' => $record->store_location_name,
+                        'items' => $itemArray,
+                        'maintenance_records' => $record->update_date,
+                        'remarks' => $record->remarks,
+                        'final_status' => ($statusKey === 'complete') ? 'complete' : (($statusKey === 'in_progress') ? 'in_progress' : 'PENDING'),
+                    ],
+                ];
+
+                if ($statusKey === 'complete') {
+                    $formattedComplete[] = $event;
+                } elseif ($statusKey === 'in_progress') {
+                    $formattedInProgress[] = $event;
+                } else {
+                    $formattedinMaintenance[] = $event;
+                }
+            }
+
+            die(json_encode([
+                'plannedOrders' => $formattedinMaintenance,
+                'progressOrders' => $formattedInProgress,
+                'completedOrders' => $formattedComplete,
+            ]));
+
             $default_frequency_year = 2;
             $default_reminder_days = 30;
             $currentDate = new DateTime();
