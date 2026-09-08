@@ -193,6 +193,23 @@ class Assets_Item_maintenance extends CI_Controller
         } elseif ($this->input->get("filter") === "preventive") {
             $maintenanceType = 2;
         }
+
+        $recordTypeValues = [];
+        if ($maintenanceType == 1) {
+            $recordTypeValues = [1, "corrective"];
+        } elseif ($maintenanceType == 2) {
+            $recordTypeValues = [2, "preventive"];
+        }
+
+        if (!empty($recordTypeValues)) {
+            $recordEvents = $this->getMaintenanceRecordEventBuckets($recordTypeValues);
+            $hasRecordEvents = !empty($recordEvents["plannedOrders"]) || !empty($recordEvents["progressOrders"]) || !empty($recordEvents["completedOrders"]);
+
+            if ($maintenanceType == 2 || $hasRecordEvents) {
+                die(json_encode($recordEvents));
+            }
+        }
+
         // Apply condition in query
         if ($maintenanceType == 1) {
             $data = $this->db->select('
@@ -675,9 +692,156 @@ class Assets_Item_maintenance extends CI_Controller
     }
 
 
+    private function getMaintenanceRecordEventBuckets($typeValues)
+    {
+        $emptyBuckets = [
+            "plannedOrders" => [],
+            "progressOrders" => [],
+            "completedOrders" => []
+        ];
+
+        if (!$this->db->table_exists("equipment_maintenance_asset")) {
+            return $emptyBuckets;
+        }
+
+        $maintenanceFields = $this->db->list_fields("equipment_maintenance_asset");
+        foreach (["equipment_maintenance_id", "equipment_id", "maintenance_type_id", "update_date", "final_status"] as $requiredField) {
+            if (!in_array($requiredField, $maintenanceFields, true)) {
+                return $emptyBuckets;
+            }
+        }
+
+        $ticketSelect = in_array("ticket_number", $maintenanceFields, true)
+            ? "equipment_maintenance_asset.ticket_number"
+            : "NULL AS ticket_number";
+
+        $query = $this->db->select("
+                equipment_maintenance_asset.equipment_maintenance_id,
+                equipment_maintenance_asset.equipment_id,
+                equipment_maintenance_asset.update_date,
+                equipment_maintenance_asset.final_status,
+                {$ticketSelect},
+                equipments_asset.equipment_name,
+                equipments_asset.equipment_registration,
+                asset_types.name AS equipment_type_name,
+                store_location.name AS store_location_name,
+                GROUP_CONCAT(DISTINCT CONCAT(add_asset_items.item_name, ' (', IFNULL(add_asset_items.manufacturer_name, 'No Manufacturer'), ')') SEPARATOR ', ') AS asset_items
+            ", false)
+            ->from("equipment_maintenance_asset")
+            ->join("equipments_asset", "equipments_asset.equipment_id = equipment_maintenance_asset.equipment_id", "left")
+            ->join("asset_types", "asset_types.asset_id = equipments_asset.equipment_type", "left")
+            ->join("store_location", "store_location.id = equipments_asset.store_location_id", "left")
+            ->join("add_asset_items", "add_asset_items.asset_id = equipments_asset.equipment_id", "left")
+            ->group_start();
+
+        foreach ($typeValues as $index => $typeValue) {
+            if ($index === 0) {
+                $query->where("equipment_maintenance_asset.maintenance_type_id", $typeValue);
+            } else {
+                $query->or_where("equipment_maintenance_asset.maintenance_type_id", $typeValue);
+            }
+        }
+
+        $query->group_end()
+            ->where("equipment_maintenance_asset.update_date IS NOT NULL", null, false)
+            ->group_by("equipment_maintenance_asset.equipment_maintenance_id")
+            ->group_by("equipment_maintenance_asset.equipment_id")
+            ->group_by("equipment_maintenance_asset.update_date")
+            ->group_by("equipment_maintenance_asset.final_status")
+            ->group_by("equipments_asset.equipment_name")
+            ->group_by("equipments_asset.equipment_registration")
+            ->group_by("asset_types.name")
+            ->group_by("store_location.name");
+
+        if (in_array("ticket_number", $maintenanceFields, true)) {
+            $query->group_by("equipment_maintenance_asset.ticket_number");
+        }
+
+        $records = $query->get()->result();
+
+        $plannedOrders = [];
+        $progressOrders = [];
+        $completedOrders = [];
+
+        foreach ($records as $index => $record) {
+            $itemArray = [];
+            if (!empty($record->asset_items)) {
+                $items = explode(", ", $record->asset_items);
+                foreach ($items as $item) {
+                    if (preg_match("/(.*?)\s*\((.*?)\)/", $item, $matches)) {
+                        $itemArray[] = [
+                            "item_name" => trim($matches[1]),
+                            "manufacturer_name" => trim($matches[2])
+                        ];
+                    } else {
+                        $itemArray[] = [
+                            "item_name" => trim($item),
+                            "manufacturer_name" => "No Manufacturer"
+                        ];
+                    }
+                }
+            }
+
+            $statusKey = strtolower(trim((string) $record->final_status));
+            if (in_array($statusKey, ["complete", "completed"], true)) {
+                $normalizedStatus = "complete";
+            } elseif (in_array($statusKey, ["in_progress", "in-progress", "in progress"], true)) {
+                $normalizedStatus = "in_progress";
+            } else {
+                $normalizedStatus = "PENDING";
+            }
+
+            $maintenanceDate = date("Y-m-d", strtotime($record->update_date));
+            $title = !empty($record->equipment_name)
+                ? $record->equipment_name
+                : (!empty($record->ticket_number) ? $record->ticket_number : "Maintenance");
+
+            $event = [
+                "id" => $index + 1,
+                "start" => $maintenanceDate,
+                "title" => $title,
+                "data" => (object) [
+                    "ticket_number" => !empty($record->ticket_number) ? $record->ticket_number : "MTN-" . $record->equipment_maintenance_id,
+                    "equipment_id" => $record->equipment_id,
+                    "equipment_maintenance_id" => $record->equipment_maintenance_id,
+                    "equipment_name" => $title,
+                    "maintenance_date" => $record->update_date,
+                    "interval" => $record->update_date,
+                    "interval_end_date" => $record->update_date,
+                    "equipment_type_name" => $record->equipment_type_name,
+                    "equipment_registration" => $record->equipment_registration,
+                    "store_location_name" => $record->store_location_name,
+                    "items" => $itemArray,
+                    "maintenance_records" => $record->update_date,
+                    "remarks" => "",
+                    "final_status" => $normalizedStatus
+                ]
+            ];
+
+            if ($normalizedStatus === "complete") {
+                $completedOrders[] = $event;
+            } elseif ($normalizedStatus === "in_progress") {
+                $progressOrders[] = $event;
+            } else {
+                $plannedOrders[] = $event;
+            }
+        }
+
+        return [
+            "plannedOrders" => $plannedOrders,
+            "progressOrders" => $progressOrders,
+            "completedOrders" => $completedOrders
+        ];
+    }
+
+
     private function getTaskBasedStatus($equipment_id, $maintenance_id, $fallback_status)
     {
         if (empty($maintenance_id)) {
+            return $fallback_status;
+        }
+
+        if (!$this->db->table_exists("equipment_maintenance_tasks")) {
             return $fallback_status;
         }
 
