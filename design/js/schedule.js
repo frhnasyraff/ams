@@ -90,9 +90,10 @@ $(function () {
             // Status mapping – now PENDING uses the planned (red) modal
             switch (data.final_status) {
                 case "IN-MAINTENANCE":
-                    statusClass = "planned";
-                    statusText = "In Maintenance";
-                    modalId = "#plannedOrderScheduleModal";
+                case "in_maintenance":
+                    statusClass = "progresss";
+                    statusText = "In Progress";
+                    modalId = "#progressOrderScheduleModal";
                     break;
                 case "PENDING":
                     statusClass = "planned";      // red
@@ -101,7 +102,7 @@ $(function () {
                     break;
                 case "in_progress":
                     statusClass = "progresss";
-                    statusText = "In-Progress";
+                    statusText = "In Progress";
                     modalId = "#progressOrderScheduleModal";
                     break;
                 case "complete":
@@ -116,8 +117,18 @@ $(function () {
             }
 
             // ✅ Get the correct date
-            var issueDate = data.maintenance_date || data.issue_date || 'N/A';
-            var reminderDate = data.interval || data.reminder_date || data.update_date || 'N/A';
+            function formatMaintenanceDate(value) {
+                if (!value || value === 'No Data' || value === 'No Date' || value === 'N/A') return 'N/A';
+                var normalized = String(value).split(' ')[0];
+                if (window.moment) {
+                    var parsed = moment(normalized, ['YYYY-MM-DD', 'DD/MM/YYYY'], true);
+                    if (parsed.isValid()) return parsed.format('DD/MM/YYYY');
+                }
+                return normalized;
+            }
+
+            var issueDate = formatMaintenanceDate(data.maintenance_date || data.issue_date || 'N/A');
+            var reminderDate = formatMaintenanceDate(data.interval || data.reminder_date || data.update_date || 'N/A');
             var ticketNumber = data.ticket_number || 'PM-' + (data.equipment_id || 'N/A');
 
             // Populate modal fields

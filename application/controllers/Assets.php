@@ -621,13 +621,22 @@ public function new_maintenance_ajax_list()
             $remarks_display = substr($remarks_display, 0, 47) . '...';
         }
         
+        $finalStatus = strtolower(trim((string) ($row['final_status'] ?? '')));
+        if (in_array($finalStatus, ['in-maintenance', 'in_maintenance', 'in maintenance'], true)) {
+            $finalStatus = 'in_progress';
+        } elseif (in_array($finalStatus, ['complete', 'completed'], true)) {
+            $finalStatus = 'complete';
+        } elseif ($finalStatus !== 'in_progress' && $finalStatus !== 'pending') {
+            $finalStatus = $row['final_status'] ?? 'N/A';
+        }
+
         $formattedData[] = [
             'equipment_maintenance_id' => $row['equipment_maintenance_id'],
             'update_date' => $row['update_date'] ? date('d/m/Y', strtotime($row['update_date'])) : 'N/A',
             'maintenance_type_id' => ucfirst($row['maintenance_type_id'] ?? 'N/A'),
             'ticket_number' => $row['ticket_number'] ?? 'N/A',
             'faulty_type' => $row['faulty_type'] ?? 'N/A',
-            'final_status' => $row['final_status'] ?? 'N/A',
+            'final_status' => $finalStatus,
             'created_at' => $row['created_at'] ? date('d/m/Y H:i', strtotime($row['created_at'])) : 'N/A',
             'task_done' => $row['task_done'] ?? 'N/A',
             'remarks' => $remarks_display,

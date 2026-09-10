@@ -4,9 +4,11 @@
     if (root) root.amsMaintenanceStatus = render;
 })(typeof window !== 'undefined' ? window : null, function () {
     return function (value, type) {
-        var key = value == null ? '' : String(value).trim().toLowerCase().replace(/\s+/g, '_');
+        var key = value == null ? '' : String(value).trim().toLowerCase().replace(/[\s-]+/g, '_');
+        if (key === 'in_maintenance') key = 'in_progress';
         var states = {
             complete: ['Complete', 'complete'],
+            completed: ['Complete', 'complete'],
             in_progress: ['In Progress', 'progress'],
             pending: ['Pending', 'pending']
         };

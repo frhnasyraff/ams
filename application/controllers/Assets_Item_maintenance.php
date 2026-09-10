@@ -178,7 +178,7 @@ class Assets_Item_maintenance extends CI_Controller
 
         $this
             ->load
-            ->view("footer", ["scripts" => ["design/js/moment.js", "design/js/fullCalendar.js", "design/js/schedule.js?v=4", "design/js/asset-item-maintenance.js?v=3",],]);
+            ->view("footer", ["scripts" => ["design/js/moment.js", "design/js/fullCalendar.js", "design/js/schedule.js?v=5", "design/js/asset-item-maintenance.js?v=3",],]);
     }
 
     
@@ -785,7 +785,7 @@ class Assets_Item_maintenance extends CI_Controller
             $statusKey = strtolower(trim((string) $record->final_status));
             if (in_array($statusKey, ["complete", "completed"], true)) {
                 $normalizedStatus = "complete";
-            } elseif (in_array($statusKey, ["in_progress", "in-progress", "in progress"], true)) {
+            } elseif (in_array($statusKey, ["in_progress", "in-progress", "in progress", "in_maintenance", "in-maintenance", "in maintenance"], true)) {
                 $normalizedStatus = "in_progress";
             } else {
                 $normalizedStatus = "PENDING";

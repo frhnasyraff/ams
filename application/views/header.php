@@ -82,7 +82,7 @@ function sub_menu_item($name, $url, $menu = '', $root = 0)
         <link href="<?= site_url('design/css/asset-maintenance-ui.css?v=2'); ?>" rel="stylesheet">
     <?php } ?>
     <?php if (strtolower($this->router->fetch_class()) === 'assets') { ?>
-        <script src="<?= site_url('design/js/asset-maintenance-status.js?v=1'); ?>"></script>
+        <script src="<?= site_url('design/js/asset-maintenance-status.js?v=2'); ?>"></script>
     <?php } ?>
     <?php if ($_SESSION['user']->default_font) { ?>
         <link
