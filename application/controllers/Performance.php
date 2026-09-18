@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Performance extends CI_Controller
@@ -38,7 +38,7 @@ class Performance extends CI_Controller
         $this->load->view('footer', ['scripts' => [
             'https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js',
             'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels',
-            'design/js/performance.js?v=12',
+            'design/js/performance.js?v=3',
         ]]);
     }
 
@@ -404,27 +404,11 @@ class Performance extends CI_Controller
 
 
             $chart_data = [];
-            $start_month = !empty($month_param) ? (int)$month_param : 1;
-            $end_month = !empty($month_param) ? (int)$month_param : date('n'); // Default to current month if no month filter
+            $periods = $this->performance_periods($year, $month_param);
 
-            // Adjust end_month based on the requested year
-            if (!empty($month_param)) {
-                $end_month = (int)$month_param;
-            } else {
-                // If no specific month is requested, determine the natural end month for the loop.
-                if ($year < date('Y')) {
-                    $end_month = 12; // For past years, show all 12 months
-                } else if ($year == date('Y')) {
-                    $end_month = date('n'); // For the current year, show up to the current month
-                } else {
-                    $end_month = 12; // For future years, show all 12 months (counts will likely be 0)
-                }
-            }
-
-            // Loop through each month to calculate serviceability for that month
-            for ($i = $start_month; $i <= $end_month; $i++) {
-
-                $end_of_month_date = date('Y-m-t', strtotime("$year-$i-01"));
+            // Loop through each reporting period to calculate serviceability.
+            foreach ($periods as $period) {
+                $end_of_month_date = $period['end'];
 
                 $this->db->select('log_item_id, MAX(timestamp) as max_timestamp');
                 $this->db->from('asset_logs');
@@ -450,7 +434,7 @@ class Performance extends CI_Controller
 
                 // Add the monthly data to the chart_data array
                 $chart_data[] = [
-                    'month' => date('M', mktime(0, 0, 0, $i, 1)), // Format month number to short name (e.g., 'Jan', 'Feb')
+                    'month' => $period['label'],
                     'percentage' => $percentage
                 ];
             }
@@ -458,10 +442,9 @@ class Performance extends CI_Controller
             // 4. Faulty corrective maintenance assets (per month)
             $faulty_data = [];
 
-            // Loop through each month to calculate maintenance status for that month
-            for ($i = $start_month; $i <= $end_month; $i++) {
-                // Define the end date for the current month iteration (e.g., '2025-08-31')
-                $end_of_month_date = date('Y-m-t', strtotime("$year-$i-01"));
+            // Loop through each reporting period to calculate maintenance status.
+            foreach ($periods as $period) {
+                $end_of_month_date = $period['end'];
 
                 $this->db->select('log_item_id, MAX(timestamp) as max_timestamp');
                 $this->db->from('asset_logs');
@@ -487,20 +470,20 @@ class Performance extends CI_Controller
 
                 // Add the monthly data to the faulty_data array
                 $faulty_data[] = [
-                    'month' => date('M', mktime(0, 0, 0, $i, 1)), // Format month number to short name (e.g., 'Jan', 'Feb')
+                    'month' => $period['label'],
                     'percentage' => $percentage
                 ];
             }
 
-            // Loop through each month to calculate average repair time
+            // Loop through each reporting period to calculate average repair time
             $repair_time_data = [];
-            for ($i = $start_month; $i <= $end_month; $i++) {
+            foreach ($periods as $period) {
                 $this->db->select('t.ticket_number, t.issue_date, ema.update_date')
                     ->from('ticket t')
                     ->join('equipment_maintenance_asset ema', 't.ticket_number = ema.ticket_number', 'inner')
                     ->where('ema.final_status', 'complete')
-                    ->where('YEAR(ema.update_date)', $year)
-                    ->where('MONTH(ema.update_date)', $i);
+                    ->where('DATE(ema.update_date) >=', $period['start'])
+                    ->where('DATE(ema.update_date) <=', $period['end']);
 
                 // Execute query
                 $results = $this->db->get()->result_array();
@@ -526,7 +509,7 @@ class Performance extends CI_Controller
 
 
                 $repair_time_data[] = [
-                    'month' => date('M', mktime(0, 0, 0, $i, 1)),
+                    'month' => $period['label'],
                     'days' => $days,
                     'hours' => $hours
                 ];
@@ -560,27 +543,11 @@ class Performance extends CI_Controller
             $component_chart_data = []; // For component serviceability percentage
             $component_faulty_data = []; // For component maintenance status percentage
             $component_repair_time_data = []; // For component average repair time
+            $periods = $this->performance_periods($year, $month_param);
 
-            $start_month = !empty($month_param) ? (int)$month_param : 1;
-            $end_month = !empty($month_param) ? (int)$month_param : date('n'); // Default to current month if no month filter
-
-            // Adjust end_month based on the requested year
-            if (!empty($month_param)) {
-                $end_month = (int)$month_param;
-            } else {
-                // If no specific month is requested, determine the natural end month for the loop.
-                if ($year < date('Y')) {
-                    $end_month = 12; // For past years, show all 12 months
-                } else if ($year == date('Y')) {
-                    $end_month = date('n'); // For the current year, show up to the current month
-                } else {
-                    $end_month = 12; // For future years, show all 12 months (counts will likely be 0)
-                }
-            }
-
-            // Loop through each month to calculate all metrics for that month
-            for ($i = $start_month; $i <= $end_month; $i++) {
-                $end_of_month_date = date('Y-m-t', strtotime("$year-$i-01"));
+            // Loop through each reporting period to calculate all metrics.
+            foreach ($periods as $period) {
+                $end_of_month_date = $period['end'];
 
                 // --- Calculate Component Serviceability (component_chart_data) ---
                 // Subquery: Find the MAX timestamp for each component's 'Component_Updated' log entry
@@ -601,7 +568,7 @@ class Performance extends CI_Controller
                 $serviceable_count_comp = $result_serviceable_comp ? $result_serviceable_comp->serviceable_count : 0;
                 $serviceable_percentage_comp = $total_components > 0 ? round(($serviceable_count_comp / $total_components) * 100, 2) : 0;
                 $component_chart_data[] = [
-                    'month' => date('M', mktime(0, 0, 0, $i, 1)),
+                    'month' => $period['label'],
                     'percentage' => $serviceable_percentage_comp
                 ];
 
@@ -624,7 +591,7 @@ class Performance extends CI_Controller
                 $maintenance_count_comp = $result_maintenance_comp ? $result_maintenance_comp->maintenance_count : 0;
                 $maintenance_percentage_comp = $total_components > 0 ? round(($maintenance_count_comp / $total_components) * 100, 2) : 0;
                 $component_faulty_data[] = [
-                    'month' => date('M', mktime(0, 0, 0, $i, 1)),
+                    'month' => $period['label'],
                     'percentage' => $maintenance_percentage_comp
                 ];
 
@@ -634,8 +601,8 @@ class Performance extends CI_Controller
                 $this->db->from('item_ticket it');
                 $this->db->join('logs_item_maintenance lim', 'it.id = lim.item_ticket_id', 'inner'); // join via ID, not number
                 $this->db->where('lim.final_status', 'COMPLETE');
-                $this->db->where('YEAR(lim.update_date)', $year);
-                $this->db->where('MONTH(lim.update_date)', $i);
+                $this->db->where('DATE(lim.update_date) >=', $period['start']);
+                $this->db->where('DATE(lim.update_date) <=', $period['end']);
 
                 // Execute query once and store the result object
                 $query = $this->db->get();
@@ -662,7 +629,7 @@ class Performance extends CI_Controller
                 $days_comp = floor($average_duration_seconds_comp / 86400); // 86400 seconds in a day
                 $hours_comp = round(($average_duration_seconds_comp - ($days_comp * 86400)) / 3600, 2); // 3600 seconds in an hour
                 $component_repair_time_data[] = [
-                    'month' => date('M', mktime(0, 0, 0, $i, 1)),
+                    'month' => $period['label'],
                     'days' => $days_comp,
                     'hours' => $hours_comp
                 ];
@@ -677,7 +644,46 @@ class Performance extends CI_Controller
             ]);
         }
     }
+
+    private function performance_periods($year, $month = null)
+    {
+        $year = empty($year) ? (int) date('Y') : (int) $year;
+
+        if (!empty($month)) {
+            $month = max(1, min(12, (int) $month));
+            $lastDay = (int) date('t', strtotime(sprintf('%04d-%02d-01', $year, $month)));
+            $periods = [];
+            $week = 1;
+
+            for ($startDay = 1; $startDay <= $lastDay; $startDay += 7) {
+                $endDay = min($startDay + 6, $lastDay);
+                $periods[] = [
+                    'label' => 'Week ' . $week,
+                    'start' => sprintf('%04d-%02d-%02d', $year, $month, $startDay),
+                    'end' => sprintf('%04d-%02d-%02d', $year, $month, $endDay),
+                ];
+                $week++;
+            }
+
+            return $periods;
+        }
+
+        $endMonth = $year < (int) date('Y') ? 12 : ($year == (int) date('Y') ? (int) date('n') : 12);
+        $periods = [];
+        for ($monthIndex = 1; $monthIndex <= $endMonth; $monthIndex++) {
+            $periods[] = [
+                'label' => date('M', mktime(0, 0, 0, $monthIndex, 1)),
+                'start' => sprintf('%04d-%02d-01', $year, $monthIndex),
+                'end' => date('Y-m-t', strtotime(sprintf('%04d-%02d-01', $year, $monthIndex))),
+            ];
+        }
+
+        return $periods;
+    }
+
+
 }
+
 
 
 

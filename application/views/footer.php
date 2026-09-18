@@ -48,7 +48,51 @@
     </div>
   </div>
 </div>
+<div class="modal fade maintenance-alert-modal" id="maintenanceAlertModal" tabindex="-1" role="dialog" aria-labelledby="maintenanceAlertModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="maintenanceAlertModalTitle" data-alert-field="title">Maintenance Alert</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="maintenance-alert-detail-grid">
+          <?php foreach (['status' => 'Status', 'due_date' => 'Due Date', 'days_text' => 'Timing', 'subtitle' => 'Asset / Component Tag', 'asset_type' => 'Type', 'location' => 'Location'] as $alertField => $alertLabel) { ?>
+          <div>
+            <div class="maintenance-alert-detail-label"><?= $alertLabel ?></div>
+            <div class="maintenance-alert-detail-value" data-alert-field="<?= $alertField ?>">N/A</div>
+          </div>
+          <?php } ?>
+          <div><div class="maintenance-alert-detail-label">Maintenance Type</div><div class="maintenance-alert-detail-value" data-alert-field="maintenance_type"></div></div>
+          <div><div class="maintenance-alert-detail-label">Work Status</div><div class="maintenance-alert-detail-value" data-alert-field="work_status"></div></div>
+          <div class="maintenance-alert-wide"><div class="maintenance-alert-detail-label">Remarks</div><div class="maintenance-alert-detail-value" data-alert-field="remarks"></div></div>
+          <div class="maintenance-alert-wide"><div class="maintenance-alert-detail-label">Tasks</div><ul class="maintenance-alert-tasks" data-alert-field="tasks"></ul></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+        <a class="btn btn-primary" href="#" data-alert-action="details">Go To Asset Detail</a>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="loading d-none">Loading</div>
+<?php if (isset($this->user_model) && $this->user_model->logged_in() && $this->user_model->has_perm('list_assets')) { ?>
+<button type="button" class="ai-floating-launcher" data-ai-widget-open title="Open AI Insights">
+  <i class="fas fa-robot"></i><span>AI</span>
+</button>
+<div class="ai-floating-widget" data-ai-widget>
+  <div class="ai-floating-widget__header">
+    <div><strong>AI Insights</strong><small>Assets assistant</small></div>
+    <div class="ai-floating-widget__actions">
+      <button type="button" data-ai-widget-minimize title="Minimize"><i class="fas fa-minus"></i></button>
+      <button type="button" data-ai-widget-fullscreen title="Fullscreen"><i class="fas fa-expand"></i></button>
+      <button type="button" data-ai-widget-close title="Close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+  <iframe data-ai-widget-frame title="AI Insights" loading="lazy" data-src="<?= site_url('ai_insights?embed=1') ?>"></iframe>
+</div>
+<?php } ?>
 <!-- Bootstrap core JavaScript-->
 <script src="<?= site_url('design/vendor/jquery/jquery.min.js'); ?>"></script>
 <script src="<?= site_url('design/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
@@ -92,6 +136,11 @@
   });
 </script>
 <script src="<?= site_url('design/js/scripts.js?66'); ?>"></script>
+<script src="<?= site_url('design/js/maintenance-alerts.js?v=3'); ?>"></script>
+<?php if (isset($this->user_model) && $this->user_model->logged_in() && $this->user_model->has_perm('list_assets')) { ?>
+  <link rel="stylesheet" href="<?= site_url('design/css/ai-widget.css?v=2'); ?>">
+  <script src="<?= site_url('design/js/ai-widget.js?v=2'); ?>"></script>
+<?php } ?>
 
 <!-- Legacy location for root-relative AJAX guard moved above scripts.js so it also protects global scripts. -->
 
@@ -108,13 +157,13 @@
 
 <?php if (isset($scripts)) {
   foreach ($scripts as $script) { ?>
-    <!-- Shared page-script cache version: ?77 -->
-    <script type="text/javascript" src='<?= (preg_match("/http/", $script) ? $script : site_url($script . "?77")); ?>'>
+    <!-- Shared page-script cache version: ?79 -->
+    <script type="text/javascript" src='<?= (preg_match("/http/", $script) ? $script : site_url($script . "?79")); ?>'>
     </script>
 <?php }
 } ?>
 
-<script type="text/javascript" src="<?= site_url('design/js/master-ui.js?4'); ?>"></script>
+<script type="text/javascript" src="<?= site_url('design/js/master-ui.js?7'); ?>"></script>
 
 <script type="text/javascript">
   $(".worker_employment_types_selection #form_type").change(function() {
@@ -143,6 +192,7 @@ $(document).ready(function() {
 </body>
 
 </html>
+
 
 
 

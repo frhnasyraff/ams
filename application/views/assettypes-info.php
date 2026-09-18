@@ -48,8 +48,8 @@
                     <label for="manufacturer_dropdown">Manufacturer</label><br />
                     <select name="manufacturer" id="manufacturer_name" class="searchable-dropdown" >
                         <?php foreach ($manufacturer_name as $mn): ?>
-                            <option value="<?= htmlspecialchars($mn->manufacturer_name, ENT_QUOTES, 'UTF-8') ?>"
-                                <?= ($mn->manufacturer_name == $info->manufacturer) ? 'selected' : '' ?>>
+                            <option value="<?= (int) $mn->id ?>"
+                                <?= ((string) $mn->id === (string) $info->manufacturer) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($mn->manufacturer_name, ENT_QUOTES, 'UTF-8') ?>
                             </option>
                         <?php endforeach; ?>

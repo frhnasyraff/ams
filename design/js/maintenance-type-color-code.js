@@ -7,7 +7,7 @@ $(document).ready(function () {
         "pageLength": 10,
         stateSave: true,
         "ajax": {
-            "url": "/MaintenanceTypeColorCode/ajax_list",
+            "url": appUrl("/MaintenanceTypeColorCode/ajax_list"),
             "type": "POST",
             "error": function (xhr, error, thrown) {
                 if (xhr.responseJSON && xhr.responseJSON.redirect) {
@@ -23,7 +23,7 @@ $(document).ready(function () {
         ],
         "columns": [
             {
-                "data": "Maintenance Type",
+                "data": "maintenance_type",
                 createdCell: function (td, cellData, rowData, row, col) {
                     $(td).html(`<a href="javascript:void(0);" data-toggle="modal" data-target="#editModal" class='editMaintenanceTypeColorCode' data-id="${rowData.id}" data-maintenance_type="${rowData.maintenance_type}" data-color="${rowData.color}" >${rowData.maintenance_type}</a>`);
                 }
@@ -40,9 +40,12 @@ $(document).ready(function () {
             },
            
             {
-                "data": 'action',
+                "data": null,
+                "orderable": false,
+                "searchable": false,
                 createdCell: function (td, cellData, rowData, row, col) {
-                    $(td).html('<a href="/MaintenanceTypeColorCode/delete?maintenance_type=' + rowData.maintenance_type + '" onclick="return confirm(\'Are you sure you want to delete this Color?\');" title="Delete Asset Type Color"><i class="fa fa-trash"></i></a>');
+                    // A direct text label is also recognised by older cached UI scripts.
+                    $(td).html(`<a class="maintenance-color-delete" href="${appUrl("/MaintenanceTypeColorCode/delete?maintenance_type=")}${encodeURIComponent(rowData.maintenance_type)}" onclick="return confirm('Are you sure you want to delete this Color?');" title="Delete Maintenance Color" aria-label="Delete"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>`);
                 }
             }
         ]
@@ -59,3 +62,5 @@ $(document).ready(function () {
         $("#id_edit").val(idd);
     });
 });
+
+

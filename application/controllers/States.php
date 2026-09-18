@@ -16,14 +16,14 @@ class States extends CI_Controller
 
     public function index()
     {
-        $this->load->view('header', ['title' => 'States', 'title2' => 'States']);
+        $this->load->view('header', ['title' => 'States', 'title2' => 'States', 'styles' => ['design/css/states.css?v=1']]);
 
         $countries = $this->db->select('*')->from('countries')->get()->result();
         $this->load->view('states', [
             'countries' => $countries
         ]);
 
-        $this->load->view('footer', ['scripts' => ['design/js/states.js']]);
+        $this->load->view('footer', ['scripts' => ['design/js/states.js?v=2']]);
     }
 
     public function upload_picture()

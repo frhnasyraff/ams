@@ -1,4 +1,4 @@
-﻿// Clean Performance dashboard charts. Old file backed up as performance.js.before-clean-redesign.
+// Clean Performance dashboard charts. Old file backed up as performance.js.before-clean-redesign.
 (function () {
     const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let charts = {};
@@ -16,8 +16,11 @@
 
     function selectedMonths(monthValue, items) {
         if (monthValue) {
-            const index = Math.max(1, Math.min(12, Number(monthValue))) - 1;
-            return [MONTHS[index]];
+            if (Array.isArray(items) && items.length) {
+                const weekLabels = items.map(item => item.month).filter(label => /^Week\s+\d+$/i.test(label));
+                if (weekLabels.length) return weekLabels;
+            }
+            return ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
         }
 
         if (Array.isArray(items) && items.length) {
@@ -287,3 +290,4 @@
         window.addEventListener('resize', resizeCharts, { passive: true });
     });
 })();
+

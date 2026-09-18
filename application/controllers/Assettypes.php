@@ -239,7 +239,7 @@ public function index()
     //         // Sanitize inputs
     //         $name = $this->input->post('name', true);
     //         $manufacturer = $this->input->post('manufacturer');
-    //         $vendor_part_number = $this->input->post('vendor_part_number');
+    //         $vendor_part_number = $this->input->post('vendor_part_number') !== '' ? (int) $this->input->post('vendor_part_number') : null;
     //         $calibration = $this->input->post('calibration') ? '1' : '0'; // Check if checkbox is set, default to '0'
     //         $maintenance = $this->input->post('maintenance') ? '1' : '0'; // Check if checkbox is set, default to '0'
 
@@ -305,8 +305,8 @@ public function update()
 
         // Basic fields
         $name               = $this->asset_type_name_from_form($asset_id);
-        $manufacturer       = $this->input->post('manufacturer');
-        $vendor_part_number = $this->input->post('vendor_part_number');
+        $manufacturer       = $this->input->post('manufacturer') !== '' ? (int) $this->input->post('manufacturer') : null;
+        $vendor_part_number = $this->input->post('vendor_part_number') !== '' ? (int) $this->input->post('vendor_part_number') : null;
         $calibration        = $this->input->post('calibration') ? '1' : '0';
         $maintenance        = $this->input->post('maintenance') ? '1' : '0';
         $maintenanceDefaults = $this->maintenance_defaults_from_form();
@@ -409,8 +409,8 @@ public function add()
     if ($this->user_model->has_perm('add_assettypes')) {
 
         $name               = $this->asset_type_name_from_form();
-        $manufacturer       = $this->input->post('manufacturer');
-        $vendor_part_number = $this->input->post('vendor_part_number');
+        $manufacturer       = $this->input->post('manufacturer') !== '' ? (int) $this->input->post('manufacturer') : null;
+        $vendor_part_number = $this->input->post('vendor_part_number') !== '' ? (int) $this->input->post('vendor_part_number') : null;
         $calibration        = $this->input->post('calibration') ? '1' : '0';
         $maintenance        = $this->input->post('maintenance') ? '1' : '0';
         $maintenanceDefaults = $this->maintenance_defaults_from_form();
@@ -549,7 +549,7 @@ public function add()
     //     if ($this->user_model->has_perm('add_assettypes') && $this->input->post('name')) {
     //         $name = $this->input->post('name');
     //         $manufacturer = $this->input->post('manufacturer');
-    //         $vendor_part_number = $this->input->post('vendor_part_number');
+    //         $vendor_part_number = $this->input->post('vendor_part_number') !== '' ? (int) $this->input->post('vendor_part_number') : null;
     //         $calibration = $this->input->post('calibration') ? $this->input->post('calibration') : '0';
     //         $maintenance = $this->input->post('maintenance') ? $this->input->post('maintenance') : '0';
 

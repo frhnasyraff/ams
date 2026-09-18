@@ -558,6 +558,23 @@
     .asset-command-legacy-alerts,
     .asset-command-legacy-kpis { display: none !important; }
 
+    /* Asset Health cards spacing */
+    .asset-summary-ref-section .asset-section-heading {
+        margin-bottom: 18px !important;
+    }
+
+    .asset-summary-ref-section .summary-ref-chart-grid {
+        row-gap: 22px !important;
+        column-gap: 22px !important;
+    }
+    /* Add breathing room between live register and health coverage section */
+    .asset-command-layout > .asset-summary-ref-section {
+        margin-top: 28px !important;
+    }
+
+    body:has(.asset-summary-ref-section) .asset-command-page .asset-command-operations {
+        margin-bottom: 28px !important;
+    }
     .asset-command-layout,
     .asset-command-layout > .asset-summary-ref-section,
     .asset-command-layout > .asset-summary-ref-section > .col-12,
@@ -920,6 +937,21 @@
         min-height: 0 !important;
         max-height: none !important;
         overflow: visible !important;
+    }
+
+    body:has(.asset-summary-ref-section) .asset-command-page .asset-command-table-panel #home_wrapper .dataTables_length,
+    body:has(.asset-summary-ref-section) .asset-command-page .asset-command-table-panel #home_wrapper .dataTables_filter,
+    body:has(.asset-summary-ref-section) .asset-command-page .asset-command-table-panel #home_wrapper .dataTables_info,
+    body:has(.asset-summary-ref-section) .asset-command-page .asset-command-table-panel #home {
+        font-size: .88rem !important;
+    }
+
+    body:has(.asset-summary-ref-section) .asset-command-page .asset-command-table-panel #home thead th {
+        font-size: .72rem !important;
+    }
+
+    body:has(.asset-summary-ref-section) .asset-command-page .asset-command-table-panel #home tbody td {
+        font-size: .86rem !important;
     }
 
     body:has(.asset-summary-ref-section) .asset-command-page .asset-command-map-body {
@@ -1499,3 +1531,5 @@
     </div>
 </div>
 </section>
+
+

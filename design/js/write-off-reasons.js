@@ -102,7 +102,22 @@ $(document).ready(function() {
                                     </span>
                                 </td>
                                 <td>${r.created_at}</td>
-                                <td>—</td>
+                                <td>
+                                    <div class="action-buttons writeoff-row-actions">
+                                        <button type="button" class="writeoff-action-btn writeoff-action-btn--edit edit-reason"
+                                                data-id="${r.id}"
+                                                data-reason="${r.write_off_reason}"
+                                                data-description="${r.description ?? ''}"
+                                                data-status="${r.status}">
+                                            <i class="fas fa-pen" aria-hidden="true"></i> Edit
+                                        </button>
+                                        <button type="button" class="writeoff-action-btn writeoff-action-btn--delete delete-reason"
+                                                data-id="${r.id}"
+                                                data-reason="${r.write_off_reason}">
+                                            <i class="fas fa-trash" aria-hidden="true"></i> Delete
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                         `;
                     });
@@ -211,3 +226,4 @@ $(document).ready(function() {
         $('#reasonModal').modal('show');
     });
 });
+

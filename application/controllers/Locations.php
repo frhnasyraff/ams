@@ -16,7 +16,7 @@ class Locations extends CI_Controller
 
     public function index()
     {
-        $this->load->view('header', ['title' => 'Locations', 'title2' => 'Locations']);
+        $this->load->view('header', ['title' => 'Locations', 'title2' => 'Locations', 'styles' => ['design/css/locations.css?v=1']]);
 
         $countries = $this->db->select('*')->from('countries')->get()->result();
         $states = $this->db->select('*')->from('states')->get()->result();
@@ -25,7 +25,7 @@ class Locations extends CI_Controller
             'states' => $states
         ]);
 
-        $this->load->view('footer', ['scripts' => ['design/js/locations.js']]);
+        $this->load->view('footer', ['scripts' => ['design/js/locations.js?v=2']]);
     }
 
 

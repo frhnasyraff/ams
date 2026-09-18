@@ -1,88 +1,58 @@
-<style type="text/css">
-.pagination>li>a {
-    border-radius: 10px;
-}
+<a class="btn" href="#addModal" data-toggle="modal" data-target="#addModal" title="Upload logo image"><i class="fas fa-upload" aria-hidden="true"></i> Upload Image</a>
 
-#resource_types_next>a {
-    margin-left: 10px;
-    border-radius: 10px;
-    background-color: #fff !important;
-    color: grey !important;
-}
-
-#resource_types_previous>a {
-    border-radius: 10px;
-    margin-right: 10px;
-    background-color: #fff !important;
-    color: grey !important;
-}
-
-#asset-type-colors>tbody>tr>td>span {
-    padding: 8px 13px;
-}
-</style>
-
-<a class="float-right text_successo btn btn_border" href="#addModal" data-toggle="modal" data-target="#addModal"
-    title="Upload logo image"><i class="fa fa-plus"></i>Upload Image</a>
-
-<hr style="color: #DBDBE0;" />
-<div class="card shadow mb-4 tabradius">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-borderless table-striped" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th class="bg-white text-dark font-weight-bold">Image <span style="margin-left:50%;">Delete</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <td>
-                        <?php if (!empty($image_path)): ?>
-                        <img src="<?php echo base_url($image_path); ?>" alt="Logo Image" width="20%">
-                        <!-- Delete Button -->
-                        <form action="<?= site_url('LogoImage/delete'); ?>" method="post" style="display:inline; ">
-                            <input type="hidden" name="image_path" value="<?= $image_path; ?>">
-                            <button style="margin-left:50%;" type="submit" class="btn btn-danger"
-                                onclick="return confirm('Are you sure you want to delete this image?');">
-                                Delete
-                            </button>
-                        </form>
-                        <?php else: ?>
-                        <p>No image found.</p>
-                        <?php endif; ?>
-                    </td>
-                </tbody>
-            </table>
+<section class="card mb-4 logo-manager" id="logo-image-panel" data-logo-count="<?= empty($image_path) ? 0 : 1; ?>">
+    <div class="card-header"><h2>Current Logo</h2></div>
+    <div class="card-body logo-layout">
+        <div class="logo-preview-panel">
+            <div class="logo-preview-heading"><span>Image Preview</span><span class="logo-preview-tag"><?= empty($image_path) ? 'Not Set' : 'Current'; ?></span></div>
+            <div class="logo-preview-stage">
+                <?php if (!empty($image_path)): ?>
+                    <img class="logo-preview-image" src="<?= htmlspecialchars(base_url($image_path), ENT_QUOTES, 'UTF-8'); ?>" alt="Current organisation logo">
+                <?php else: ?>
+                    <div class="logo-empty"><i class="far fa-image" aria-hidden="true"></i><p>No logo uploaded yet</p><span>Upload an image to personalise the application header.</span></div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="logo-details">
+            <span class="logo-eyebrow">System Appearance</span>
+            <h2><?= empty($image_path) ? 'Add Your Organisation Logo' : 'Organisation Logo'; ?></h2>
+            <p>This image is displayed in the application header.</p>
+            <?php if (!empty($image_path)): ?>
+                <div class="logo-file-info"><i class="far fa-file-image" aria-hidden="true"></i><div><span>Current File</span><strong><?= htmlspecialchars(basename($image_path), ENT_QUOTES, 'UTF-8'); ?></strong></div></div>
+            <?php endif; ?>
+            <div class="logo-actions">
+                <button type="button" class="logo-action logo-action-edit" data-toggle="modal" data-target="#addModal"><i class="fas <?= empty($image_path) ? 'fa-upload' : 'fa-pen'; ?>" aria-hidden="true"></i> <?= empty($image_path) ? 'Upload Image' : 'Replace Image'; ?></button>
+                <?php if (!empty($image_path)): ?>
+                    <form action="<?= site_url('LogoImage/delete'); ?>" method="post">
+                        <input type="hidden" name="image_path" value="<?= htmlspecialchars($image_path, ENT_QUOTES, 'UTF-8'); ?>">
+                        <button type="submit" class="logo-action logo-action-delete" onclick="return confirm('Are you sure you want to delete this image?');"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete</button>
+                    </form>
+                <?php endif; ?>
+            </div>
+            <p class="logo-help">Supported formats: JPG, PNG and GIF.</p>
         </div>
     </div>
-</div>
+</section>
 
-
-<div class="modal fade" tabindex="-1" role="dialog" id="addModal">
-    <div class="modal-dialog" role="document">
+<div class="modal fade logo-upload-modal" tabindex="-1" role="dialog" id="addModal" aria-labelledby="logo-upload-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Upload Logo Image</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="logo-upload-title">Upload Logo Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <form class="form-horizontal" action="<?= site_url("LogoImage/add"); ?>" method="post"
-                enctype="multipart/form-data">
+            <form action="<?= site_url('LogoImage/add'); ?>" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8 col-md-10">
-                            <div class="form-group time_picker uppercase">
-                                <label for="asset-type-name">Select Image <sup>REQUIRED</sup></label>
-                                <input type="file" name="logoImage" id="logoImage" class="form-control">
-                            </div>
-
-                        </div>
+                    <p>Select an image for your organisation's logo. Uploading a new image replaces the current logo.</p>
+                    <div class="logo-file-picker">
+                        <label for="logoImage"><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i> Select Image</label>
+                        <input type="file" name="logoImage" id="logoImage" class="form-control" accept="image/jpeg,image/png,image/gif" required aria-describedby="logo-format-help">
+                        <small id="logo-format-help">JPG, PNG or GIF. A clear image with a transparent background works well.</small>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Upload Image</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="logo-cancel" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn logo-upload-submit"><i class="fas fa-upload" aria-hidden="true"></i> Upload Image</button>
                 </div>
             </form>
         </div>

@@ -166,7 +166,7 @@ class Assets extends CI_Controller
                 'design/js/datepicker.js',
                 'design/vendor/moment.js-2.24.0/moment.min.js',
                 'design/js/asset-maintenance-fields.js?v=1',
-                'design/js/assets-list.js?v=6',
+                'design/js/assets-list.js?v=11',
                 'https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js',
                 'https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js',
                 'design/js/helper.js',
@@ -188,7 +188,7 @@ class Assets extends CI_Controller
 
             $this->load->view('header', ['title' => 'Items Info - ' . $info[0]->item_name, 'styles' => ['design/vendor/dropzone/min/dropzone.min.css', 'design/css/multi-select.css', 'design/css/datepicker.css', 'design/css/custom-select.css']]);
             $this->load->view('item-info', ['info' => $info[0]]);
-            $this->load->view('footer', ['scripts' => ['design/vendor/dropzone/min/dropzone.min.js', 'design/js/datepicker.js', 'design/js/jquery.multi-select.js', 'design/js/asset-maintenance-fields.js?v=1', 'design/js/assets-list.js?v=6']]);
+            $this->load->view('footer', ['scripts' => ['design/vendor/dropzone/min/dropzone.min.js', 'design/js/datepicker.js', 'design/js/jquery.multi-select.js', 'design/js/asset-maintenance-fields.js?v=1', 'design/js/assets-list.js?v=11']]);
         }
     }
 
@@ -390,7 +390,7 @@ class Assets extends CI_Controller
                         'design/js/jquery.multi-select.js',
                         'design/js/asset_logs.js',
                         'design/js/asset-maintenance-fields.js?v=1',
-                        'design/js/assets-list.js?v=6'
+                        'design/js/assets-list.js?v=11'
                     ]
                 ]);
             } else {

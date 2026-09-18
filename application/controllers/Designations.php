@@ -16,7 +16,7 @@ class Designations extends CI_Controller
     {
         $this->load->view('header', ['title' => "Designations", 'title2' => "Designations", "styles" => []]);
         $this->load->view('designations');
-        $this->load->view('footer', ['scripts' => ['design/js/designations-list.js']]);
+        $this->load->view('footer', ['scripts' => ['design/js/designations-list.js?v=5']]);
     }
 
     public function info()
@@ -83,3 +83,4 @@ class Designations extends CI_Controller
         }
     }
 }
+

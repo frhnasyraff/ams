@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // Current list-page defaults added so legacy edit-modal snippets do not raise warnings.
 // Legacy snippets below still reference $info/$assets when the same markup is reused for edit screens.
 if (!isset($info) || !is_object($info)) {
@@ -128,12 +128,12 @@ if (!isset($assets)) {
         width: 100% !important;
         min-width: 0 !important;
         max-width: none !important;
-        height: 46px !important;
-        padding: 0 16px !important;
+        height: 42px !important;
+        padding: 0 14px !important;
         display: inline-flex !important;
         align-items: center !important;
-        justify-content: center !important;
-        gap: 9px !important;
+        justify-content: flex-start !important;
+        gap: 7px !important;
         flex: none !important;
         border: 1px solid rgba(48, 112, 173, .42) !important;
         border-radius: 12px !important;
@@ -152,9 +152,26 @@ if (!isset($assets)) {
         position: static !important;
         inset: auto !important;
         width: auto !important;
+        min-width: 0 !important;
         height: auto !important;
         margin: 0 !important;
         transform: none !important;
+    }
+
+    html body:has(#defaultDiv.assets-redesign-page) #defaultDiv.assets-redesign-page
+    .asset-filter-panel .asset-chip-group .asset-filter-chip > i {
+        flex: 0 0 auto !important;
+        font-size: 11px !important;
+    }
+
+    html body:has(#defaultDiv.assets-redesign-page) #defaultDiv.assets-redesign-page
+    .asset-filter-panel .asset-chip-group .asset-filter-chip > span {
+        min-width: 0 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        font-size: 12px !important;
+        letter-spacing: .01em !important;
     }
 
     html body:has(#defaultDiv.assets-redesign-page) #defaultDiv.assets-redesign-page
@@ -162,10 +179,11 @@ if (!isset($assets)) {
     html body:has(#defaultDiv.assets-redesign-page) #defaultDiv.assets-redesign-page
     .asset-filter-panel .asset-chip-group .asset-filter-chip.btn-primary {
         opacity: 1 !important;
-        color: #fff !important;
-        border-color: #38bdf8 !important;
-        background: linear-gradient(135deg, #2563eb, #1da9ed) !important;
-        box-shadow: 0 10px 24px rgba(37, 99, 235, .35) !important;
+        color: #7dd3fc !important;
+        border-color: rgba(56, 189, 248, .88) !important;
+        background: rgba(8, 47, 73, .34) !important;
+        background-image: none !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 0 0 1px rgba(56, 189, 248, .10), 0 8px 18px rgba(0, 0, 0, .12) !important;
     }
 
     @media (max-width: 760px) {
@@ -228,13 +246,13 @@ $assetKpis = [
                     <span id="asset-file-name">Select CSV / XLSX / XLS</span>
                     <input type="file" name="excel_file" id="excel-file-upload" accept=".xlsx,.xls,.csv">
                 </label>
-                <button class="asset-primary-btn asset-upload-submit" type="submit" id="upload-excel-btn">
+                <button class="asset-primary-btn asset-upload-submit" style="width:148px!important;min-width:148px!important;max-width:148px!important;height:46px!important;min-height:46px!important;border:1px solid rgba(96,165,250,.72)!important;border-radius:10px!important;background:rgba(6,18,39,.52)!important;background-image:none!important;color:#93c5fd!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 16px rgba(0,0,0,.10)!important;" type="submit" id="upload-excel-btn">
                     <i class="fa fa-upload"></i><span>Upload</span>
                 </button>
             </form>
 
             <?php if ($this->user_model->has_perm("add_equipments")) { ?>
-                <a class="asset-primary-btn asset-new-btn" href="#addModal" data-toggle="modal" data-target="#addModal" title="Add new Asset">
+                <a class="asset-primary-btn asset-new-btn asset-new-hollow-btn" style="width:148px!important;min-width:148px!important;max-width:148px!important;height:46px!important;min-height:46px!important;border:1px solid rgba(56,189,248,.72)!important;border-radius:10px!important;background:rgba(6,18,39,.52)!important;background-image:none!important;color:#7dd3fc!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 16px rgba(0,0,0,.10)!important;" href="#addModal" data-toggle="modal" data-target="#addModal" title="Add new Asset">
                     <i class="fa fa-plus"></i><span>New Asset</span>
                 </a>
             <?php } ?>
@@ -251,16 +269,16 @@ $assetKpis = [
             <?php if ($typeFilter !== '' || $activeFilter !== ''): ?>
                 <a class="asset-clear-filters" href="<?= site_url('assets'); ?>"><i class="fas fa-undo-alt"></i><span>Clear Filters</span></a>
             <?php else: ?>
-                <span class="asset-filter-count"><i class="fas fa-filter"></i><?= count($filterAssetTypes); ?> types · <?= count($assetStatus); ?> statuses</span>
+                <span class="asset-filter-count"><i class="fas fa-filter"></i><?= count($filterAssetTypes); ?> types � <?= count($assetStatus); ?> statuses</span>
             <?php endif; ?>
         </div>
         <div class="asset-filter-block">
             <div class="asset-filter-title"><i class="fa fa-truck"></i><span>Asset Type</span></div>
             <div class="btn-group equipment_type_filter asset-chip-group" role="group" aria-label="Equipments filter actions">
-                <button type="button" class="btn asset-filter-chip <?= $typeFilter === '' ? 'btn-primary active' : '' ?>" <?= $typeFilter === '' ? 'disabled' : '' ?> data-filter="" title="Show all asset types"><i class="fas fa-th-large"></i><span>All Types</span></button>
+                <button type="button" class="btn asset-filter-chip <?= $typeFilter === '' ? 'active' : '' ?>" <?= $typeFilter === '' ? 'disabled' : '' ?> data-filter="" title="Show all asset types"><i class="fas fa-th-large"></i><span>All Types</span></button>
                 <?php foreach ($filterAssetTypes as $t): ?>
                     <?php $isActive = (string) $typeFilter == (string) $t->asset_id; ?>
-                    <button type="button" class="btn asset-filter-chip text-uppercase tip <?= $isActive ? 'btn-primary active' : '' ?>" data-filter="<?= $t->asset_id; ?>" title="Show only <?= $t->name; ?>">
+                    <button type="button" class="btn asset-filter-chip text-uppercase tip <?= $isActive ? 'active' : '' ?>" data-filter="<?= $t->asset_id; ?>" title="Show only <?= $t->name; ?>">
                         <i class="fas fa-cube"></i><span><?= $t->name ?></span>
                     </button>
                 <?php endforeach; ?>
@@ -270,11 +288,11 @@ $assetKpis = [
         <div class="asset-filter-block">
             <div class="asset-filter-title"><i class="fa fa-folder-open"></i><span>Status</span></div>
             <div id="orders-list" class="project-tab btn-group equipment_group_filter asset-chip-group" role="group" aria-label="Equipment groups filter">
-                <button id="nav-tab" type="button" class="btn asset-filter-chip nav-item nav-link <?= $activeFilter === '' ? 'active btn-primary' : '' ?>" <?= $activeFilter === '' ? 'disabled' : '' ?> data-filter="" title="Show all equipment groups">
+                <button id="nav-tab" type="button" class="btn asset-filter-chip nav-item nav-link <?= $activeFilter === '' ? 'active' : '' ?>" <?= $activeFilter === '' ? 'disabled' : '' ?> data-filter="" title="Show all equipment groups">
                     <i class="fas fa-th-list"></i><span>All Statuses</span>
                 </button>
                 <?php foreach ($assetStatus as $t) { $isActive = strtoupper($activeFilter) === strtoupper($t->name); ?>
-                    <button type="button" class="btn asset-filter-chip nav-item nav-link text-uppercase tip <?= $isActive ? 'active btn-primary' : '' ?>" data-filter="<?= $t->name; ?>" title="Show only <?= $t->name; ?>">
+                    <button type="button" class="btn asset-filter-chip nav-item nav-link text-uppercase tip <?= $isActive ? 'active' : '' ?>" data-filter="<?= $t->name; ?>" title="Show only <?= $t->name; ?>">
                         <i class="fas <?= $statusIcons[strtoupper($t->name)] ?? 'fa-tag'; ?>"></i><span><?= $t->name; ?></span>
                     </button>
                 <?php } ?>
@@ -303,14 +321,14 @@ $assetKpis = [
                     <p>Review, select, print QR/RFID and update asset records.</p>
                 </div>
                 <div class="asset-table-actions">
-                    <button type="submit" formaction="<?= site_url('assets/printRFID') ?>" class="asset-icon-btn asset-download-btn" title="Print RFID">
+                    <button type="submit" formaction="<?= site_url('assets/printRFID') ?>" class="asset-icon-btn asset-download-btn" style="width:122px!important;min-width:122px!important;max-width:122px!important;height:40px!important;min-height:40px!important;border:1px solid rgba(96,165,250,.72)!important;border-radius:10px!important;background:rgba(6,18,39,.52)!important;background-image:none!important;color:#93c5fd!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 16px rgba(0,0,0,.10)!important;" title="Print RFID">
                         <i class="fa fa-download"></i><span>Print RFID</span>
                     </button>
-                    <button type="submit" formaction="<?= site_url('assets/generateQrPDF') ?>" class="asset-icon-btn asset-qr-btn" title="Generate QR">
+                    <button type="submit" formaction="<?= site_url('assets/generateQrPDF') ?>" class="asset-icon-btn asset-qr-btn" style="width:122px!important;min-width:122px!important;max-width:122px!important;height:40px!important;min-height:40px!important;border:1px solid rgba(196,181,253,.72)!important;border-radius:10px!important;background:rgba(6,18,39,.52)!important;background-image:none!important;color:#c4b5fd!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 16px rgba(0,0,0,.10)!important;" title="Generate QR">
                         <i class="fa fa-qrcode"></i><span>Generate QR</span>
                     </button>
                     <?php if ($this->user_model->has_perm("add_equipments")) { ?>
-                        <a class="asset-icon-btn assets-table-add asset-add-btn" href="#addModal" data-toggle="modal" data-target="#addModal" title="Add new Asset">
+                        <a class="asset-icon-btn assets-table-add asset-add-btn asset-new-hollow-btn" style="width:122px!important;min-width:122px!important;max-width:122px!important;height:40px!important;min-height:40px!important;border:1px solid rgba(52,211,153,.72)!important;border-radius:10px!important;background:rgba(6,18,39,.52)!important;background-image:none!important;color:#5eead4!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 16px rgba(0,0,0,.10)!important;" href="#addModal" data-toggle="modal" data-target="#addModal" title="Add new Asset">
                             <i class="fa fa-plus"></i><span>New Asset</span>
                         </a>
                     <?php } ?>

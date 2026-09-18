@@ -790,3 +790,37 @@ body:has(.asset-type-dashboard-page) .page-title {
     content: none !important;
     display: none !important;
 }
+
+/* Preventive maintenance modal status badges */
+.preventive-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 96px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+.preventive-status-badge--complete { color: #92f1cb; background: #123c35; border: 1px solid #2b9474; }
+.preventive-status-badge--pending { color: #ffd36b; background: #3b2d18; border: 1px solid #8a6724; }
+.preventive-status-badge--maintenance { color: #d7c2ff; background: #2f2359; border: 1px solid #7c5bd6; }
+#preventiveModal .modal-header { background: #0d2b57; border-bottom: 1px solid rgba(77, 177, 255, .35); color: #fff; }
+#preventiveModal .modal-header .close { color: #fff; opacity: .9; text-shadow: none; }
+/* Keep the preventive maintenance modal clickable above the dark backdrop */
+#preventiveModal {
+    z-index: 2060 !important;
+}
+#preventiveModal .modal-dialog {
+    pointer-events: auto !important;
+}
+.modal-backdrop {
+    z-index: 2050 !important;
+    pointer-events: none !important;
+}
+body.modal-open {
+    overflow: hidden !important;
+    padding-right: 0 !important;
+}

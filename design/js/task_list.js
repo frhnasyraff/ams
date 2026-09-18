@@ -8,7 +8,7 @@ $(document).ready(function () {
         "pageLength": 10,
         "stateSave": true,
         "ajax": {
-            "url": "Task_list/ajax_list",
+            "url": appUrl("/Task_list/ajax_list"),
             "type": "POST",
             "error": function (xhr, error, thrown) {
                 console.error("DataTables error:", error, thrown);
@@ -29,6 +29,7 @@ $(document).ready(function () {
             initEditButtons();
         }
     });
+
 
     // Edit button handler
     function initEditButtons() {
@@ -89,3 +90,4 @@ $(document).ready(function () {
     // Initial call for edit buttons
     initEditButtons();
 });
+

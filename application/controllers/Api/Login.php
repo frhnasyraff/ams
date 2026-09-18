@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Firebase\JWT\JWT;
+
 class Login extends CI_Controller
 {
     public function __construct()
@@ -55,9 +57,16 @@ class Login extends CI_Controller
                 }
 
                 // Successful login response
+                $token = JWT::encode([
+                    'user_id' => $user->user_id,
+                    'username' => $user->username,
+                    'iat' => time(),
+                    'exp' => time() + (60 * 60 * 24 * 30),
+                ], jWTSecretKey(), 'HS256');
                 $response = array(
                     'status' => true,
-                    'message' => 'User logged in successfully'
+                    'message' => 'User logged in successfully',
+                    'token' => $token,
                 );
                 return $this->output
                     ->set_content_type('application/json')

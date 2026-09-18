@@ -1,4 +1,4 @@
-﻿<style>
+<style>
     .section-title {
         color: #2c3e50;
         font-weight: bold;
@@ -122,22 +122,22 @@
                                     <div class="card-body text-center">
                                         <h5 class="card-title main-title"><?= $t['asset_type']; ?></h5>
                                         <div class="asset-metric-grid preventive-metric-grid">
-                                            <div class="asset-metric-box">
+                                            <div class="asset-metric-box" data-status-filter="all">
                                                 <span class="metric-icon total-text"><i class="fas fa-chart-bar"></i></span>
                                                 <span class="metric-label">Total</span>
                                                 <strong><?= $t['total']; ?></strong>
                                             </div>
-                                            <div class="asset-metric-box">
+                                            <div class="asset-metric-box" data-status-filter="complete">
                                                 <span class="metric-icon serviceable-text"><i class="fas fa-check-circle"></i></span>
                                                 <span class="metric-label">Complete</span>
                                                 <strong><?= $complete; ?></strong>
                                             </div>
-                                            <div class="asset-metric-box">
+                                            <div class="asset-metric-box" data-status-filter="pending">
                                                 <span class="metric-icon unserviceable-text"><i class="fas fa-times-circle"></i></span>
                                                 <span class="metric-label">Pending</span>
                                                 <strong><?= $pending; ?></strong>
                                             </div>
-                                            <div class="asset-metric-box">
+                                            <div class="asset-metric-box" data-status-filter="maintenance">
                                                 <span class="metric-icon maintenance-text"><i class="fas fa-wrench"></i></span>
                                                 <span class="metric-label">Maintenance</span>
                                                 <strong><?= $maintenance; ?></strong>
@@ -168,6 +168,12 @@
                 <div class="modal fade" id="preventiveModal" tabindex="-1" aria-labelledby="preventiveModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="preventiveModalLabel">Preventive Maintenance</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             <div class="modal-body">
                                 <div class="table-responsive">
                                     <table class="table" id="preventive" width="100%" cellspacing="0">

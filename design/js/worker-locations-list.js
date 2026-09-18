@@ -24,7 +24,7 @@ $(document).ready(function() {
 				"data": "worker_location_name",
 				createdCell: function (td, cellData, rowData, row, col) {
 					if (!$("table.read-only").length) {
-						$(td).html('<a class="text_warning_color" href="/worker_locations/info?id=' + id_encode(rowData.worker_location_id) + '" title="View location info">' + cellData + '</a>');
+						$(td).html('<a class="access-record-link" href="/worker_locations/info?id=' + id_encode(rowData.worker_location_id) + '" title="View location info">' + cellData + '</a>');
 					}
 					}
 			},
@@ -32,11 +32,12 @@ $(document).ready(function() {
 				"data": "description",
 				    },
 			{
-				"data": "",
+				"data": null,
+                "searchable": false,
 				"orderable": false,
 				createdCell: function (td, cellData, rowData, row, col) {
 					if (!$("table.read-only").length) {
-						$(td).addClass("text-center").html('<input type="checkbox" ' + (rowData.active != 0 ? 'checked' : '') + ' data-toggle="toggle" data-id="' + rowData.worker_location_id + '" />');
+						$(td).addClass("access-actions-cell").html('<div class="access-row-actions"><a class="access-action access-edit" href="' + appUrl("/worker_locations/info?id=" + id_encode(rowData.worker_location_id)) + '" title="Edit worker location"><i class="fas fa-pen" aria-hidden="true"></i> Edit</a><input type="checkbox" ' + (rowData.active != 0 ? 'checked' : '') + ' data-toggle="toggle" data-id="' + rowData.worker_location_id + '" /></div>');
 					}
 				}
 			}

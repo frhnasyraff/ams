@@ -34,6 +34,8 @@
 # Editor, test, and generated files
 /.idea/
 /.vscode/
+/.venv-ai/
+__pycache__/
 .phpunit.result.cache
 npm-debug.log
 yarn-error.log

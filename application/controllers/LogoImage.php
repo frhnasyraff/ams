@@ -29,7 +29,7 @@ class LogoImage extends CI_Controller
             // If no image is found, set a default empty string
         }
 
-        $this->load->view('header', ['title' => 'Logo Image', 'title2' => 'Logo Image', 'styles' => [], 'image_path' => $image_path]);
+        $this->load->view('header', ['title' => 'Logo Image', 'title2' => 'Logo Image', 'styles' => ['design/css/logo-image.css?v=1'], 'image_path' => $image_path]);
         $this->load->view('logo-image', ['image_path' => $image_path]);
         $this->load->view('footer', ['scripts' => []]);
     }

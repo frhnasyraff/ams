@@ -93,7 +93,7 @@ class Items extends CI_Controller
             'scripts' => [
                 'design/js/datepicker.js',
                 'design/vendor/moment.js-2.24.0/moment.min.js',
-                'design/js/items-list.js?v=2',
+                'design/js/items-list.js?v=3',
                 'https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js',
                 'https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js',
                 'design/js/helper.js',
@@ -1097,3 +1097,4 @@ class Items extends CI_Controller
         echo json_encode($data);
     }
 }
+

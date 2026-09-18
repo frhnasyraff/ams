@@ -18,14 +18,15 @@ class StoreLocation extends CI_Controller
     {
         $this->load->view('header', [
             'title' => 'Store Locations',
-            'title2' => 'Store Locations'
+            'title2' => 'Store Locations',
+            'styles' => ['design/css/locations.css?v=1']
         ]);
 
         $this->load->view('store-location', [
             'states' => $this->db->order_by('state_name', 'asc')->get('states')->result()
         ]);
 
-        $this->load->view('footer', ['scripts' => ['design/js/store-location.js']]);
+        $this->load->view('footer', ['scripts' => ['design/js/store-location.js?v=2']]);
     }
 
     public function ajax_list()

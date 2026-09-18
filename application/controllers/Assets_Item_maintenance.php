@@ -170,7 +170,7 @@ class Assets_Item_maintenance extends CI_Controller
 
         $this
             ->load
-            ->view("header", ["title" => "ASSETS & Components MAINTENANCE", "title2" => "ASSETS & ITEMS MAINTENANCE", "styles" => ["design/css/schedule.css?v=4", "design/css/fullcalendar/full-calendar.css",],]);
+            ->view("header", ["title" => "ASSETS & Components MAINTENANCE", "title2" => "ASSETS & ITEMS MAINTENANCE", "styles" => ["design/css/schedule.css?v=5", "design/css/fullcalendar/full-calendar.css",],]);
 
         $this
             ->load
@@ -1873,7 +1873,7 @@ public function task_details($equipment_id, $maintenance_id = null)
             'styles' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css',
                 'https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css',
-                'design/css/schedule.css?v=4'
+                'design/css/schedule.css?v=5'
             ]
         ]);
         
@@ -2411,4 +2411,5 @@ private function insertMaintenanceTasks($equipment_id, $maintenance_id)
 }
 
 }
+
 

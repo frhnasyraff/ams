@@ -1,0 +1,62 @@
+/* Match States and Maintenance Tasks without a white outer table border. */
+html body#page-top #locations_tabel {
+    border: 0 !important;
+    outline: 0 !important;
+}
+
+html body#page-top #locations_tabel .locations-row-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+html body#page-top #locations_tabel .locations-action {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    min-width: 92px !important;
+    height: 38px !important;
+    margin: 0 !important;
+    padding: 0 14px !important;
+    border-radius: 11px !important;
+    border: 1px solid transparent !important;
+    font-size: .82rem !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    box-shadow: none !important;
+}
+
+html body#page-top #locations_tabel .locations-action i {
+    color: inherit !important;
+    font-size: .82rem !important;
+}
+
+html body#page-top #locations_tabel .btn-edit {
+    border-color: rgba(51, 190, 255, .5) !important;
+    background: rgba(8, 50, 84, .42) !important;
+    color: #39d6ff !important;
+}
+
+html body#page-top #locations_tabel .btn-delete {
+    border-color: rgba(255, 92, 127, .54) !important;
+    background: rgba(99, 29, 52, .36) !important;
+    color: #ff85a1 !important;
+}
+
+html body#page-top #locations_tabel .btn-edit:hover {
+    background: rgba(34, 123, 194, .45) !important;
+    color: #fff !important;
+}
+
+html body#page-top #locations_tabel .btn-delete:hover {
+    background: rgba(147, 41, 70, .52) !important;
+    color: #fff !important;
+}
+
+html body#page-top #locations_tabel .locations-action:focus-visible {
+    outline: 2px solid currentColor !important;
+    outline-offset: 3px;
+}

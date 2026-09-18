@@ -2,12 +2,14 @@
 $this->load->helper('url');
 function main_menu_item($name, $url, $icon = '', $menu = '', $root = 0)
 {
-    return '<li class="nav-item' . ("/" . $url == $_SERVER['REDIRECT_QUERY_STRING'] || $url == $_SERVER['REDIRECT_QUERY_STRING'] || $menu == $url ? ' active' : '') . '"><a class="nav-link" href="' . ($root ? $url : site_url($url)) . '">' . ($icon ? '<i class="fas fa-fw fa-' . $icon . '"></i> ' : '') . '<span>' . $name . '</span></a></li>';
+    $current_query = $_SERVER['REDIRECT_QUERY_STRING'] ?? trim(($_SERVER['REQUEST_URI'] ?? ''), '/');
+    return '<li class="nav-item' . ("/" . $url == $current_query || $url == $current_query || $menu == $url ? ' active' : '') . '"><a class="nav-link" href="' . ($root ? $url : site_url($url)) . '">' . ($icon ? '<i class="fas fa-fw fa-' . $icon . '"></i> ' : '') . '<span>' . $name . '</span></a></li>';
 }
 
 function sub_menu_item($name, $url, $menu = '', $root = 0)
 {
-    return '<a class="collapse-item' . ("/" . $url == $_SERVER['REDIRECT_QUERY_STRING'] || $url == $_SERVER['REDIRECT_QUERY_STRING'] || $menu == $url ? ' active' : '') . '" href="' . ($root ? $url : site_url($url)) . '">' . '<span>' . $name . '</span></a>';
+    $current_query = $_SERVER['REDIRECT_QUERY_STRING'] ?? trim(($_SERVER['REQUEST_URI'] ?? ''), '/');
+    return '<a class="collapse-item' . ("/" . $url == $current_query || $url == $current_query || $menu == $url ? ' active' : '') . '" href="' . ($root ? $url : site_url($url)) . '">' . '<span>' . $name . '</span></a>';
 }
 
 ?>
@@ -69,7 +71,11 @@ function sub_menu_item($name, $url, $menu = '', $root = 0)
     } ?>
 
     <link href="<?= site_url('design/css/styles.css?15'); ?>" rel="stylesheet">
-    <link href="<?= site_url('design/css/steve-dark-theme.css?76'); ?>" rel="stylesheet">
+    <link href="<?= site_url('design/css/steve-dark-theme.css?123'); ?>" rel="stylesheet">
+    <link href="<?= site_url('design/css/maintenance-alerts.css?v=4'); ?>" rel="stylesheet">
+    <?php if (in_array(strtolower($this->router->fetch_class()), ['user_groups', 'designations', 'worker_locations', 'permissions'], true)): ?>
+        <link href="<?= site_url('design/css/access-directory.css?v=7'); ?>" rel="stylesheet">
+    <?php endif; ?>
     <?php if (strtolower($this->router->fetch_class()) === 'order_summary'): ?>
         <link href="<?= site_url('design/css/ams-summary-layout.css?v=1'); ?>" rel="stylesheet">
     <?php elseif (strtolower($this->router->fetch_class()) === 'assettypes'): ?>
@@ -525,6 +531,10 @@ $is_master_module = $current_method === 'index' && in_array($current_controller,
             <?php } ?>
 
             <?php if ($this->user_model->has_perm("list_assets")) { ?>
+                <?= main_menu_item("AI Insights", "ai_insights", 'robot'); ?>
+            <?php } ?>
+
+            <?php if ($this->user_model->has_perm("list_assets")) { ?>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseasset"
                         aria-expanded="true" aria-controls="collapseasset">
@@ -863,6 +873,19 @@ $is_master_module = $current_method === 'index' && in_array($current_controller,
                         <?php } ?>
                         <div class="topbar-divider d-none d-sm-block"></div>
 
+                        <?php if ($this->user_model->has_perm('list_equipments') && $this->user_model->has_perm('edit_equipments')) { ?>
+                        <li class="nav-item maintenance-alert-nav">
+                            <button type="button" class="maintenance-alert-button" id="maintenanceAlertButton" title="Maintenance alerts" aria-label="Maintenance alerts" aria-expanded="false" aria-controls="maintenanceAlertDropdown">
+                                <i class="fas fa-bell" aria-hidden="true"></i>
+                                <span class="maintenance-alert-badge is-hidden" id="maintenanceAlertBadge">0</span>
+                            </button>
+                            <div class="maintenance-alert-dropdown" id="maintenanceAlertDropdown" aria-label="Maintenance alerts">
+                                <div class="maintenance-alert-header">Maintenance Alerts</div>
+                                <div class="maintenance-alert-list" id="maintenanceAlertList"></div>
+                                <div class="maintenance-alert-empty" id="maintenanceAlertEmpty" role="status">Loading maintenance alerts...</div>
+                            </div>
+                        </li>
+                        <?php } ?>
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow mt-3">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -933,6 +956,39 @@ $is_master_module = $current_method === 'index' && in_array($current_controller,
                     }
                     ?>
                     <h1 class="btn mb-3">&nbsp;</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
