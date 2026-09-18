@@ -65,7 +65,7 @@ $(document).ready(function () {
                         $(td)
                             .addClass("p-0 m-0 text-center")
                             .html(
-                                '<div class="btn view-asset-type-list" data-id="' +
+                                '<div class="btn view-asset-type-list component-view-hollow-btn" data-id="' +
                                 rowData.asset_id +
                                 '">' +
                                 '<i class="fas fa-eye"></i><span>View Asset</span>' +
@@ -80,18 +80,17 @@ $(document).ready(function () {
                 data: "item_status_name",
                 createdCell: function (td, cellData, rowData) {
                     if (cellData) {
-                        var customClass = "light-blue";
-                        var status = rowData.item_status_name.replace(/\s+/g, "");
-                        if (status == "INUSE") customClass = "light-blue";
-                        else if (status == "MAINTENANCE") customClass = "warn";
-                        else if (status == "Available") customClass = "success";
-                        else if (status == "Repair") customClass = "dark-blue";
-                        else if (status == "Dispose") customClass = "green";
-                        else if (status == "Scrap") customClass = "purple";
-                        else if (status == "SERVICEABLE") customClass = "green";
-                        else if (status == "UNSERVICEABLE") customClass = "red";
+                        var label = (rowData.item_status_name || "").toString().trim();
+                        var status = label.toUpperCase().replace(/\s+/g, "");
+                        var customClass = "component-status-neutral";
 
-                        $(td).html(`<span class='custom-badge ${customClass}'>${rowData.item_status_name}</span>`);
+                        if (status == "SERVICEABLE" || status == "AVAILABLE") customClass = "component-status-serviceable";
+                        else if (status == "UNSERVICEABLE" || status == "REPAIR" || status == "FAULTY") customClass = "component-status-unserviceable";
+                        else if (status == "MAINTENANCE") customClass = "component-status-maintenance";
+                        else if (status == "STORE") customClass = "component-status-store";
+                        else if (status == "INUSE" || status == "INUSE") customClass = "component-status-inuse";
+
+                        $(td).addClass("text-center").html(`<span class="component-status-badge ${customClass}">${label}</span>`);
                     }
                 }
             },
@@ -100,7 +99,7 @@ $(document).ready(function () {
                 createdCell: function (td, cellData, rowData, row, col) {
                     $(td).html(
                         '<a href="/items/deleteItem?id=' + rowData.id +
-                        '" onclick="return confirm(\'Are you sure you want to delete this item?\');" class="btn btn-danger" title="Delete item">' +
+                        '" onclick="return confirm(\'Are you sure you want to delete this item?\');" class="btn btn-danger component-delete-hollow-btn" title="Delete item">' +
                         '<i class="fa fa-trash trash-icon"></i><span>Delete</span></a>'
                     );
                 }
@@ -749,3 +748,4 @@ $(document).on("click", ".view-asset-type-list", function () {
             }
         });
 });
+

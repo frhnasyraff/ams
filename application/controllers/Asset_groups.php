@@ -19,7 +19,7 @@ class Asset_groups extends CI_Controller
             "design/css/custom-datatable.css"
         ]]);
         $this->load->view('asset-groups-list', []);
-        $this->load->view('footer', ['scripts' => ['design/js/asset-groups-list.js']]);
+        $this->load->view('footer', ['scripts' => ['design/js/asset-groups-list.js?v=2']]);
     }
 
     public function info()
@@ -101,3 +101,4 @@ class Asset_groups extends CI_Controller
         }
     }
 }
+

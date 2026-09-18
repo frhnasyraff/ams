@@ -23,7 +23,7 @@
 		var displayName = row.equipment_group_name || 'this asset group';
 
 		return '<div class="identity-row-actions master-record-actions">' +
-			'<a class="identity-manage-action" href="' + manageUrl + '" title="Manage asset group"><i class="fas fa-pen"></i><span>Manage</span></a>' +
+			'<a class="identity-manage-action asset-group-manage-action" href="' + manageUrl + '" title="Manage asset group" aria-label="Manage asset group"><i class="fas fa-pen"></i><span class="asset-group-manage-label">Manage</span></a>' +
 			'<button type="button" class="identity-state-action ' + stateClass + '" data-id="' + row.equipment_group_id + '" data-active="' + (enabled ? '1' : '0') + '" data-name="' + escapeHtml(displayName) + '"><i class="fas ' + stateIcon + '"></i><span>' + stateLabel + '</span></button>' +
 		'</div>';
 	}
@@ -118,3 +118,4 @@
 		});
 	});
 })(jQuery);
+

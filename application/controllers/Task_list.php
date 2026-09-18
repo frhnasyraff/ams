@@ -21,7 +21,7 @@ class Task_list extends CI_Controller
         $this->load->view('task-list', $data);
         $this->load->view('footer', [
             'scripts' => [
-                'design/js/task_list.js'
+                'design/js/task_list.js?v=4'
             ]
         ]);
     }
@@ -50,18 +50,22 @@ class Task_list extends CI_Controller
                 "name" => $task->name,
                 "frequency_in_days" => $task->frequency_in_days,
                 "action" => '
-                    <a href="javascript:void(0);" 
-                       class="btn btn-sm btn-primary editBtn" 
-                       data-id="'.$task->id.'" 
-                       data-name="'.$task->name.'" 
-                       data-frequency="'.$task->frequency_in_days.'">
-                       Edit
-                    </a>
-                    <a href="'.site_url('Task_list/delete/'.$task->id).'" 
-                       class="btn btn-sm btn-danger" 
-                       onclick="return confirm(\'Are you sure?\')">
-                       Delete
-                    </a>'
+                    <div class="task-row-actions">
+                        <a href="javascript:void(0);" 
+                           class="task-action-btn task-action-btn--edit editBtn" 
+                           title="Edit task"
+                           data-id="'.$task->id.'" 
+                           data-name="'.htmlspecialchars($task->name, ENT_QUOTES, 'UTF-8').'" 
+                           data-frequency="'.$task->frequency_in_days.'">
+                           <i class="fas fa-pen"></i><span>Edit</span>
+                        </a>
+                        <a href="'.site_url('Task_list/delete/'.$task->id).'" 
+                           class="task-action-btn task-action-btn--delete" 
+                           title="Delete task"
+                           onclick="return confirm(\'Are you sure?\')">
+                           <i class="fas fa-trash-alt"></i><span>Delete</span>
+                        </a>
+                    </div>'
             );
         }
 
@@ -120,3 +124,5 @@ class Task_list extends CI_Controller
         redirect('Task_list');
     }
 }
+
+

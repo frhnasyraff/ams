@@ -17,7 +17,7 @@ class Worker_locations extends CI_Controller
     {
         $this->load->view('header', ['title' => "Worker Locations", 'title2' => "Worker Locations", "styles" => []]);
         $this->load->view('worker-locations', []);
-        $this->load->view('footer', ['scripts' => ['design/js/worker-locations-list.js']]);
+        $this->load->view('footer', ['scripts' => ['design/js/worker-locations-list.js?v=3']]);
     }
 
     public function info()

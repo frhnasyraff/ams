@@ -39,7 +39,7 @@ class corrective_maintenance extends CI_Controller
 
             'design/js/corrective-summary.js',
             'design/js/corrective-maintenance-summary.js',
-            'design/js/corrective_table_list.js?v=2'
+            'design/js/corrective_table_list.js?v=4'
         ]]);
     }
 
@@ -122,15 +122,16 @@ class corrective_maintenance extends CI_Controller
         $progress_count = 0;
         $summary = [];
 
-        // Fetch tickets and their latest status from maintenance along with asset details
-        $data = $this->db->select('ticket.*, 
+        // Fetch active asset tickets and label them by type for the queue filter.
+        $assetData = $this->db->select('ticket.*, 
             equipments_asset.*, 
+            "Asset" AS record_type,
             COALESCE(latest_maintenance_asset.final_status, "IN-MAINTENANCE") AS final_status, 
             latest_maintenance_asset.update_date AS update_date,
             latest_maintenance_asset.maintenance_type_id AS maintenance_type,
             latest_maintenance_asset.faulty_type,
             latest_task_done.task_done AS task_done,
-            latest_task_done.remarks AS remarks')
+            latest_task_done.remarks AS remarks', false)
             ->from('ticket')
             ->join('equipments_asset', 'equipments_asset.equipment_id = ticket.equipment_id', 'left')
 
@@ -159,15 +160,44 @@ class corrective_maintenance extends CI_Controller
             ->get()
             ->result();
 
+        // Fetch active component tickets and label them separately from assets.
+        $componentData = $this->db->select('item_ticket.*, 
+            "Component" AS record_type,
+            COALESCE(add_asset_items.item_name, item_ticket.number) AS equipment_name,
+            COALESCE(latest_item_maintenance.final_status, "IN-MAINTENANCE") AS final_status,
+            COALESCE(latest_item_maintenance.update_date, item_ticket.issue_date) AS update_date,
+            NULL AS task_done,
+            COALESCE(latest_item_maintenance.notes, item_ticket.description, "Work is progressing according to workshop schedule.") AS remarks', false)
+            ->from('item_ticket')
+            ->join('add_asset_items', 'add_asset_items.id = item_ticket.item_id', 'left')
+            ->join(
+                '(SELECT * FROM (
+                SELECT t1.*, 
+                       ROW_NUMBER() OVER (PARTITION BY t1.item_ticket_id ORDER BY t1.created_at DESC) AS rn
+                FROM logs_item_maintenance t1
+            ) latest WHERE latest.rn = 1) AS latest_item_maintenance',
+                'latest_item_maintenance.item_ticket_id = item_ticket.id',
+                'left'
+            )
 
+            ->where('item_ticket.active', 1)
+            ->group_start()
+                ->where('latest_item_maintenance.id IS NULL', null, false)
+                ->or_where_not_in('UPPER(latest_item_maintenance.final_status)', ['COMPLETE', 'COMPLETED', 'CLOSED'])
+            ->group_end()
+            ->get()
+            ->result();
+
+        $data = array_merge($assetData, $componentData);
         // Process data for counts
         foreach ($data as $row) {
-            // if ($row->final_status === 'complete') {
-            //     $complete_count++;
-            // } else
-            if ($row->final_status === 'in_progress') {
+            $status = strtolower(str_replace(['_', ' '], '-', trim((string) $row->final_status)));
+
+            if ($status === 'complete' || $status === 'completed' || $status === 'closed') {
+                $complete_count++;
+            } elseif ($status === 'in-progress') {
                 $progress_count++;
-            } elseif ($row->final_status === 'IN-MAINTENANCE') {
+            } else {
                 $maintenance_count++;
             }
         }
@@ -185,3 +215,6 @@ class corrective_maintenance extends CI_Controller
         die();
     }
 }
+
+
+

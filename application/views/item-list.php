@@ -190,9 +190,11 @@
 
     html.ims-components-index .item_type_filter .btn.active,
     html.ims-components-index .item_group_filter .btn.active {
-        color: #fff !important;
-        background: linear-gradient(135deg, #2f7cff 0%, #23b8f4 100%) !important;
-        box-shadow: 0 14px 30px rgba(31, 143, 255, .32) !important;
+        color: #7dd3fc !important;
+        border-color: rgba(56, 189, 248, .88) !important;
+        background: rgba(8, 47, 73, .34) !important;
+        background-image: none !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 0 0 1px rgba(56, 189, 248, .10), 0 8px 18px rgba(0, 0, 0, .12) !important;
     }
 
     html.ims-components-index .item_group_filter {
@@ -443,14 +445,15 @@
         gap: 9px !important;
         min-height: 44px !important;
         padding: 0 20px !important;
-        border: 0 !important;
-        border-radius: 14px !important;
+        border: 1px solid rgba(45, 212, 191, .72) !important;
+        border-radius: 12px !important;
         color: #ffffff !important;
         font-weight: 900 !important;
         letter-spacing: .01em !important;
         text-decoration: none !important;
-        background: linear-gradient(135deg, #2f7dff 0%, #18c2ff 100%) !important;
-        box-shadow: 0 14px 30px rgba(24, 144, 255, .28) !important;
+        background: rgba(6, 18, 39, .52) !important;
+        background-image: none !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 12px 24px rgba(20, 184, 166, .10) !important;
         transition: transform .16s ease, box-shadow .16s ease, filter .16s ease !important;
     }
 
@@ -458,7 +461,11 @@
     html.ims-components-index a[href="#addModal"][data-target="#addModal"]:hover {
         transform: translateY(-1px) !important;
         filter: brightness(1.08) !important;
-        box-shadow: 0 18px 38px rgba(24, 144, 255, .35) !important;
+        border-color: rgba(94, 234, 212, .92) !important;
+        color: #5eead4 !important;
+        background: rgba(13, 148, 136, .14) !important;
+        background-image: none !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 12px 24px rgba(20, 184, 166, .12) !important;
     }
 
     html.ims-components-index .card.shadow.mb-4.tabradius {
@@ -521,19 +528,20 @@
 
     html.ims-components-index .item_type_filter .btn,
     html.ims-components-index .item_group_filter .btn {
-        min-width: 124px !important;
+        min-width: 0 !important;
         height: 42px !important;
         display: inline-flex !important;
         align-items: center !important;
-        justify-content: center !important;
-        gap: 8px !important;
-        padding: 0 18px !important;
-        border: 0 !important;
-        border-radius: 999px !important;
-        color: rgba(226, 237, 255, .78) !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        font-size: 13px !important;
+        justify-content: flex-start !important;
+        gap: 7px !important;
+        padding: 0 14px !important;
+        border: 1px solid rgba(48, 112, 173, .42) !important;
+        border-radius: 12px !important;
+        color: #b7c9df !important;
+        background: rgba(5, 20, 39, .62) !important;
+        background-image: none !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+        font-size: 12px !important;
         font-weight: 900 !important;
         text-transform: uppercase !important;
         letter-spacing: .02em !important;
@@ -551,9 +559,12 @@
     html.ims-components-index .item_group_filter .btn.active,
     html.ims-components-index .item_type_filter .btn.btn-primary,
     html.ims-components-index .item_group_filter .btn.btn-primary {
-        color: #ffffff !important;
-        background: linear-gradient(135deg, #2e7bff 0%, #1fc3ff 100%) !important;
-        box-shadow: 0 14px 30px rgba(30, 144, 255, .26) !important;
+        opacity: 1 !important;
+        color: #7dd3fc !important;
+        border-color: rgba(56, 189, 248, .88) !important;
+        background: rgba(8, 47, 73, .34) !important;
+        background-image: none !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 0 0 1px rgba(56, 189, 248, .10), 0 8px 18px rgba(0, 0, 0, .12) !important;
     }
 
     html.ims-components-index .item_type_filter .btn i,
@@ -566,7 +577,7 @@
     html.ims-components-index .item_group_filter .btn.active i,
     html.ims-components-index .item_type_filter .btn.btn-primary i,
     html.ims-components-index .item_group_filter .btn.btn-primary i {
-        color: #ffffff !important;
+        color: #38d9ff !important;
     }
 
     html.ims-components-index .item_group_filter .btn {
@@ -585,14 +596,17 @@
 
     html.ims-components-index #orders-list .btn.btn-primary,
     html.ims-components-index #orders-list .btn.active {
-        color: #ffffff !important;
-        background: linear-gradient(135deg, #2e7bff 0%, #1fc3ff 100%) !important;
-        box-shadow: 0 14px 30px rgba(30, 144, 255, .26) !important;
+        opacity: 1 !important;
+        color: #7dd3fc !important;
+        border-color: rgba(56, 189, 248, .88) !important;
+        background: rgba(8, 47, 73, .34) !important;
+        background-image: none !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 0 0 1px rgba(56, 189, 248, .10), 0 8px 18px rgba(0, 0, 0, .12) !important;
     }
 
     html.ims-components-index #orders-list .btn.btn-primary i,
     html.ims-components-index #orders-list .btn.active i {
-        color: #ffffff !important;
+        color: #38d9ff !important;
     }
 
     html.ims-components-index .col-lg-12.mt-25 {
@@ -942,11 +956,12 @@
 
     html.ims-components-index body .component-filter-panel #orders-list.item_group_filter > .btn.active,
     html.ims-components-index body .component-filter-panel #orders-list.item_group_filter > .btn.btn-primary {
-        border-color: rgba(78, 217, 255, .72) !important;
-        color: #fff !important;
-        background: linear-gradient(135deg, #337bf5, #1dbce9) !important;
-        box-shadow: 0 8px 22px rgba(28, 155, 229, .22) !important;
         opacity: 1 !important;
+        color: #7dd3fc !important;
+        border-color: rgba(56, 189, 248, .88) !important;
+        background: rgba(8, 47, 73, .34) !important;
+        background-image: none !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 0 0 1px rgba(56, 189, 248, .10), 0 8px 18px rgba(0, 0, 0, .12) !important;
     }
 
     html.ims-components-index body .component-filter-panel #orders-list.item_group_filter > .btn::before,
@@ -1069,6 +1084,12 @@
             if (addBtn) {
                 addBtn.classList.add('component-primary-action');
                 addBtn.innerHTML = '<i class="fa fa-plus"></i><span>New Component</span>';
+                addBtn.style.setProperty('border', '1px solid rgba(45,212,191,.72)', 'important');
+                addBtn.style.setProperty('border-radius', '12px', 'important');
+                addBtn.style.setProperty('background', 'rgba(6,18,39,.52)', 'important');
+                addBtn.style.setProperty('background-image', 'none', 'important');
+                addBtn.style.setProperty('color', '#ffffff', 'important');
+                addBtn.style.setProperty('box-shadow', 'inset 0 1px 0 rgba(255,255,255,.06), 0 12px 24px rgba(20,184,166,.10)', 'important');
 
                 if (mainCard && !addBtn.closest('.component-registry-hero') && !document.querySelector('html.ims-components-index .components-action-bar')) {
                     var actionBar = document.createElement('div');
@@ -1124,7 +1145,7 @@
         </div>
     </div>
     <?php if ($this->user_model->has_perm("add_equipments")) { ?>
-        <a class="float-right text_successo btn btn-default btn_border component-primary-action" href="#addModal" data-toggle="modal"
+        <a class="float-right text_successo btn btn-default btn_border component-primary-action" style="border:1px solid rgba(45,212,191,.72)!important;border-radius:12px!important;background:rgba(6,18,39,.52)!important;background-image:none!important;color:#ffffff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 24px rgba(20,184,166,.10)!important;" href="#addModal" data-toggle="modal"
             data-target="#addModal" title="Add new component"><i class="fa fa-plus"></i><span>New Component</span></a>
     <?php } ?>
 </section>
@@ -1762,3 +1783,9 @@
         });
     });
 </script>
+
+
+
+
+
+

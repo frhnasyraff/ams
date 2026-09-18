@@ -17,7 +17,7 @@ class Permissions extends CI_Controller
     {
         $this->load->view('header', ['title' => "Permissions", 'title2' => "Permissions", "styles" => []]);
         $this->load->view('permissions', []);
-        $this->load->view('footer', ['scripts' => ['design/js/permissions-list.js']]);
+        $this->load->view('footer', ['scripts' => ['design/js/permissions-list.js?v=3']]);
     }
 
     public function info()

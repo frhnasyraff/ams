@@ -1,0 +1,79 @@
+/* Shared Users & Permissions directory, add dialogs and edit forms. */
+html body#page-top#page-top .access-panel { margin-top: 20px; overflow: hidden; }
+html body#page-top#page-top .access-panel > .card-body { padding: 22px !important; }
+html body#page-top#page-top .access-context-note {
+    display: flex; gap: 12px; align-items: flex-start; padding: 14px 18px; margin-bottom: 20px;
+    border: 1px solid #22455f; border-radius: 12px; background: #0a2035; color: #a9c5df;
+}
+html body#page-top#page-top .access-context-note > i { color: #43cfff; margin-top: 3px; }
+html body#page-top#page-top .access-context-note p { margin: 0; font-size: 12px; line-height: 1.7; background: none !important; }
+html body#page-top#page-top .access-context-note a { color: #53d5ff; text-decoration: underline; }
+html body#page-top#page-top .access-directory-table { border: 0 !important; margin-bottom: 0 !important; }
+html body#page-top#page-top .access-directory-table thead th { height: 96px !important; padding: 0 20px !important; font-size: 15px !important; font-weight: 900 !important; line-height: 1.2 !important; color: #ffffff !important; text-transform: uppercase !important; vertical-align: middle !important; }
+html body#page-top#page-top .access-directory-table tbody td { height: 58px !important; padding: 12px 20px !important; font-size: 13px !important; line-height: 1.35 !important; vertical-align: middle !important; }
+
+html body#page-top#page-top .access-actions-heading { width: 260px; min-width: 250px; }
+html body#page-top#page-top .access-directory-table:not(.permissions-directory-table) th:nth-child(1),
+html body#page-top#page-top .access-directory-table:not(.permissions-directory-table) td:nth-child(1) { width: 54% !important; }
+html body#page-top#page-top .access-directory-table:not(.permissions-directory-table) th:nth-child(2),
+html body#page-top#page-top .access-directory-table:not(.permissions-directory-table) td:nth-child(2) { width: 24% !important; }
+html body#page-top#page-top .access-directory-table:not(.permissions-directory-table) th:nth-child(3),
+html body#page-top#page-top .access-directory-table:not(.permissions-directory-table) td:nth-child(3) { width: 22% !important; }
+
+html body#page-top#page-top .access-row-actions { display: flex; align-items: center; gap: 10px !important; white-space: nowrap; }
+html body#page-top#page-top .access-record-link { color: #dbefff !important; font-weight: 700; text-decoration: none; }
+html body#page-top#page-top .access-record-link:hover { color: #3bd6ff !important; text-decoration: underline; }
+html body#page-top#page-top .access-action {
+    display: inline-flex !important; align-items: center; justify-content: center; gap: 8px;
+    min-width: 92px; height: 38px; padding: 0 14px !important; margin: 0 !important;
+    border: 1px solid transparent !important; border-radius: 11px !important; font-size: .82rem !important;
+    font-weight: 900; line-height: 1; white-space: nowrap; text-decoration: none; box-shadow: none !important;
+}
+html body#page-top#page-top .access-edit { color: #39d6ff !important; border-color: #33beff80 !important; background: #0832546b !important; }
+html body#page-top#page-top .access-delete { color: #ff85a1 !important; border-color: #ff5c7f8a !important; background: #631d345c !important; }
+html body#page-top#page-top .access-action i { color: inherit !important; }
+html body#page-top#page-top .access-action:hover { filter: brightness(1.18); }
+html body#page-top#page-top .access-action:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+html body#page-top#page-top .access-row-actions .toggle { min-height: 38px !important; margin: 0 !important; flex-shrink: 0; }
+html body#page-top#page-top .access-panel td.status-only-action-cell .toggle.status-text-toggle {
+    height: 38px !important; min-height: 38px !important; width: 116px !important; min-width: 116px !important;
+    font-size: .76rem !important; box-shadow: none !important; border-radius: 11px !important;
+}
+html body#page-top#page-top .access-protected { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; background: #10283e; border: 1px solid #294b68; border-radius: 10px; font-size: 11px; color: #9ab9d7; white-space: nowrap; }
+html body#page-top#page-top .access-panel .dataTables_wrapper { padding: 0 !important; border: 0 !important; box-shadow: none !important; }
+html body#page-top#page-top .access-panel .dataTables_length,
+html body#page-top#page-top .access-panel .dataTables_filter { margin-bottom: 16px; }
+html body#page-top#page-top .access-panel .dataTables_info,
+html body#page-top#page-top .access-panel .dataTables_paginate { padding-top: 18px !important; padding-bottom: 10px; }
+html body#page-top#page-top .access-modal .modal-content,
+html body#page-top#page-top .access-editor { background: #081a2e !important; border: 1px solid #285173 !important; border-radius: 18px !important; overflow: hidden; }
+html body#page-top#page-top .access-modal .modal-header { padding: 20px 24px; background: #0d2945 !important; border-bottom: 1px solid #21415f; }
+html body#page-top#page-top .access-modal .modal-body { padding: 24px; color: #b4cce4; }
+html body#page-top#page-top .access-modal .modal-footer { padding: 18px 24px; border-top: 1px solid #21415f; gap: 10px; }
+html body#page-top#page-top :is(.access-modal,.access-editor) .form-control {
+    background: #061426 !important; color: #e4f1ff !important; border: 1px solid #2a5879 !important;
+    border-radius: 11px !important; font-size: 13px; padding: 12px 14px; box-shadow: none !important;
+}
+html body#page-top#page-top :is(.access-modal,.access-editor) :is(input,select).form-control { min-height: 46px; height: auto; }
+html body#page-top#page-top :is(.access-modal,.access-editor) textarea { min-height: 130px; }
+html body#page-top#page-top :is(.access-modal,.access-editor) .form-control:focus { border-color: #35c8ff !important; box-shadow: 0 0 0 3px #21b8ef22 !important; }
+html body#page-top#page-top :is(.access-modal,.access-editor) .form-control::placeholder { color: #799bb9; }
+html body#page-top#page-top :is(.access-modal,.access-editor) label { color: #d9ecff; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+html body#page-top#page-top :is(.access-modal,.access-editor) label small { color: #ff9bad; margin-left: 6px; font-size: 9px; }
+html body#page-top#page-top .access-optional { color: #8aaccb; margin-left: 6px; font-size: 10px; font-weight: 500; }
+html body#page-top#page-top .access-secondary { display: inline-flex; align-items: center; gap: 8px; background: #0b2137 !important; color: #b7d6f1 !important; border: 1px solid #2a5476 !important; box-shadow: none !important; padding: 10px 16px; font-size: 13px; border-radius: 10px; }
+html body#page-top#page-top .access-save { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: 13px; min-height: 42px; }
+html body#page-top#page-top .access-editor { max-width: 960px; margin: 20px auto; }
+html body#page-top#page-top .access-editor-heading { padding: 24px 28px; border-bottom: 1px solid #21415f; background: #0d2945; }
+html body#page-top#page-top .access-editor-heading span { color: #3fd3ff; font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; }
+html body#page-top#page-top .access-editor-heading h2 { color: #eff7ff !important; font-size: 23px; margin: 8px 0; font-weight: 800; }
+html body#page-top#page-top .access-editor-heading p { color: #9fbcd7; font-size: 13px; margin: 0; }
+html body#page-top#page-top .access-edit-form { padding: 28px; }
+html body#page-top#page-top .access-form-actions { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 8px; }
+@media(max-width:600px) {
+    html body#page-top#page-top .access-panel > .card-body { padding: 14px !important; }
+    html body#page-top#page-top .access-editor-heading, html body#page-top#page-top .access-edit-form { padding: 20px; }
+    html body#page-top#page-top .access-directory-table { min-width: 620px; }
+
+}
+

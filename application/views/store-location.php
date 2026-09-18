@@ -42,7 +42,7 @@
         -->
         <div class="table-responsive">
             <table
-                class="table table-bordered table-striped <?= ($this->user_model->has_perm("edit_equipment_types") ? "" : "read-only"); ?>"
+                class="table table-borderless table-striped <?= ($this->user_model->has_perm("edit_equipment_types") ? "" : "read-only"); ?>"
                 id="locations_tabel" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -126,8 +126,8 @@
                 </div>
 
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success">Add Store Location</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
@@ -215,8 +215,8 @@
                         <input type="hidden" id="editId" name="id">
                     </div>
                     <div class="modal-footer" style="float:end;">
-                        <button type="submit" class="btn btn-success">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
                     </div>
                     <!-- <button type="submit" class="btn btn-primary mt-4 float-right">Save changes</button> -->
 
@@ -225,3 +225,4 @@
         </div>
     </div>
 </div>
+

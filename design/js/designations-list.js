@@ -5,9 +5,14 @@ $(document).ready(function () {
 		"responsive": true,
 		"autoWidth": true,
 		"pageLength": 10,
-		stateSave: true,
+		stateSave: false,
+		"columnDefs": [
+			{ "targets": 0, "width": "54%" },
+			{ "targets": 1, "width": "24%" },
+			{ "targets": 2, "width": "22%", "className": "access-actions-cell" }
+		],
 		"ajax": {
-			"url": "/designations/ajax_list",
+			"url": appUrl("/designations/ajax_list"),
 			"type": "POST",
 			"error": function (xhr, error, thrown) {
 				if (xhr.responseJSON && xhr.responseJSON.redirect) {
@@ -17,15 +22,17 @@ $(document).ready(function () {
 				}
 			}
 		},
-		drawCallback: initToggle,
+		drawCallback: function () {
+			initToggle();
+		},
 		"order": [
-			[1, "asc"]
+			[0, "asc"]
 		],
 		"columns": [{
 				"data": "designation_name",
 				createdCell: function (td, cellData, rowData, row, col) {
 					if (!$("table.read-only").length) {
-						$(td).html('<a class="text_warning_color" href="/designations/info?id=' + id_encode(rowData.designation_id) + '" title="View designation">' + cellData + '</a>');
+						$(td).html('<a class="access-record-link" href="/designations/info?id=' + id_encode(rowData.designation_id) + '" title="View designation">' + cellData + '</a>');
 					}
 				}
 			},
@@ -33,11 +40,12 @@ $(document).ready(function () {
 				"data": "description",
 			},
 			{
-				"data": "",
+				"data": null,
+                "searchable": false,
 				"orderable": false,
 				createdCell: function (td, cellData, rowData, row, col) {
 					if (!$("table.read-only").length) {
-						$(td).addClass("text-center").html('<input type="checkbox" ' + (rowData.active != 0 ? 'checked' : '') + ' data-toggle="toggle" data-id="' + rowData.designation_id + '" />');
+						$(td).addClass("access-actions-cell").html('<div class="access-row-actions"><a class="access-action access-edit" href="' + appUrl("/designations/info?id=" + id_encode(rowData.designation_id)) + '" title="Edit designation"><i class="fas fa-pen" aria-hidden="true"></i> Edit</a><input type="checkbox" ' + (rowData.active != 0 ? 'checked' : '') + ' data-toggle="toggle" data-id="' + rowData.designation_id + '" /></div>');
 					}
 				}
 			}

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class preventive_maintenance extends CI_Controller
@@ -28,7 +28,7 @@ class preventive_maintenance extends CI_Controller
             'design/css/custom-datatable.css',
             'design/vendor/dropzone/min/dropzone.min.css',
             'design/css/datepicker.css',
-            'design/css/assets-type-dashboard.css?v=74',
+            'design/css/assets-type-dashboard.css?v=75',
         ]]);
 
         $this->load->view('preventive-maintenance', []);
@@ -42,8 +42,8 @@ class preventive_maintenance extends CI_Controller
             'design/vendor/dropzone/min/dropzone.min.js',
             'design/js/datepicker.js',
             'design/js/assets-type-dashboard.js',
-            'design/js/assets-list.js',
-            'design/js/preventive_table_list.js',
+            'design/js/assets-list.js?v=11',
+            'design/js/preventive_table_list.js?v=2',
 
         ]]);
     }
@@ -51,6 +51,7 @@ class preventive_maintenance extends CI_Controller
     public function preventive_table_list()
     {
         $asset_type_id = $this->input->post("asset_id");
+        $status_filter = strtolower(trim((string) $this->input->post("status_filter")));
         $table_data = [];
 
         $data = $this->db->select('
@@ -133,7 +134,7 @@ class preventive_maintenance extends CI_Controller
                     } elseif ($next_maintenance_date < $currentDate) {
                         $status = "pending";
                     } elseif ($currentDate >= $reminder_date && $currentDate < $next_maintenance_date) {
-                        $status = "Maintenance";
+                        $status = "in_progress";
                     }
                 } catch (Exception $e) {
                     $status = "pending";
@@ -208,6 +209,19 @@ class preventive_maintenance extends CI_Controller
                 "remarks"                => $data->latest_remarks ?? "No Remarks",
                 "current_status"         => $status,
             ];
+        }
+
+        if ($status_filter && $status_filter !== "all") {
+            $table_data = array_values(array_filter($table_data, function ($row) use ($status_filter) {
+                $status = strtolower(trim((string) ($row->current_status ?? "")));
+                if (in_array($status, ["maintenance", "in-maintenance", "in_maintenance", "in progress"], true)) {
+                    $status = "in_progress";
+                }
+                if ($status_filter === "maintenance") {
+                    return $status === "in_progress";
+                }
+                return $status === $status_filter;
+            }));
         }
 
         echo json_encode(['data' => $table_data]);

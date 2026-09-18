@@ -46,7 +46,7 @@ class Write_off_reasons extends CI_Controller
         $this->load->view('header', $data);
         $this->load->view('write-off-reasons', $data);
         $this->load->view('footer', [
-            'scripts' => ['design/js/write-off-reasons.js']
+            'scripts' => ['design/js/write-off-reasons.js?v=3']
         ]);
     }
     

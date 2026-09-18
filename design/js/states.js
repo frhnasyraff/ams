@@ -28,10 +28,14 @@ $(document).ready(function () {
 			
 			{
 				"data": null,
+				"orderable": false,
+				"searchable": false,
 				createdCell: function (td, cellData, rowData, row, col) {
                     $(td).html(
-                        '<button class="btn  btn-edit btn-sm " data-id="' + rowData.id + '" style="font-size:13px;"><i class="fa fa-edit text-warning"></i></button>' +
-                        '<button class="btn  btn-delete btn-sm" data-id="' + rowData.id + '" style="font-size:13px;"><i class="fa fa-trash text-danger" aria-hidden="true"></i></button>'
+                        '<div class="states-row-actions">' +
+                        '<button type="button" class="btn btn-edit states-action" data-id="' + rowData.id + '" title="Edit state" aria-label="Edit"><i class="fas fa-pen" aria-hidden="true"></i> Edit</button>' +
+                        '<button type="button" class="btn btn-delete states-action" data-id="' + rowData.id + '" title="Delete state" aria-label="Delete"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete</button>' +
+                        '</div>'
                     );
 				}
 			}

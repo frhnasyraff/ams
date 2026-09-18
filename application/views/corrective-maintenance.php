@@ -66,7 +66,7 @@
     }
 
     html body#page-top#page-top .corrective-ops-page #correctiveAllStatus {
-        min-width: 760px !important;
+        min-width: 940px !important;
     }
 
     html body#page-top#page-top .corrective-ops-page #corrective {
@@ -175,6 +175,69 @@
         cursor: not-allowed !important;
     }
 
+
+    html body#page-top#page-top .corrective-ops-page .corrective-type-filter {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 10px !important;
+        margin: 0 0 16px !important;
+        flex-wrap: wrap !important;
+    }
+
+    html body#page-top#page-top .corrective-ops-page .corrective-type-filter__label {
+        color: #8fb6e8 !important;
+        font-size: .78rem !important;
+        font-weight: 900 !important;
+        letter-spacing: .04em !important;
+        text-transform: uppercase !important;
+    }
+
+    html body#page-top#page-top .corrective-ops-page .corrective-type-filter button {
+        min-width: 112px !important;
+        height: 38px !important;
+        border: 1px solid rgba(49, 190, 255, .34) !important;
+        border-radius: 12px !important;
+        background: rgba(6, 20, 40, .78) !important;
+        color: #c8e2ff !important;
+        font-size: .78rem !important;
+        font-weight: 900 !important;
+        letter-spacing: .01em !important;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.02) !important;
+        transition: .18s ease !important;
+    }
+
+    html body#page-top#page-top .corrective-ops-page .corrective-type-filter button:hover,
+    html body#page-top#page-top .corrective-ops-page .corrective-type-filter button.is-active {
+        border-color: rgba(67, 205, 255, .9) !important;
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #2f6ff2, #26bee9) !important;
+        box-shadow: 0 10px 22px rgba(38, 190, 233, .18) !important;
+    }
+
+    html body#page-top#page-top .corrective-ops-page .corrective-type-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 92px !important;
+        height: 30px !important;
+        padding: 0 14px !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(49, 190, 255, .42) !important;
+        background: rgba(7, 30, 55, .84) !important;
+        color: #35d8ff !important;
+        font-size: .72rem !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        letter-spacing: .02em !important;
+        white-space: nowrap !important;
+    }
+
+    html body#page-top#page-top .corrective-ops-page .corrective-type-badge--component {
+        border-color: rgba(167, 139, 250, .48) !important;
+        background: rgba(59, 35, 115, .34) !important;
+        color: #c4b5fd !important;
+    }
     @media (max-width: 767px) {
         html body#page-top#page-top .corrective-ops-page .corrective-pages {
             width: 100% !important;
@@ -268,9 +331,15 @@
                 <div><span class="corrective-panel__kicker">Action Queue</span><h3>Active Maintenance Queue</h3><p>Jobs that still require attention or are in progress.</p></div>
                 <span class="corrective-table-count"><strong id="corrective-active-count">0</strong> active</span>
             </div>
+            <div class="corrective-type-filter" aria-label="Filter active maintenance queue by type">
+                <span class="corrective-type-filter__label">Filter Type</span>
+                <button type="button" class="is-active" data-corrective-type="">All</button>
+                <button type="button" data-corrective-type="Asset">Assets</button>
+                <button type="button" data-corrective-type="Component">Components</button>
+            </div>
             <div class="corrective-table-scroll">
                 <table class="table corrective-data-table" id="correctiveAllStatus" width="100%" cellspacing="0">
-                    <thead><tr><th>Equipment Name</th><th>Update Date</th><th>Final Status</th><th>Remarks</th></tr></thead>
+                    <thead><tr><th>Type</th><th>Equipment Name</th><th>Update Date</th><th>Work Status</th><th>Remarks</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
@@ -283,7 +352,7 @@
             </div>
             <div class="corrective-table-scroll">
                 <table class="table corrective-data-table" id="corrective" width="100%" cellspacing="0">
-                    <thead><tr><th>Asset Type</th><th>Equipment Name</th><th>Location</th><th>Final Status</th></tr></thead>
+                    <thead><tr><th>Asset Type</th><th>Equipment Name</th><th>Location</th><th>Work Status</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
@@ -300,3 +369,7 @@
         </div>
     </article>
 </section>
+
+
+
+

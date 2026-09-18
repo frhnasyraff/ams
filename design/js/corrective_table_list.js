@@ -5,9 +5,37 @@
         return $('<div>').text(value == null || value === '' ? '—' : value).html();
     }
 
+    function formatStatusLabel(value) {
+        var raw = value == null || value === '' ? 'pending' : String(value).trim();
+        var normalised = raw.toLowerCase().replace(/[\s_]+/g, '-');
+
+        if (normalised === 'in-maintenance') return 'In Maintenance';
+        if (normalised === 'in-progress') return 'In Progress';
+        if (normalised === 'complete' || normalised === 'completed') return 'Completed';
+        if (normalised === 'pending') return 'Pending';
+
+        return raw.replace(/[-_]+/g, ' ').replace(/\b\w/g, function (letter) {
+            return letter.toUpperCase();
+        });
+    }
+
+    function formatDateOnly(value) {
+        if (value == null || value === '') return '—';
+        var text = String(value).trim();
+        var match = text.match(/^(\d{4}-\d{2}-\d{2})/);
+        return match ? match[1] : text.replace(/\s+00:00:00$/, '');
+    }
+
+    function typeBadge(value) {
+        var label = value == null || value === '' ? 'Asset' : String(value).trim();
+        var normalised = label.toLowerCase();
+        var className = normalised.indexOf('component') !== -1 ? 'component' : 'asset';
+
+        return '<span class="corrective-type-badge corrective-type-badge--' + className + '">' + escapeHtml(label) + '</span>';
+    }
     function statusBadge(value) {
-        var label = value || 'Pending';
-        var normalised = String(label).toLowerCase().replace(/[\s_]+/g, '-');
+        var label = formatStatusLabel(value);
+        var normalised = String(value || label).toLowerCase().replace(/[\s_]+/g, '-');
         var className = 'maintenance';
 
         if (normalised.indexOf('complete') !== -1) {
@@ -58,7 +86,7 @@
         drawCallback: drawComplete
     };
 
-    $('#correctiveAllStatus').DataTable($.extend(true, {}, commonOptions, {
+    var activeTable = $('#correctiveAllStatus').DataTable($.extend(true, {}, commonOptions, {
         ajax: {
             url: appUrl('/corrective_maintenance/corrective_table_list_all_status'),
             type: 'POST',
@@ -73,21 +101,29 @@
                 }
             }
         },
-        order: [[1, 'desc']],
+        order: [[2, 'desc']],
         columnDefs: [
-            { targets: 0, width: '25%' },
-            { targets: 1, width: '18%' },
-            { targets: 2, width: '22%' },
-            { targets: 3, width: '35%' }
+            { targets: 0, width: '12%' },
+            { targets: 1, width: '22%' },
+            { targets: 2, width: '16%' },
+            { targets: 3, width: '18%' },
+            { targets: 4, width: '32%' }
         ],
         columns: [
+            { data: 'record_type', defaultContent: 'Asset', render: function (data, type) { return type === 'display' ? typeBadge(data) : (data || 'Asset'); } },
             { data: 'equipment_name', defaultContent: '—', render: escapeHtml },
-            { data: 'update_date', defaultContent: '—', render: escapeHtml },
+            { data: 'update_date', defaultContent: '—', render: formatDateOnly },
             { data: 'final_status', defaultContent: 'Pending', render: statusBadge },
             { data: 'remarks', defaultContent: '—', render: escapeHtml }
         ]
     }));
 
+    $('.corrective-type-filter [data-corrective-type]').on('click', function () {
+        var type = $(this).data('corrective-type') || '';
+        $('.corrective-type-filter [data-corrective-type]').removeClass('is-active');
+        $(this).addClass('is-active');
+        activeTable.column(0).search(type ? '^' + type + '$' : '', true, false).draw();
+    });
     $('#corrective').DataTable($.extend(true, {}, commonOptions, {
         ajax: {
             url: appUrl('/corrective_maintenance/corrective_table_list'),
@@ -118,3 +154,8 @@
         ]
     }));
 })(jQuery);
+
+
+
+
+

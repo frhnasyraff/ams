@@ -151,6 +151,7 @@
     function enhanceActionButtons($scope) {
         $scope.find('table button, table a').each(function () {
             var $button = $(this);
+            if ($button.hasClass('access-record-link')) return;
             var signature = (($button.attr('class') || '') + ' ' + ($button.attr('title') || '') + ' ' + $button.text()).toLowerCase();
             var type = '';
             var label = '';
@@ -170,7 +171,9 @@
 
             $button.addClass('master-row-action master-row-action--' + type).attr('aria-label', label);
             if (!$button.attr('title')) $button.attr('title', label);
-            if (!$.trim($button.clone().children().remove().end().text())) {
+            // Labels can be nested in spans. Only ignore icons when checking
+            // for existing text, so repeated draws never append another label.
+            if (!$.trim($button.clone().find('i, svg').remove().end().text())) {
                 $button.append('<span>' + label + '</span>');
             }
         });
@@ -198,6 +201,7 @@
     function enhanceStateToggles($scope) {
         $scope.find('.toggle').each(function () {
             var $toggle = $(this);
+            if ($toggle.closest('.access-panel').length) return;
             var isActive = !$toggle.hasClass('off');
 
             $toggle.addClass('master-state-toggle')
@@ -222,7 +226,7 @@
 
         $('#content > h5').first().addClass('master-legacy-page-title').attr('aria-hidden', 'true');
 
-        var $action = $workspace.find('a[data-toggle="modal"][data-target="#addModal"], button#addReasonBtn').first();
+        var $action = $workspace.find('[data-toggle="modal"][data-target="#addModal"], button#addReasonBtn').first();
         var $hero = makeHero(meta);
 
         if ($action.length) {
@@ -287,6 +291,11 @@
 
         enhanceActionButtons($workspace);
         enhanceStateToggles($workspace);
+
+        if (controller === 'logoimage') {
+            var logoCount = Number($workspace.find('#logo-image-panel').attr('data-logo-count')) || 0;
+            $workspace.find('.master-record-count').html('<strong>' + logoCount + '</strong> ' + (logoCount === 1 ? 'image' : 'images'));
+        }
 
         $workspace.find('table').each(function () {
             updateRecordCount($workspace, this);

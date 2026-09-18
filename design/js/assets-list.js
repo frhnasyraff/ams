@@ -34,8 +34,8 @@ $(document).ready(function () {
 			type: "POST",
 			data: function (d) {
 				return $.extend({}, d, {
-					equipment_type: $(".equipment_type_filter .btn-primary").data("filter"),
-					equipment_group: $(".equipment_group_filter .btn-primary").data("filter"),
+					equipment_type: $(".equipment_type_filter .active").data("filter"),
+					equipment_group: $(".equipment_group_filter .active").data("filter"),
 				});
 			},
 			"error": function (xhr, error, thrown) {
@@ -69,7 +69,7 @@ $(document).ready(function () {
 						$(td)
 							.addClass("p-0 m-0 text-center")
 							.html(
-								'<div class="btn view-list" data-id="' +
+								'<div class="btn view-list asset-view-hollow-btn" style="width:42px!important;height:38px!important;border:1px solid rgba(56,189,248,.72)!important;border-radius:10px!important;background:rgba(6,18,39,.52)!important;background-image:none!important;color:#7dd3fc!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 16px rgba(0,0,0,.10)!important;" data-id="' +
 								rowData.equipment_id +
 								'">' +
 								'<i class="fas fa-eye"></i>' +
@@ -142,38 +142,67 @@ $(document).ready(function () {
 			},
 
 	{
-    data: "active",
-    createdCell: function (td, cellData, rowData, row, col) {
-        if (!$("table.read-only").length) {
-            const toggleCheckbox = `
-                <input type="checkbox" 
-                       ${rowData.active != 0 ? "checked" : ""} 
-                       data-toggle="toggle"
-                       data-on="Active"
-                       data-off="Inactive"
-                       data-onstyle="success"
-                       data-offstyle="danger"
-                       data-style="asset-row-active-toggle status-text-toggle"
-                       data-id="${rowData.equipment_id}" />`;
+		data: "active",
+		createdCell: function (td, cellData, rowData, row, col) {
+			if (!$('table.read-only').length) {
+				var isActive = parseInt(rowData.active, 10) !== 0;
+				var nextActive = isActive ? 0 : 1;
+				var actionLabel = isActive ? "Deactivate" : "Activate";
+				var actionClass = isActive ? "asset-state-action--deactivate" : "asset-state-action--activate";
+				var actionIcon = isActive ? "fa-ban" : "fa-check-circle";
 
-            const html = `
-                <div class="asset-status-action">
-                    ${toggleCheckbox}
-                </div>`;
-
-            $(td)
-                .addClass("text-center status-only-action-cell")
-                .html(html);
-        }
-    }
-}
+				$(td)
+					.addClass("text-center status-only-action-cell")
+					.html(
+						'<button type="button" class="asset-state-action ' + actionClass + '" data-id="' + rowData.equipment_id + '" data-active="' + nextActive + '">' +
+							'<i class="fas ' + actionIcon + '"></i>' +
+							'<span>' + actionLabel + '</span>' +
+						'</button>'
+					);
+			}
+		}
+	}
 
 
 
 		],
 	});
 
-	$(document).on("change", ".checkbox-equipment-id", function () {
+	
+	$(document).on("click", "#assets .asset-state-action", function (e) {
+		e.preventDefault();
+		var button = $(this);
+		if (button.prop("disabled")) return;
+
+		var nextActive = parseInt(button.data("active"), 10) ? 1 : 0;
+		button.prop("disabled", true).addClass("is-loading");
+
+		$.ajax({
+			url: amsUrl("/assets/state_ajax"),
+			dataType: "json",
+			type: "POST",
+			data: {
+				id: button.data("id"),
+				active: nextActive
+			},
+			success: function (s) {
+				if (s && s.state) {
+					growl((nextActive ? "Activated" : "Deactivated") + " successfully", "success");
+					if (typeof assets !== "undefined" && assets.ajax) {
+						assets.ajax.reload(null, false);
+					}
+				} else {
+					button.prop("disabled", false).removeClass("is-loading");
+					growl("Could not save changes", "danger");
+				}
+			},
+			error: function () {
+				button.prop("disabled", false).removeClass("is-loading");
+				growl("Could not save changes", "danger");
+			}
+		});
+	});
+$(document).on("change", ".checkbox-equipment-id", function () {
 		let row = $(this).closest("tr");
 		if ($(this).is(":checked")) {
 			row.addClass("highlight-row");
@@ -521,14 +550,14 @@ $(document).ready(function () {
 	});
 
 	$(".equipment_type_filter .btn").click(function () {
-		$(".equipment_type_filter .btn").removeAttr("disabled").removeClass("btn-primary active");
-		$(this).addClass("btn-primary active").attr("disabled", "disabled");
+		$(".equipment_type_filter .btn").removeAttr("disabled").removeClass("active");
+		$(this).addClass("active").attr("disabled", "disabled");
 		assets.ajax.reload();
 	});
 
 	$(".equipment_group_filter .btn").click(function () {
-		$(".equipment_group_filter .btn").removeAttr("disabled").removeClass("btn-primary active");
-		$(this).addClass("btn-primary active").attr("disabled", "disabled");
+		$(".equipment_group_filter .btn").removeAttr("disabled").removeClass("active");
+		$(this).addClass("active").attr("disabled", "disabled");
 		assets.ajax.reload();
 	});
 	$(document).on("change", "#status", function (e) {

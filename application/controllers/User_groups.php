@@ -17,7 +17,7 @@ class User_groups extends CI_Controller
     {
         $this->load->view('header', ['title' => "User Groups", 'title2' => "User Groups", "styles" => []]);
         $this->load->view('user-groups', []);
-        $this->load->view('footer', ['scripts' => ['design/js/user-groups-list.js']]);
+        $this->load->view('footer', ['scripts' => ['design/js/user-groups-list.js?v=3']]);
     }
 
     public function info()

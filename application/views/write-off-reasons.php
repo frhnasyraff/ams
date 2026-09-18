@@ -103,18 +103,18 @@
                             </td>
                             <td><?php echo date('Y-m-d', strtotime($reason->created_at)); ?></td>
                             <td>
-                                <div class="action-buttons">
-                                    <button type="button" class="btn btn-sm btn-outline-primary edit-reason" 
+                                <div class="action-buttons writeoff-row-actions">
+                                    <button type="button" class="writeoff-action-btn writeoff-action-btn--edit edit-reason" 
                                             data-id="<?php echo $reason->id; ?>"
                                             data-reason="<?php echo htmlspecialchars($reason->write_off_reason); ?>"
                                             data-description="<?php echo htmlspecialchars($reason->description); ?>"
                                             data-status="<?php echo $reason->status; ?>">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="fas fa-pen" aria-hidden="true"></i> Edit
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger delete-reason" 
+                                    <button type="button" class="writeoff-action-btn writeoff-action-btn--delete delete-reason" 
                                             data-id="<?php echo $reason->id; ?>"
                                             data-reason="<?php echo htmlspecialchars($reason->write_off_reason); ?>">
-                                        <i class="fas fa-trash"></i>
+                                        <i class="fas fa-trash" aria-hidden="true"></i> Delete
                                     </button>
                                 </div>
                             </td>
@@ -219,3 +219,4 @@
         list: "<?= site_url('write_off_reasons/get_ajax_list'); ?>"
     };
 </script>
+

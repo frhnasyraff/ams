@@ -761,3 +761,165 @@
     border-color: rgba(60, 117, 164, 0.4) !important;
     color: #eef7ff !important;
 }
+
+/* Bigger polished maintenance calendar popup */
+.schedule-modal .modal-dialog {
+    width: min(520px, calc(100vw - 32px)) !important;
+    max-width: 520px !important;
+    margin: 1.75rem auto !important;
+}
+
+.schedule-modal .modal-dialog .modal-content,
+.schedule-modal .modal-body {
+    overflow: hidden !important;
+    border-radius: 24px !important;
+    background:
+        radial-gradient(circle at 12% 0%, rgba(47, 190, 255, .16), transparent 32%),
+        linear-gradient(160deg, #0b1d35 0%, #061427 100%) !important;
+    color: #eef7ff !important;
+    box-shadow: 0 32px 90px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(105, 190, 255, .08) !important;
+}
+
+.schedule-modal.planned .modal-dialog .modal-content,
+.schedule-modal.progresss .modal-dialog .modal-content,
+.schedule-modal.completed .modal-dialog .modal-content,
+.schedule-modal.new .modal-dialog .modal-content {
+    border: 1px solid rgba(52, 197, 255, .38) !important;
+}
+
+.schedule-modal .header {
+    align-items: flex-start !important;
+    padding: 22px 26px 12px !important;
+    border-bottom: 1px solid rgba(63, 151, 226, .12) !important;
+}
+
+.schedule-modal .header .left .dots {
+    gap: 7px !important;
+}
+
+.schedule-modal .header .left .dots .dot {
+    width: 8px !important;
+    height: 8px !important;
+    background: #32d5ff !important;
+    box-shadow: 0 0 14px rgba(50, 213, 255, .72) !important;
+}
+
+.schedule-modal .header .right p {
+    margin-bottom: 7px !important;
+    color: #8fb6e8 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+.schedule-modal .header .right .status {
+    min-height: 32px !important;
+    padding: 7px 14px !important;
+    border-radius: 11px !important;
+    background: rgba(16, 54, 91, .82) !important;
+    border: 1px solid rgba(66, 202, 255, .46) !important;
+    color: #bfefff !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+}
+
+.schedule-modal.planned .header .right .status,
+.schedule-modal.progresss .header .right .status {
+    background: rgba(21, 91, 130, .38) !important;
+    border-color: rgba(57, 209, 255, .58) !important;
+    color: #c8f4ff !important;
+}
+
+.schedule-modal.completed .header .right .status {
+    background: rgba(20, 102, 73, .34) !important;
+    border-color: rgba(67, 230, 166, .54) !important;
+    color: #b9ffd9 !important;
+}
+
+.schedule-modal .content {
+    padding: 10px 30px 26px !important;
+}
+
+.schedule-modal .content .wrapper {
+    position: relative !important;
+    margin: 0 0 18px 0 !important;
+    padding-left: 32px !important;
+}
+
+.schedule-modal .content .wrapper .key {
+    margin-bottom: 4px !important;
+    color: #57ddff !important;
+    font-size: 14px !important;
+    font-weight: 900 !important;
+    letter-spacing: .01em !important;
+}
+
+.schedule-modal .content .wrapper .key:before {
+    left: -1px !important;
+    top: 10px !important;
+    width: 22px !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, rgba(57, 214, 255, .95), rgba(57, 214, 255, 0)) !important;
+}
+
+.schedule-modal .content .wrapper .value {
+    color: #ffffff !important;
+    font-size: 20px !important;
+    font-weight: 950 !important;
+    line-height: 1.2 !important;
+    letter-spacing: -.02em !important;
+}
+
+.schedule-modal .item-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 9px !important;
+    overflow-x: auto !important;
+    border: 1px solid rgba(73, 172, 238, .38) !important;
+    border-radius: 12px !important;
+    background: rgba(4, 16, 31, .55) !important;
+}
+
+.schedule-modal .item-box table {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: collapse !important;
+    color: #dff4ff !important;
+    font-size: 12px !important;
+}
+
+.schedule-modal .item-box th {
+    padding: 8px 10px !important;
+    background: rgba(32, 105, 162, .5) !important;
+    color: #a9dfff !important;
+    border-color: rgba(98, 183, 244, .2) !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+}
+
+.schedule-modal .item-box td {
+    padding: 8px 10px !important;
+    border-color: rgba(98, 183, 244, .18) !important;
+    background: rgba(8, 27, 48, .72) !important;
+    color: #f3fbff !important;
+}
+
+.schedule-modal .item-box tr:nth-child(even) td {
+    background: rgba(10, 38, 68, .72) !important;
+}
+
+@media (max-width: 575px) {
+    .schedule-modal .modal-dialog {
+        width: calc(100vw - 20px) !important;
+        max-width: calc(100vw - 20px) !important;
+    }
+
+    .schedule-modal .content {
+        padding: 10px 20px 22px !important;
+    }
+
+    .schedule-modal .content .wrapper .value {
+        font-size: 18px !important;
+    }
+}
+

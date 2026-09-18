@@ -25,7 +25,8 @@ class DisposalMethod extends CI_Controller {
 
         $this->load->view('header', [
             'title' => 'Disposal Methods',
-            'title2' => 'Disposal Methods'
+            'title2' => 'Disposal Methods',
+            'styles' => ['design/css/disposal-methods.css?v=1']
         ]);
         $this->load->view('disposal_methods_list', $data);
         $this->load->view('footer');

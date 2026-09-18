@@ -24,7 +24,7 @@ $(document).ready(function() {
 				"data": "perm_id",
 				createdCell: function (td, cellData, rowData, row, col) {
 					if (!$("table.read-only").length) {
-						$(td).html('<a class="text_warning_color" href="/permissions/info?id=' + id_encode(cellData) + '" title="View permission">' + pad(cellData, 3) + '</a>');
+						$(td).html('<a class="access-record-link" href="/permissions/info?id=' + id_encode(cellData) + '" title="View permission">' + pad(cellData, 3) + '</a>');
 					}
 				}
 			},
@@ -35,14 +35,15 @@ $(document).ready(function() {
 				"data": "perm_name"
 			},
 			{
-				"data": "",
+				"data": null,
+                "searchable": false,
 				"orderable": false,
 				createdCell: function (td, cellData, rowData, row, col) {
 					if (!$("table.read-only").length) {
 						if (rowData.system == "1") {
-                        $(td).addClass("text-center").html('<i class="fa fa-lock"></i>');
+                        $(td).addClass("text-center").html('<span class="access-protected" title="This system rule cannot be deleted"><i class="fas fa-lock" aria-hidden="true"></i> System Rule</span>');
                     } else {
-                    $(td).addClass("text-center").html('<button class="btn btn-danger btn-sm delete" data-id="' + rowData.perm_id + '" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash"></i> Delete</button>');
+                    $(td).addClass("text-center").html('<button type="button" class="access-action access-delete delete" data-id="' + rowData.perm_id + '" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete</button>');
                     }
 				}
 			}

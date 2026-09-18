@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $assetStateMap = [];
 foreach ($stateCount as $row) {
     $assetStateMap[(string) $row->state_name] = (int) $row->total_assets;
@@ -78,6 +78,34 @@ html body:has(.location-summary-redesign) .location-summary-redesign .distributi
     transition: height .2s ease !important;
 }
 
+
+html body:has(.location-summary-redesign) .location-summary-redesign .location-register-card {
+    overflow: visible !important;
+    padding-right: 18px !important;
+}
+
+html body:has(.location-summary-redesign) .location-summary-redesign .location-table-responsive {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    padding-right: 18px !important;
+    box-sizing: border-box !important;
+}
+
+html body:has(.location-summary-redesign) .location-summary-redesign .location-data-table {
+    min-width: 1320px !important;
+    width: 100% !important;
+    margin-right: 18px !important;
+}
+
+html body:has(.location-summary-redesign) .location-summary-redesign #locations_tabel th:last-child,
+html body:has(.location-summary-redesign) .location-summary-redesign #locations_tabel td:last-child,
+html body:has(.location-summary-redesign) .location-summary-redesign #item_locations_tabel th:last-child,
+html body:has(.location-summary-redesign) .location-summary-redesign #item_locations_tabel td:last-child {
+    min-width: 150px !important;
+    padding-right: 24px !important;
+}
 @media (max-width: 620px) {
     html body:has(.location-summary-redesign) .location-summary-redesign .location-state-filter {
         width: 100% !important;
@@ -249,4 +277,5 @@ window.locationSummaryPayload = {
     unassignedAssets: <?= (int) ($unassignedAssets ?? 0) ?>
 };
 </script>
+
 

@@ -38,7 +38,7 @@ class Assets_type_dashboard extends CI_Controller
                 'design/vendor/dropzone/min/dropzone.min.js',
                 'design/js/datepicker.js',
                 'design/js/assets-type-dashboard.js',
-                'design/js/assets-list.js',
+                'design/js/assets-list.js?v=11',
                 'design/js/dashboard-upload-pills.js'
 
             ]

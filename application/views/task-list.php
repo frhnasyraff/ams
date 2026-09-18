@@ -21,21 +21,21 @@
     }
 </style>
 
-<h2 class="mb-4">Task List</h2>
+<section class="task-list-page"><div class="task-list-hero"><div><span>Maintenance Library</span><h2>Task List</h2><p>Manage recurring maintenance task templates and their frequency.</p></div>
 
-<a class="float-right text_successo btn btn_border" href="#addModal" data-toggle="modal" data-target="#addModal" title="Add new Task" style="margin-top: -80px !important; margin-right: 5px; "><i class="fa fa-plus"></i>New Task</a>
+<a class="task-list-new-btn" href="#addModal" data-toggle="modal" data-target="#addModal" title="Add new Task"><i class="fa fa-plus"></i> New Task</a></div>
 
-<hr style="color: #DBDBE0;" />
-<div class="card shadow mb-4 tabradius" style="width: 100% !important;">
+
+<div class="card shadow mb-4 tabradius task-list-card" style="width: 100% !important;">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-borderless table-striped" id="task-list" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th class="bg-white text-dark font-weight-bold">ID</th>
-                        <th class="bg-white text-dark font-weight-bold">Name</th>
-                        <th class="bg-white text-dark font-weight-bold">Frequency (Days)</th>
-                        <th width="20%" class="bg-white text-dark font-weight-bold">Actions</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Frequency (Days)</th>
+                        <th width="22%">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +45,8 @@
         </div>
     </div>
 </div>
+
+</section>
 
 <!-- Add Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="addModal">
@@ -70,8 +72,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success">Add Task</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
@@ -103,10 +105,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success">Update</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+
+

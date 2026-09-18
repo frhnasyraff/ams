@@ -1,0 +1,71 @@
+/* A compact logo preview and controls, matching the other master pages. */
+html body#page-top #logo-image-panel .logo-layout {
+    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 32px; align-items: center; padding: 26px !important;
+}
+html body#page-top #logo-image-panel .logo-preview-panel {
+    overflow: hidden; border: 1px solid #214765; border-radius: 16px; background: #061426;
+}
+html body#page-top #logo-image-panel .logo-preview-heading {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 14px 18px; border-bottom: 1px solid #1a3855; color: #9dbbd9; font-size: 11px; font-weight: 700;
+}
+html body#page-top #logo-image-panel .logo-preview-tag {
+    color: #5ae3bb; border: 1px solid #246253; background: #0b302d; padding: 4px 9px; border-radius: 20px;
+}
+html body#page-top #logo-image-panel .logo-preview-stage {
+    display: flex; align-items: center; justify-content: center; min-height: 220px; padding: 26px;
+    background: radial-gradient(ellipse at center, #123450 0%, #081a2d 70%);
+}
+html body#page-top #logo-image-panel .logo-preview-image {
+    display: block; width: auto !important; max-width: 100% !important; max-height: 180px;
+    object-fit: contain; border: 0 !important; border-radius: 6px; padding: 0 !important;
+}
+html body#page-top #logo-image-panel .logo-eyebrow { color: #39d6ff; font-size: 10px; letter-spacing: 1.4px; font-weight: 800; text-transform: uppercase; }
+html body#page-top #logo-image-panel .logo-details h2 { margin: 8px 0 12px; color: #edf6ff !important; font-size: 23px; font-weight: 800; }
+html body#page-top #logo-image-panel .logo-details p { margin: 0; color: #9db7d3; font-size: 13px; line-height: 1.7; }
+html body#page-top #logo-image-panel .logo-file-info {
+    display: flex; gap: 13px; align-items: center; padding: 16px; margin: 22px 0;
+    border: 1px solid #1d3b56; border-radius: 12px; background: #08192c;
+}
+html body#page-top #logo-image-panel .logo-file-info > i { color: #43cffa; font-size: 22px; }
+html body#page-top #logo-image-panel .logo-file-info div { min-width: 0; }
+html body#page-top #logo-image-panel .logo-file-info span { display: block; color: #87a4c2; font-size: 10px; margin-bottom: 5px; }
+html body#page-top #logo-image-panel .logo-file-info strong { display: block; color: #d9ecff; font-size: 13px; overflow-wrap: anywhere; text-transform: none; }
+html body#page-top #logo-image-panel .logo-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+html body#page-top #logo-image-panel .logo-actions form { margin: 0; }
+html body#page-top #logo-image-panel .logo-action {
+    display: inline-flex !important; align-items: center; justify-content: center; gap: 8px;
+    min-width: 92px; height: 38px; padding: 0 14px !important; border-radius: 11px !important;
+    border: 1px solid transparent !important; font-size: .82rem !important; font-weight: 900;
+    line-height: 1; white-space: nowrap; box-shadow: none !important;
+}
+html body#page-top #logo-image-panel .logo-action-edit {
+    color: #39d6ff !important; border-color: rgba(51,190,255,.5) !important; background: rgba(8,50,84,.42) !important;
+}
+html body#page-top #logo-image-panel .logo-action-delete {
+    color: #ff85a1 !important; border-color: rgba(255,92,127,.54) !important; background: rgba(99,29,52,.36) !important;
+}
+html body#page-top #logo-image-panel .logo-action:hover { filter: brightness(1.18); }
+html body#page-top #logo-image-panel .logo-action i { color: inherit !important; }
+html body#page-top #logo-image-panel .logo-action:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+html body#page-top #logo-image-panel .logo-details .logo-help { font-size: 11px; margin-top: 16px; }
+html body#page-top #logo-image-panel .logo-empty { text-align: center; color: #88a9c8; }
+html body#page-top #logo-image-panel .logo-empty i { font-size: 36px; color: #3cbeef; }
+html body#page-top #logo-image-panel .logo-empty p { color: #d4e6f8; margin: 14px 0 6px; font-weight: 700; }
+html body#page-top #logo-image-panel .logo-empty span { font-size: 12px; }
+html body#page-top #addModal.logo-upload-modal .modal-content { background: #081a2e !important; border: 1px solid #275478 !important; border-radius: 18px !important; }
+html body#page-top #addModal.logo-upload-modal .modal-body { padding: 24px; }
+html body#page-top #addModal.logo-upload-modal .modal-body p { font-size: 13px; color: #a5bfdc; line-height: 1.7; }
+html body#page-top #addModal.logo-upload-modal .logo-file-picker { padding: 20px; margin-top: 20px; border: 1px dashed #31729a; border-radius: 14px; background: #061426; }
+html body#page-top #addModal.logo-upload-modal label { display: block; color: #dcefff; font-size: 13px; font-weight: 700; }
+html body#page-top #addModal.logo-upload-modal label i { color: #3ed4ff; margin-right: 8px; }
+html body#page-top #addModal.logo-upload-modal input[type="file"] { width: 100%; height: auto; background: transparent !important; border: 0 !important; padding: 12px 0 !important; color: #d5e8fa !important; font-size: 12px; box-shadow: none !important; }
+html body#page-top #addModal.logo-upload-modal input::file-selector-button { background: #113757; color: #71dfff; border: 1px solid #28638c; border-radius: 8px; padding: 8px 10px; margin-right: 10px; cursor: pointer; }
+html body#page-top #addModal.logo-upload-modal small { display: block; font-size: 11px; color: #89a9c8; line-height: 1.6; }
+html body#page-top #addModal.logo-upload-modal .logo-cancel { background: transparent !important; color: #b0d1ee !important; border: 1px solid #2a5576 !important; border-radius: 10px; padding: 10px 16px; font-size: 13px; }
+html body#page-top #addModal.logo-upload-modal .logo-upload-submit { font-size: 13px; padding: 10px 16px; }
+@media (max-width: 850px) {
+    html body#page-top #logo-image-panel .logo-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 18px !important; }
+    html body#page-top #logo-image-panel .logo-preview-stage { min-height: 180px; padding: 20px; }
+}

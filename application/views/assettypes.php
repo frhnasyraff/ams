@@ -87,7 +87,7 @@
                                 class="form-control searchable-dropdown">
                                 <option value="">--Select--</option>
                                 <?php foreach ($manufacturer_name as $mn): ?>
-                                    <option value="<?= $mn->manufacturer_name ?>"
+                                    <option value="<?= (int) $mn->id ?>"
                                         <?= ($mn->id == $mn->manufacturer_name) ? 'selected' : ''; ?>>
                                         <?= $mn->manufacturer_name ?>
                                     </option>
@@ -186,8 +186,8 @@
                     </div>
 
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-success">Add Asset Type</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
@@ -305,3 +305,4 @@
         });
     });
 </script>
+

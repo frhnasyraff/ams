@@ -1,3 +1,81 @@
+<style>
+    body .item-type-select2-dropdown {
+        overflow: hidden !important;
+        border: 1px solid rgba(51, 190, 255, .45) !important;
+        border-radius: 14px !important;
+        background: #07162a !important;
+        box-shadow: 0 22px 45px rgba(0,0,0,.42), 0 0 0 1px rgba(255,255,255,.03) inset !important;
+    }
+    body .item-type-select2-dropdown .select2-search--dropdown {
+        padding: 8px !important;
+        background: #07162a !important;
+        border-bottom: 1px solid rgba(63, 151, 226, .22) !important;
+    }
+    body .item-type-select2-dropdown .select2-search__field {
+        height: 38px !important;
+        padding: 7px 12px !important;
+        border: 1px solid rgba(80, 170, 245, .52) !important;
+        border-radius: 10px !important;
+        background: #061326 !important;
+        color: #eef7ff !important;
+        outline: 0 !important;
+        box-shadow: 0 0 0 3px rgba(50, 190, 255, .12) !important;
+        font-weight: 750 !important;
+    }
+    body .item-type-select2-dropdown .select2-results,
+    body .item-type-select2-dropdown .select2-results__options {
+        background: #07162a !important;
+    }
+    body .item-type-select2-dropdown .select2-results__options {
+        max-height: 260px !important;
+        padding: 6px !important;
+        scrollbar-color: #2bbcf4 #061326 !important;
+    }
+    body .item-type-select2-dropdown .select2-results__option {
+        margin: 3px 0 !important;
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+        color: #d8ecff !important;
+        background: transparent !important;
+        font-size: .92rem !important;
+        font-weight: 800 !important;
+    }
+    body .item-type-select2-dropdown .select2-results__option--highlighted[aria-selected],
+    body .item-type-select2-dropdown .select2-results__option--highlighted.select2-results__option--selectable {
+        background: linear-gradient(135deg, #2f6ff2, #27bfee) !important;
+        color: #ffffff !important;
+    }
+    body .item-type-select2-dropdown .select2-results__option[aria-selected="true"],
+    body .item-type-select2-dropdown .select2-results__option--selected {
+        background: rgba(35, 126, 204, .36) !important;
+        color: #ffffff !important;
+    }
+    body .item-type-select2-dropdown .select2-results__message {
+        color: #8fb6e8 !important;
+    }
+    body:has(#item_tabel) .select2-container--default .select2-selection--single {
+        min-height: 46px !important;
+        border: 1px solid rgba(51, 190, 255, .42) !important;
+        border-radius: 12px !important;
+        background: #071a31 !important;
+        color: #eef7ff !important;
+    }
+    body:has(#item_tabel) .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 44px !important;
+        color: #dcecff !important;
+        margin: 0 !important;
+        padding-left: 12px !important;
+        padding-right: 36px !important;
+    }
+    body:has(#item_tabel) .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #6f89aa !important;
+    }
+    body:has(#item_tabel) .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 44px !important;
+        right: 7px !important;
+        margin: 0 !important;
+    }
+</style>
 <!-- Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
 <!-- jQuery (required for Select2) -->
@@ -114,8 +192,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Add</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add</button>
                     </div>
                 </form>
             </div>
@@ -184,8 +262,8 @@
                         <input type="hidden" id="editId" name="id">
                     </div>
                     <div class="modal-footer" style="float:end;">
-                        <button type="submit" class="btn btn-success">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
                     </div>
                     <!-- <button type="submit" class="btn btn-primary mt-4 float-right">Save changes</button> -->
 
@@ -208,8 +286,18 @@
 
         // Initialize Select2 on Manufacturer Name dropdown
         $('#manufacturer_name').select2({
-            placeholder: "Select Manufacturer", // Optional
-            allowClear: true // Allow clearing the selection
+            placeholder: "Select Manufacturer",
+            allowClear: true,
+            width: '100%',
+            dropdownCssClass: 'item-type-select2-dropdown'
+        });
+
+        $('#manufacturer').select2({
+            placeholder: "Select Manufacturer",
+            allowClear: true,
+            width: '100%',
+            dropdownCssClass: 'item-type-select2-dropdown',
+            dropdownParent: $('#editModal')
         });
 
         // Optional: If you need to show a custom "Manufacturer Name" on selection
@@ -280,3 +368,4 @@
         });
     });
 </script>
+
