@@ -139,9 +139,12 @@ class Maintenance_alerts extends CI_Controller
                 continue;
             }
             if ($component) {
+                $remarksExpr = $this->db->field_exists('notes', 'logs_item_maintenance')
+                    ? 'm.notes'
+                    : ($this->db->field_exists('description', 'item_ticket') ? 'ticket.description' : '""');
                 $rows = $this->db->select('m.id AS record_id, i.id AS entity_id,
                     i.item_name AS title, sl.name AS location, m.update_date AS record_date,
-                    m.final_status, m.notes AS remarks')
+                    m.final_status, ' . $remarksExpr . ' AS remarks', false)
                     ->from('logs_item_maintenance m')
                     ->join('item_ticket ticket', 'ticket.id = m.item_ticket_id')
                     ->join('add_asset_items i', 'i.id = ticket.item_id')
