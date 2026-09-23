@@ -161,13 +161,17 @@ class corrective_maintenance extends CI_Controller
             ->result();
 
         // Fetch active component tickets and label them separately from assets.
+        $ticketFallbackName = $this->db->field_exists('number', 'item_ticket') ? 'item_ticket.number' : 'CONCAT("Component Ticket ", item_ticket.id)';
+        $itemRemarksExpr = $this->db->field_exists('notes', 'logs_item_maintenance')
+            ? 'latest_item_maintenance.notes'
+            : ($this->db->field_exists('description', 'item_ticket') ? 'item_ticket.description' : '"Work is progressing according to workshop schedule."');
         $componentData = $this->db->select('item_ticket.*, 
             "Component" AS record_type,
-            COALESCE(add_asset_items.item_name, item_ticket.number) AS equipment_name,
+            COALESCE(add_asset_items.item_name, ' . $ticketFallbackName . ') AS equipment_name,
             COALESCE(latest_item_maintenance.final_status, "IN-MAINTENANCE") AS final_status,
             COALESCE(latest_item_maintenance.update_date, item_ticket.issue_date) AS update_date,
             NULL AS task_done,
-            COALESCE(latest_item_maintenance.notes, item_ticket.description, "Work is progressing according to workshop schedule.") AS remarks', false)
+            COALESCE(' . $itemRemarksExpr . ', "Work is progressing according to workshop schedule.") AS remarks', false)
             ->from('item_ticket')
             ->join('add_asset_items', 'add_asset_items.id = item_ticket.item_id', 'left')
             ->join(
